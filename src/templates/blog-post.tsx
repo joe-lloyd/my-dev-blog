@@ -1,14 +1,17 @@
-import * as React from 'react';
-import { graphql } from 'gatsby';
+import * as React from "react"
+import { graphql } from "gatsby"
+import Layout from "../components/layout"
 
 export default function BlogPost({ data, children }) {
-  const post = data.mdx;
+  const post = data.mdx
   return (
-    <article>
-      <h1>{post.frontmatter.title}</h1>
-      {children}
-    </article>
-  );
+    <Layout>
+      <article>
+        <h1>{post.frontmatter.title}</h1>
+        {children}
+      </article>
+    </Layout>
+  )
 }
 
 export const query = graphql`
@@ -20,4 +23,4 @@ export const query = graphql`
             }
         }
     }
-`;
+`

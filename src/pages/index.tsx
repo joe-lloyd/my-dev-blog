@@ -9,36 +9,30 @@ type DataProps = {
   site: {
     buildTime: string
   }
+  allMdx: {
+    edges: Array<{
+      node: {
+        id: string
+        frontmatter: {
+          slug: string
+          title: string
+        }
+      }
+    }>
+  }
 }
 
-const Index: React.FC<PageProps<DataProps>> = ({
-  data,
-  location,
-}) => (
+const Index: React.FC<PageProps<DataProps>> = ({ data, location }) => (
   <Layout>
-    <h1>
-      Gatsby supports <b>TypeScript by default</b>
-    </h1>
-    <p>
-      This means that you can create and write <code>.ts/.tsx</code> files for
-      your pages, components, and <code>gatsby-*</code> configuration files (for
-      example <code>gatsby-config.ts</code>).
-    </p>
-    <p>
-      For type checking you'll want to install <code>typescript</code> via npm
-      and run <code>tsc --init</code> to create a <code>tsconfig</code> file.
-    </p>
-    <p>
-      You're currently on the page <code>{location.pathname}</code> which was
-      built on {data.site.buildTime}.
-    </p>
-    <p>
-      To learn more, head over to our{" "}
-      <a href="https://www.gatsbyjs.com/docs/how-to/custom-configuration/typescript/">
-        documentation about TypeScript
-      </a>
-      .
-    </p>
+    <h1>Gatsby & MDX Blog</h1>
+    <ul>
+      {data.allMdx.edges.map(({ node }) => (
+        <li key={node.id}>
+          <Link to={node.frontmatter.slug}>{node.frontmatter.title}</Link>
+        </li>
+      ))}
+    </ul>
+    <p>You're currently on the page <code>{location.pathname}</code> which was built on {data.site.buildTime}.</p>
     <Link to="/">Go back to the homepage</Link>
   </Layout>
 )
@@ -48,9 +42,20 @@ export const Head: HeadFC<DataProps> = () => <Seo title="Using TypeScript" />
 export default Index
 
 export const query = graphql`
-  {
-    site {
-      buildTime(formatString: "YYYY-MM-DD hh:mm a z")
+    {
+        site {
+            buildTime(formatString: "YYYY-MM-DD hh:mm a z")
+        }
+        allMdx {
+            edges {
+                node {
+                    id
+                    frontmatter {
+                        slug
+                        title
+                    }
+                }
+            }
+        }
     }
-  }
 `

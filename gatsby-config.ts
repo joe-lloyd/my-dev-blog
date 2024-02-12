@@ -39,7 +39,21 @@ const config: GatsbyConfig = {
         path: `${__dirname}/content/blog`,
       },
     },
-    `gatsby-plugin-mdx`,
+    {
+      resolve: `gatsby-plugin-mdx`,
+      options: {
+        gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-remark-prismjs`,
+            options: {
+              // Optionally, you can set classPrefix to something like 'language-' to match your CSS
+              // You can also add other options here to customize the behavior
+              // See: https://www.gatsbyjs.com/plugins/gatsby-remark-prismjs/#options
+            },
+          },
+        ],
+      },
+    },
   ],
 }
 
