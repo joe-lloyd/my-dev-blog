@@ -11,7 +11,7 @@ type DataProps = {
   }
 }
 
-const UsingTypescript: React.FC<PageProps<DataProps>> = ({
+const Index: React.FC<PageProps<DataProps>> = ({
   data,
   location,
 }) => (
@@ -45,7 +45,7 @@ const UsingTypescript: React.FC<PageProps<DataProps>> = ({
 
 export const Head: HeadFC<DataProps> = () => <Seo title="Using TypeScript" />
 
-export default UsingTypescript
+export default Index
 
 export const query = graphql`
   {
