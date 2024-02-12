@@ -1,6 +1,6 @@
 // If you don't want to use TypeScript you can delete this file!
 import * as React from "react"
-import { PageProps, Link, graphql, HeadFC } from "gatsby"
+import { PageProps, graphql, HeadFC } from "gatsby"
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
@@ -14,7 +14,6 @@ type DataProps = {
         frontmatter: {
           slug: string
           title: string
-          // Add excerpt and image to your MDX frontmatter if possible
           excerpt: string
           image: string
         }

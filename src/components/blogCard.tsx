@@ -1,6 +1,7 @@
-import * as React from "react";
+import * as React from "react"
 import { Link } from "gatsby"
-import "./blogCard.css";
+import "./blogCard.css"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 type BlogCardProps = {
   title: string;
@@ -10,16 +11,18 @@ type BlogCardProps = {
 };
 
 const BlogCard: React.FC<BlogCardProps> = ({ title, excerpt, slug, image }) => {
+  const imageData = getImage(image); // This helper function is used to extract image data
+
   return (
     <div className="card">
-      <img src={image} alt={title} className="card-image" />
+      return <GatsbyImage image={imageData} alt={title} className="card-image" />;
       <div className="card-content">
         <h2 className="card-title">{title}</h2>
         <p className="card-excerpt">{excerpt}</p>
         <Link to={slug} className="button">Read More</Link>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default BlogCard;
+export default BlogCard
