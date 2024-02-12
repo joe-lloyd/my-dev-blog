@@ -4,11 +4,9 @@ import { PageProps, Link, graphql, HeadFC } from "gatsby"
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
+import BlogCard from "../components/blogCard"
 
 type DataProps = {
-  site: {
-    buildTime: string
-  }
   allMdx: {
     edges: Array<{
       node: {
@@ -16,36 +14,42 @@ type DataProps = {
         frontmatter: {
           slug: string
           title: string
+          // Add excerpt and image to your MDX frontmatter if possible
+          excerpt: string
+          image: string
         }
       }
     }>
   }
+  site: {
+    buildTime: string
+  }
 }
-
-const Index: React.FC<PageProps<DataProps>> = ({ data, location }) => (
-  <Layout>
-    <h1>Gatsby & MDX Blog</h1>
-    <ul>
-      {data.allMdx.edges.map(({ node }) => (
-        <li key={node.id}>
-          <Link to={node.frontmatter.slug}>{node.frontmatter.title}</Link>
-        </li>
-      ))}
-    </ul>
-    <p>You're currently on the page <code>{location.pathname}</code> which was built on {data.site.buildTime}.</p>
-    <Link to="/">Go back to the homepage</Link>
-  </Layout>
-)
-
+const Index: React.FC<PageProps<DataProps>> = ({ data, location }) => {
+  return (
+    <Layout>
+      <h1>Gatsby & MDX Blog</h1>
+      <div className="cards-grid">
+        {data.allMdx.edges.map(({ node }) => (
+          <BlogCard
+            key={node.id}
+            title={node.frontmatter.title}
+            excerpt={node.frontmatter.excerpt} // Replace with actual excerpt data
+            slug={node.frontmatter.slug}
+            image={node.frontmatter.image} // Replace with actual image path or URL
+          />
+        ))}
+      </div>
+      <p>You're currently on the page <code>{location.pathname}</code> which was built on {data.site.buildTime}.</p>
+    </Layout>
+  )
+}
 export const Head: HeadFC<DataProps> = () => <Seo title="Using TypeScript" />
 
 export default Index
 
 export const query = graphql`
     {
-        site {
-            buildTime(formatString: "YYYY-MM-DD hh:mm a z")
-        }
         allMdx {
             edges {
                 node {
@@ -53,9 +57,14 @@ export const query = graphql`
                     frontmatter {
                         slug
                         title
+                        excerpt
+                        image
                     }
                 }
             }
+        }
+        site {
+            buildTime(formatString: "YYYY-MM-DD hh:mm a z")
         }
     }
 `

@@ -1,0 +1,48 @@
+@import "color-overrides";
+
+@import "~bulma/sass/utilities/_all";
+@import "~bulma/sass/components/navbar";
+
+nav {
+  .navbar-brand {
+    align-items: center;
+  }
+
+  & h1.title {
+    & > span {
+      color: $light-dragon-pink;
+    }
+  }
+
+}
+.logo {
+  padding: 0.5rem 0 0.5rem 0.5rem;
+  img {
+    height: 3rem;
+    max-height: none;
+  }
+}
+
+.styled-link {
+  color: $light-dragon-pink !important;
+}
+
+.content .my-links ul {
+  margin: 0;
+}
+
+.my-links li {
+  display: inline-block;
+}
+
+nav h1.title {
+  @include mobile {
+    font-size: 1.4rem;
+    line-height: 1.1;
+    display: block !important;
+
+    span {
+      display: block;
+    }
+  }
+}

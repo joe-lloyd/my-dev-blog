@@ -8,6 +8,7 @@ const config: GatsbyConfig = {
     siteUrl: `https://dev-blog.joe-lloyd.com/`,
   },
   plugins: [
+    'gatsby-plugin-sass',
     `gatsby-plugin-image`,
     {
       resolve: `gatsby-source-filesystem`,

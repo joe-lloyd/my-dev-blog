@@ -1,0 +1,39 @@
+// Your dragon theme colors
+$dragon-dark: #0A0A0A;
+$dragon-purple: #5C2D91;
+$light-dragon-pink: #E03F8E;
+$dragon-pink: #DA257D;
+$dragon-blue: #3B5FCE;
+$dragon-cyan: #31D8F2;
+
+// Overriding Bulma's default color scheme
+$primary: $dragon-purple;
+$link: $dragon-pink;
+$info: $dragon-dark;
+$success: $dragon-pink;
+$warning: $dragon-cyan;
+$danger: $dragon-pink;
+$dark: $dragon-dark;
+$text: $dragon-dark;
+
+// Overriding Bulma's default navbar colors
+$navbar-background-color: $dragon-dark;
+$navbar-item-color: white;
+$navbar-item-hover-color: $dragon-pink;
+
+// Overriding Bulma's default card colors
+$body-background-color: $dragon-dark;
+$body-color: white;
+$border-color: $dragon-pink;
+
+$card-background-color: $dragon-dark;
+$card-color: white;
+$card-header-background-color: $dragon-dark;
+$card-header-color: white;
+$card-footer-background-color: $dragon-pink;
+$card-shadow: $dragon-pink;
+$link: white;
+
+$box-background-color: $dragon-dark;
+$box-color: white;
+$title-color: $dragon-pink;
