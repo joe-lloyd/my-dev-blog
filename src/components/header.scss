@@ -14,6 +14,10 @@ nav {
     }
   }
 
+  a {
+    text-decoration: none;
+  }
+
 }
 .logo {
   padding: 0.5rem 0 0.5rem 0.5rem;
@@ -21,18 +25,6 @@ nav {
     height: 3rem;
     max-height: none;
   }
-}
-
-.styled-link {
-  color: $light-dragon-pink !important;
-}
-
-.content .my-links ul {
-  margin: 0;
-}
-
-.my-links li {
-  display: inline-block;
 }
 
 nav h1.title {

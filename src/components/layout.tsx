@@ -1,15 +1,19 @@
 import * as React from "react"
 
 import Header from "./header"
-import "./layout.css"
+import "./layout.scss"
 
 const Layout = ({ children }) => {
   return (
     <>
       <Header />
-      <div>
-        <main>{children}</main>
-      </div>
+      <main>
+        <section className="section section--full-height">
+          <div className="container full-height display-flex">
+            {children}
+          </div>
+        </section>
+      </main>
     </>
   )
 }

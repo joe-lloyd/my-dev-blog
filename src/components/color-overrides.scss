@@ -1,3 +1,6 @@
+@import "~bulma/sass/utilities/initial-variables.sass";
+@import "~bulma/sass/utilities/derived-variables.sass";
+
 // Your dragon theme colors
 $dragon-dark: #0A0A0A;
 $dragon-purple: #5C2D91;
@@ -26,12 +29,6 @@ $body-background-color: $dragon-dark;
 $body-color: white;
 $border-color: $dragon-pink;
 
-$card-background-color: $dragon-dark;
-$card-color: white;
-$card-header-background-color: $dragon-dark;
-$card-header-color: white;
-$card-footer-background-color: $dragon-pink;
-$card-shadow: $dragon-pink;
 $link: white;
 
 $box-background-color: $dragon-dark;

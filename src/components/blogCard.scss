@@ -1,0 +1,43 @@
+@import "color-overrides.scss";
+
+$card-radius: 0.3rem;
+
+$card-header-padding: 0.1rem 1rem;
+$card-header-shadow: 0 0.125em 0.25em rgba($scheme-invert, 0.1);
+$card-header-weight: $weight-bold;
+
+$card-content-background-color: transparent;
+$card-content-padding: 1rem;
+
+$card-footer-border-top: 1px solid $border-light;
+$card-footer-padding: 0rem;
+
+$card-media-margin: $block-spacing;
+
+
+$card-background-color: $dragon-dark;
+$card-color: white;
+$card-header-background-color: $dragon-dark;
+$card-header-color: white;
+$card-footer-background-color: $dragon-pink;
+$card-shadow: $dragon-pink;
+
+@import "~bulma/sass/components/card.sass";
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card footer {
+  font-weight: $weight-bold;
+}
+.card footer a {
+  color: $card-color;
+  text-decoration: none;
+}
+
+.card-content {
+  flex-grow: 1;
+}
