@@ -6,6 +6,8 @@ const config: GatsbyConfig = {
     description: `A blog about web development and other cool stuff.`,
     author: `Joe Lloyd`,
     siteUrl: `https://dev-blog.joe-lloyd.com/`,
+    defaultImage: 'image',
+    twitterUsername: '@Josephl83378898',
   },
   plugins: [
     'gatsby-plugin-sass',

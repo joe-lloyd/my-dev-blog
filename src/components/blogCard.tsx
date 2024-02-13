@@ -1,17 +1,17 @@
 import * as React from "react"
 import { Link } from "gatsby"
 import "./blogCard.css"
-import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import { GatsbyImage, getImage, ImageDataLike } from "gatsby-plugin-image"
 
 type BlogCardProps = {
   title: string;
   excerpt: string;
   slug: string;
-  image: string; // You'll need to get this URL from your MDX or static files
+  image: ImageDataLike;
 };
 
 const BlogCard: React.FC<BlogCardProps> = ({ title, excerpt, slug, image }) => {
-  const imageData = getImage(image); // This helper function is used to extract image data
+  const imageData = getImage(image);
 
   return (
     <div className="card">
