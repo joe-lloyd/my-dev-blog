@@ -15,7 +15,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ title, excerpt, slug, image }) => {
 
   return (
     <div className="card">
-      return <GatsbyImage image={imageData} alt={title} className="card-image" />;
+      <GatsbyImage image={imageData} alt={title} className="card-image" />
       <div className="card-content">
         <h2 className="card-title">{title}</h2>
         <p className="card-excerpt">{excerpt}</p>

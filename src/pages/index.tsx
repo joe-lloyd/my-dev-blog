@@ -1,10 +1,10 @@
-// If you don't want to use TypeScript you can delete this file!
 import * as React from "react"
 import { PageProps, graphql, HeadFC } from "gatsby"
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 import BlogCard from "../components/blogCard"
+import { ImageDataLike } from "gatsby-plugin-image"
 
 type DataProps = {
   allMdx: {
@@ -15,7 +15,7 @@ type DataProps = {
           slug: string
           title: string
           excerpt: string
-          image: string
+          featuredImage: ImageDataLike
         }
       }
     }>
@@ -33,9 +33,9 @@ const Index: React.FC<PageProps<DataProps>> = ({ data, location }) => {
           <BlogCard
             key={node.id}
             title={node.frontmatter.title}
-            excerpt={node.frontmatter.excerpt} // Replace with actual excerpt data
+            excerpt={node.frontmatter.excerpt}
             slug={node.frontmatter.slug}
-            image={node.frontmatter.image} // Replace with actual image path or URL
+            image={node.frontmatter.featuredImage}
           />
         ))}
       </div>
@@ -57,7 +57,11 @@ export const query = graphql`
                         slug
                         title
                         excerpt
-                        image
+                        featuredImage {
+                            childImageSharp {
+                                gatsbyImageData(width: 800)
+                            }
+                        }
                     }
                 }
             }
