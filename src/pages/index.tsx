@@ -32,9 +32,8 @@ const Index: React.FC<PageProps<DataProps>> = ({ data, location }) => {
       <div className="tile is-parent">
         <div className="columns is-multiline">
           {data.allMdx.edges.map(({ node }) => (
-            <div className="column is-one-third">
+            <div className="column is-one-third" key={node.id}>
               <BlogCard
-                key={node.id}
                 title={node.frontmatter.title}
                 excerpt={node.frontmatter.excerpt}
                 slug={node.frontmatter.slug}
