@@ -69,3 +69,7 @@ yarn-error.log
 .yarn-integrity
 
 .idea
+
+docs
+
+src/generated

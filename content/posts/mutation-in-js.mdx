@@ -1,0 +1,63 @@
+---
+title: "The Silent Killer in Your React Code: Mutation"
+date: "2024-15-02"
+slug: "/mutation-in-javascript"
+excerpt: "Mutations in React can stealthily wreck your app's predictability. Learn why mutating state is a big no-no and how using slice instead of splice keeps your code behaving as expected."
+featuredImage: ../images/generated-thumb-mutation.webp
+---
+
+# The Silent Killer in Your React Code: Mutation
+
+Hey there, fellow coders! It's time we talk about something that can silently wreak havoc in your React apps: **mutations**. Ever had your app behave like it's possessed? You might be messing with mutations without even realizing it. Let's break it down, shall we?
+
+## What the Hell is a Mutation Anyway?
+
+In the realm of programming, especially when dealing with React, a mutation is like feeding Gremlins after midnight; shit starts to get weird. When you change a non-primitive data type (think objects and arrays), directly altering its contents, you're performing a mutation. Using methods like `splice` on an array can manipulate the original array, which is often not what you want.
+
+How do you know if a method mutates data? A good rule of thumb is to check if it returns a new array or object or alters the existing one.
+
+## Why Mutations Can Fuck Your Code Sideways
+
+Imagine you've got an object or an array, and you go ahead and change it directly. You've just mutated it. The catch is, any other part of your code that uses this data will now see the updated version, not the original. Confused? Let's look at a spooky example:
+
+```javascript
+// Creating a new object
+const myObj = { key: "some value" };
+
+// Assigning myObj to newObj by reference
+const newObj = myObj;
+
+// Changing newObj also changes myObj because of the reference
+newObj.key = "some other value";
+
+// Logging myObj shows the mutated value
+console.log(myObj); // Outputs: { key: "some other value" }
+```
+
+Scary, right? This behavior can lead to unpredictable app states and debugging nightmares.
+
+## Slicing Through the Madness
+
+Fear not, for there's a way to avoid unleashing chaos: use `slice`, not `splice`. The `slice` method lets you copy parts of an array without changing the original, keeping your state predictable and your components re-rendering correctly.
+
+### A Slice of Example
+
+Let's say you need to split an array into two halves in React:
+
+```javascript
+let yourArray = props.someArray;
+let halfwayThrough = Math.floor(yourArray.length / 2);
+// Choose Math.floor or Math.ceil depending on how you want to handle odd lengths
+
+let arrayFirstHalf = yourArray.slice(0, halfwayThrough);
+let arraySecondHalf = yourArray.slice(halfwayThrough);
+```
+
+Boom! You've now split your array without mutating the original, avoiding unintended side effects in your app.
+
+## Wrapping Up
+
+Understanding and avoiding mutations in React (and JavaScript in general) is crucial for maintaining a clean, predictable state in your applications. Always keep an eye on how you're manipulating your data structures and opt for non-mutating methods whenever possible. Your future self (and your fellow devs) will thank you.
+
+Stay coding, and remember, with great power comes great responsibility. Avoid mutations, and keep your React apps sane and efficient!
+

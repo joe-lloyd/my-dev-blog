@@ -23,7 +23,11 @@
     "sass": "^1.70.0"
   },
   "devDependencies": {
-    "prettier": "^2.8.8"
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/typescript": "^4.0.4",
+    "@graphql-codegen/typescript-operations": "^4.1.2",
+    "prettier": "^2.8.8",
+    "typedoc": "^0.25.8"
   },
   "keywords": [
     "gatsby"
@@ -36,6 +40,8 @@
     "start": "gatsby develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
+    "generate": "graphql-codegen --config codegen.yml",
+    "generate-docs": "typedoc --out docs src --entryPointStrategy expand",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "repository": {

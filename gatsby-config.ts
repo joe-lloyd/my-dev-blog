@@ -1,4 +1,4 @@
-import { GatsbyConfig } from 'gatsby';
+import { GatsbyConfig } from "gatsby"
 
 const config: GatsbyConfig = {
   siteMetadata: {
@@ -6,11 +6,11 @@ const config: GatsbyConfig = {
     description: `A blog about web development and other cool stuff.`,
     author: `Joe Lloyd`,
     siteUrl: `https://dev-blog.joe-lloyd.com/`,
-    defaultImage: 'image',
-    twitterUsername: '@Josephl83378898',
+    defaultImage: "image",
+    twitterUsername: "@Josephl83378898",
   },
   plugins: [
-    'gatsby-plugin-sass',
+    "gatsby-plugin-sass",
     `gatsby-plugin-image`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
@@ -67,4 +67,4 @@ const config: GatsbyConfig = {
   ],
 }
 
-export default config;
+export default config

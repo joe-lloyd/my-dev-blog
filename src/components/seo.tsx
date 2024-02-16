@@ -2,11 +2,11 @@ import * as React from "react"
 import { graphql, useStaticQuery } from "gatsby"
 
 interface SEOProps {
-  title?: string;
-  description?: string;
-  image?: string;
-  pathname?: string;
-  article?: boolean;
+  title?: string
+  description?: string
+  image?: string
+  pathname?: string
+  article?: boolean
 }
 
 const SEO: React.FC<SEOProps> = ({
@@ -14,33 +14,39 @@ const SEO: React.FC<SEOProps> = ({
   description = "",
   image,
   pathname,
-  article = false
+  article = false,
 }) => {
   const { site } = useStaticQuery(graphql`
-      query {
-          site {
-              siteMetadata {
-                  defaultTitle: title
-                  defaultDescription: description
-                  siteUrl
-                  defaultImage
-                  twitterUsername
-              }
-          }
+    query SeoQuery {
+      site {
+        siteMetadata {
+          defaultTitle: title
+          defaultDescription: description
+          siteUrl
+          defaultImage
+          twitterUsername
+        }
       }
+    }
   `)
 
   const seo = {
     title: title || site.siteMetadata.defaultTitle,
     description: description || site.siteMetadata.defaultDescription,
-    image: `${site.siteMetadata.siteUrl}${image || site.siteMetadata.defaultImage}`,
-    url: `${site.siteMetadata.siteUrl}${pathname || "/"}`
+    image: `${site.siteMetadata.siteUrl}${
+      image || site.siteMetadata.defaultImage
+    }`,
+    url: `${site.siteMetadata.siteUrl}${pathname || "/"}`,
   }
 
   // Export Head component for Gatsby
   return (
     <>
-      <title>{title ? `${title} | ${site.siteMetadata.defaultTitle}` : site.siteMetadata.defaultTitle}</title>
+      <title>
+        {title
+          ? `${title} | ${site.siteMetadata.defaultTitle}`
+          : site.siteMetadata.defaultTitle}
+      </title>
       <meta name="description" content={seo.description} />
       <meta name="image" content={seo.image} />
       <meta property="og:url" content={seo.url} />
@@ -50,7 +56,10 @@ const SEO: React.FC<SEOProps> = ({
       <meta property="og:image" content={seo.image} />
       <meta name="twitter:card" content="summary_large_image" />
       {site.siteMetadata.twitterUsername && (
-        <meta name="twitter:creator" content={site.siteMetadata.twitterUsername} />
+        <meta
+          name="twitter:creator"
+          content={site.siteMetadata.twitterUsername}
+        />
       )}
       <meta name="twitter:title" content={seo.title} />
       <meta name="twitter:description" content={seo.description} />
@@ -61,4 +70,3 @@ const SEO: React.FC<SEOProps> = ({
 }
 
 export default SEO
-
