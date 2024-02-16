@@ -2,10 +2,10 @@ import * as React from "react"
 import { graphql, useStaticQuery } from "gatsby"
 
 interface SEOProps {
-  title?: string
-  description?: string
-  image?: string
-  pathname?: string
+  title?: string | null
+  description?: string | null
+  image?: string | null
+  pathname?: string | null
   article?: boolean
 }
 
