@@ -7,6 +7,18 @@ $dragon-blue-lighter: lighten($dragon-blue, 5%);
 $dragon-purple-lighter: lighten($dragon-purple, 35%);
 $dragon-purple-even-lighter: lighten($dragon-purple, 25%);
 
+// Inline code styling for .language-text
+code.language-text {
+  background-color: lighten($dragon-dark, 10%) !important;
+  color: $light-dragon-pink !important;
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 0.9em;
+  border-radius: 2px !important;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  word-wrap: break-word;
+}
+
 // Custom PrismJS Theme
 code[class*="language-"],
 pre[class*="language-"] {
