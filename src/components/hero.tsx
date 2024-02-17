@@ -1,6 +1,7 @@
 import React from "react"
 import "./hero.scss"
 import { StaticImage } from "gatsby-plugin-image"
+import TypingEffect from "./typingEffect"
 
 const Hero = () => {
   return (
@@ -10,15 +11,17 @@ const Hero = () => {
           <div className="columns">
             <div className="column">
               <div className="section">
-                <p className="title">
-                  10,000 Hours of Debugging
-                </p>
+                <TypingEffect />
+
                 <p className="subtitle">
                   Another dev blog
                 </p>
               </div>
             </div>
-            <div className="column is-justify-content-flex-end is-hidden-mobile" style={{maxWidth: "400px"}}>
+            <div
+              className="column is-justify-content-flex-end is-hidden-mobile hovering-element"
+              style={{ maxWidth: "400px" }}
+            >
               <StaticImage
                 src="../images/logo.png"
                 alt="logo"

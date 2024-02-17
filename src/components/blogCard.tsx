@@ -5,12 +5,12 @@ import {
   GatsbyImage,
   getImage,
   IGatsbyImageData,
-  ImageDataLike,
+  ImageDataLike
 } from "gatsby-plugin-image"
 import { OverviewPageQuery } from "../generated/graphql"
 
 type BlogCardProps =
-  OverviewPageQuery["allMdx"]["edges"][0]["node"]["frontmatter"]
+  OverviewPageQuery["allMdx"]["edges"][0]["node"]["frontmatter"] & { index: number }
 
 const BlogCard: React.FC<BlogCardProps> = ({
   title,
@@ -18,12 +18,13 @@ const BlogCard: React.FC<BlogCardProps> = ({
   slug,
   featuredImage,
   date,
+  index
 }) => {
   const imageData = getImage(featuredImage as ImageDataLike)
 
   return (
     <div className="card">
-      <header className="card-header">
+      <header className="card-header" style={{ animationDelay: `${index * 2}s` }}>
         <p className="card-header-title">{title}</p>
       </header>
       <GatsbyImage

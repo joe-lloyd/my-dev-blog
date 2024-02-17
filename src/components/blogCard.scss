@@ -32,12 +32,14 @@ $card-shadow: $dragon-pink;
 
 .card-header {
   background: linear-gradient(-40deg, $dragon-pink, $light-dragon-pink 45%, $dragon-pink 45%) $dragon-pink;
+  animation: backgroundShift 20s infinite linear;
 }
 
 .card footer {
   font-weight: $weight-bold;
   background: linear-gradient(-40deg, $dragon-purple, lighten($dragon-purple, 15%) 50%, $dragon-purple 45%) $dragon-purple;
 }
+
 .card footer a {
   color: $card-color;
   text-decoration: none;
@@ -45,4 +47,19 @@ $card-shadow: $dragon-pink;
 
 .card-content {
   flex-grow: 1;
+}
+
+@keyframes backgroundShift {
+  0% {
+    background-size: 100% 100%;
+    background-position: 0% 0%;
+  }
+  50% {
+    background-size: 150% 150%;
+    background-position: 50% 50%;
+  }
+  100% {
+    background-size: 100% 100%;
+    background-position: 0% 0%;
+  }
 }

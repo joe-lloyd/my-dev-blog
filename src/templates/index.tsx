@@ -24,9 +24,10 @@ const Index: React.FC<PageProps<OverviewPageQuery, { postIds: string[] }>> = ({
       <div className="container full-height display-flex">
         <div className="tile is-parent">
           <div className="columns is-multiline">
-            {filteredPosts.map(({ node }) => (
+            {filteredPosts.map(({ node }, index) => (
               <div className="column is-one-third" key={node.id}>
                 <BlogCard
+                  index={index}
                   title={node.frontmatter.title}
                   excerpt={node.frontmatter.excerpt}
                   slug={node.frontmatter.slug}

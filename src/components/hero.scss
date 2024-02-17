@@ -37,3 +37,26 @@ section.hero .title {
 .hero .column.is-justify-content-flex-end {
   display: flex;
 }
+
+@keyframes hoverEffect {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.hovering-element {
+  animation: hoverEffect 4s ease-in-out infinite;
+}
+
+.cursor {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
