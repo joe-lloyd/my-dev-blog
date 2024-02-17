@@ -1,7 +1,12 @@
 import * as React from "react"
 import { Link } from "gatsby"
 import "./blogCard.scss"
-import { GatsbyImage, getImage, IGatsbyImageData, ImageDataLike } from "gatsby-plugin-image"
+import {
+  GatsbyImage,
+  getImage,
+  IGatsbyImageData,
+  ImageDataLike,
+} from "gatsby-plugin-image"
 import { OverviewPageQuery } from "../generated/graphql"
 
 type BlogCardProps =
@@ -12,6 +17,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
   excerpt,
   slug,
   featuredImage,
+  date,
 }) => {
   const imageData = getImage(featuredImage as ImageDataLike)
 
@@ -20,7 +26,11 @@ const BlogCard: React.FC<BlogCardProps> = ({
       <header className="card-header">
         <p className="card-header-title">{title}</p>
       </header>
-      <GatsbyImage image={imageData as IGatsbyImageData} alt={title} className="card-image" />
+      <GatsbyImage
+        image={imageData as IGatsbyImageData}
+        alt={title}
+        className="card-image"
+      />
       <div className="card-content">
         <div className="content">{excerpt}</div>
       </div>
@@ -29,7 +39,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
           Read More
         </Link>
         <time className="card-footer-item" dateTime="2016-1-1">
-          1 Jan 2016
+          {date}
         </time>
       </footer>
     </div>

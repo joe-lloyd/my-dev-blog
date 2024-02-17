@@ -6,19 +6,26 @@ import Seo from "../components/seo"
 import BlogCard from "../components/blogCard"
 
 import "../components/overviewPage.scss"
-import { OverviewPageQuery, SeoQueryQuery } from "../generated/graphql"
+import { OverviewPageQuery, SeoComponentQuery } from "../generated/graphql"
 
-const Index: React.FC<PageProps<OverviewPageQuery>> = ({ data, location }) => {
+const Index: React.FC<PageProps<OverviewPageQuery, {postIds: string[]}>> = ({ data, location, pageContext }) => {
+  const { postIds } = pageContext;
+
+  const filteredPosts = React.useMemo(() => {
+    return data.allMdx.edges.filter(edge => postIds.includes(edge.node.id));
+  }, [data.allMdx.edges, postIds]);
+
   return (
     <Layout>
       <div className="tile is-parent">
         <div className="columns is-multiline">
-          {data.allMdx.edges.map(({ node }) => (
+          {filteredPosts.map(({ node }) => (
             <div className="column is-one-third" key={node.id}>
               <BlogCard
                 title={node.frontmatter.title}
                 excerpt={node.frontmatter.excerpt}
                 slug={node.frontmatter.slug}
+                date={node.frontmatter.date}
                 featuredImage={node.frontmatter.featuredImage}
               />
             </div>
@@ -32,21 +39,23 @@ const Index: React.FC<PageProps<OverviewPageQuery>> = ({ data, location }) => {
     </Layout>
   )
 }
-export const Head: HeadFC<SeoQueryQuery> = () => (
+export const Head: HeadFC<SeoComponentQuery> = () => (
   <Seo title="Using TypeScript" />
 )
 
 export default Index
 
-export const query = graphql`
-  query OverviewPage {
-    allMdx {
+export const blogOverviewPageQuery = graphql`
+  query OverviewPage{
+    allMdx(sort: { frontmatter: { date: DESC } }) {
       edges {
         node {
           id
           frontmatter {
+            published
             slug
             title
+            date(formatString: "MMMM D, YYYY")
             excerpt
             featuredImage {
               childImageSharp {

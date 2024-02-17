@@ -2,13 +2,13 @@ import * as React from "react"
 import { graphql, HeadFC } from "gatsby"
 import Layout from "../components/layout"
 import "../components/detailPage.scss"
-import { BlogPostByIdQuery, SeoQueryQuery } from "../generated/graphql"
+import { BlogPostPageQuery } from "../generated/graphql"
 import { PropsWithChildren } from "react"
 import Seo from "../components/seo"
 
-const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostByIdQuery }>> = ({
+const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
   data,
-  children
+  children,
 }) => {
   const post = data.mdx
   return (
@@ -23,22 +23,20 @@ const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostByIdQuery }>> = ({
   )
 }
 
-export const Head: HeadFC<BlogPostByIdQuery> = ({ data }) =>
-  (
-    <Seo
-      title={data.mdx?.frontmatter.seoTitle}
-      description={data.mdx?.frontmatter.seoDescription}
-      image={data.mdx?.frontmatter.featuredImage?.absolutePath}
-      pathname={data.mdx?.frontmatter.slug}
-      article={true}
-    />
-  )
-
+export const Head: HeadFC<BlogPostPageQuery> = ({ data }) => (
+  <Seo
+    title={data.mdx?.frontmatter.seoTitle}
+    description={data.mdx?.frontmatter.seoDescription}
+    image={data.mdx?.frontmatter.featuredImage?.absolutePath}
+    pathname={data.mdx?.frontmatter.slug}
+    article={true}
+  />
+)
 
 export default BlogPost
 
 export const query = graphql`
-  query BlogPostById($id: String!) {
+  query BlogPostPage($id: String!) {
     mdx(id: { eq: $id }) {
       id
       frontmatter {

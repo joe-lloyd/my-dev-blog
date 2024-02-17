@@ -5,17 +5,26 @@
  */
 
 import * as path from "path"
+import { GatsbyNode } from "gatsby"
+import { GatsbyNodeGetPostsQuery } from "./src/generated/graphql"
 
-exports.createPages = async ({ graphql, actions }) => {
+export const createPages: GatsbyNode["createPages"] = async ({
+  graphql,
+  actions
+}) => {
   const { createPage } = actions
-  const mdxContent = await graphql(`
-    query {
-      allMdx {
+  const isProduction = process.env.NODE_ENV === "production"
+
+  const result = await graphql<GatsbyNodeGetPostsQuery>(`
+    query gatsbyNodeGetPosts {
+      allMdx(sort: { frontmatter: { date: DESC } }) {
         edges {
           node {
             id
             frontmatter {
               slug
+              published
+              date
             }
             internal {
               contentFilePath
@@ -26,17 +35,46 @@ exports.createPages = async ({ graphql, actions }) => {
     }
   `)
 
-  mdxContent.data.allMdx.edges.forEach(({ node }) => {
+  if (result.errors) {
+    throw new Error(result.errors.join(", "))
+  }
+
+  const posts = result.data.allMdx.edges
+    .filter(
+      ({ node }) =>
+        process.env.NODE_ENV === "development" || node.frontmatter.published
+    )
+
+  /**
+   * Create blog post pages
+   */
+  posts.forEach(({ node }) => {
+    // In production, skip creating pages for unpublished posts
+    if (isProduction && !node.frontmatter.published) {
+      return
+    }
+
     const templatePath = path.resolve(`./src/templates/blog-post.tsx`)
 
     createPage({
       path: node.frontmatter.slug,
       component: `${templatePath}?__contentFilePath=${node.internal.contentFilePath}`,
       context: {
-        id: node.id,
-      },
+        id: node.id
+      }
     })
   })
+
+  /**
+   * Create paginated blog overview
+   */
+  createPage({
+    path: '/',
+    component: path.resolve("./src/templates/index.tsx"), // Resolve the path to the template component
+    context: {
+      postIds: posts.map(({ node }) => node.id)
+    },
+  });
 }
 
 exports.createSchemaCustomization = ({ actions }) => {

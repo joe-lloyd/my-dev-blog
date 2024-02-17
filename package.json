@@ -41,6 +41,7 @@
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "generate": "graphql-codegen --config codegen.yml",
+    "type-check": "tsc --noEmit",
     "generate-docs": "typedoc --out docs src --entryPointStrategy expand",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },

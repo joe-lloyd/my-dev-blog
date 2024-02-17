@@ -1,5 +1,7 @@
 schema: "http://localhost:8000/___graphql"
-documents: "src/**/*.{ts,tsx}"
+documents:
+  - "src/**/*.{ts,tsx}"
+  - "gatsby-node.ts"
 generates:
   src/generated/graphql.ts:
     plugins:

@@ -17,7 +17,7 @@ const SEO: React.FC<SEOProps> = ({
   article = false,
 }) => {
   const { site } = useStaticQuery(graphql`
-    query SeoQuery {
+    query SeoComponent {
       site {
         siteMetadata {
           defaultTitle: title
