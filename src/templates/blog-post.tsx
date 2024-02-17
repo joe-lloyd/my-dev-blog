@@ -1,6 +1,7 @@
 import * as React from "react"
 import { graphql, HeadFC } from "gatsby"
 import Layout from "../components/layout"
+import "../components/prism-theme.scss"
 import "../components/detailPage.scss"
 import { BlogPostPageQuery } from "../generated/graphql"
 import { PropsWithChildren } from "react"
@@ -8,17 +9,18 @@ import Seo from "../components/seo"
 
 const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
   data,
-  children,
+  children
 }) => {
   const post = data.mdx
   return (
     <Layout>
-      <article>
-        <div className="content">
-          <h1>{post!.frontmatter.title}</h1>
-          {children}
-        </div>
-      </article>
+      <div className="container full-height display-flex is-max-desktop">
+        <article>
+          <div className="content">
+            {children}
+          </div>
+        </article>
+      </div>
     </Layout>
   )
 }

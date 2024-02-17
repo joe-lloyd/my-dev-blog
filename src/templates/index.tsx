@@ -8,34 +8,40 @@ import BlogCard from "../components/blogCard"
 import "../components/overviewPage.scss"
 import { OverviewPageQuery, SeoComponentQuery } from "../generated/graphql"
 
-const Index: React.FC<PageProps<OverviewPageQuery, {postIds: string[]}>> = ({ data, location, pageContext }) => {
-  const { postIds } = pageContext;
+const Index: React.FC<PageProps<OverviewPageQuery, { postIds: string[] }>> = ({
+  data,
+  location,
+  pageContext
+}) => {
+  const { postIds } = pageContext
 
   const filteredPosts = React.useMemo(() => {
-    return data.allMdx.edges.filter(edge => postIds.includes(edge.node.id));
-  }, [data.allMdx.edges, postIds]);
+    return data.allMdx.edges.filter(edge => postIds.includes(edge.node.id))
+  }, [data.allMdx.edges, postIds])
 
   return (
     <Layout>
-      <div className="tile is-parent">
-        <div className="columns is-multiline">
-          {filteredPosts.map(({ node }) => (
-            <div className="column is-one-third" key={node.id}>
-              <BlogCard
-                title={node.frontmatter.title}
-                excerpt={node.frontmatter.excerpt}
-                slug={node.frontmatter.slug}
-                date={node.frontmatter.date}
-                featuredImage={node.frontmatter.featuredImage}
-              />
-            </div>
-          ))}
+      <div className="container full-height display-flex">
+        <div className="tile is-parent">
+          <div className="columns is-multiline">
+            {filteredPosts.map(({ node }) => (
+              <div className="column is-one-third" key={node.id}>
+                <BlogCard
+                  title={node.frontmatter.title}
+                  excerpt={node.frontmatter.excerpt}
+                  slug={node.frontmatter.slug}
+                  date={node.frontmatter.date}
+                  featuredImage={node.frontmatter.featuredImage}
+                />
+              </div>
+            ))}
+          </div>
         </div>
+        <p>
+          You're currently on the page <code>{location.pathname}</code> which was
+          built on {data.site!.buildTime}.
+        </p>
       </div>
-      <p>
-        You're currently on the page <code>{location.pathname}</code> which was
-        built on {data.site!.buildTime}.
-      </p>
     </Layout>
   )
 }

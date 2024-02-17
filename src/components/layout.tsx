@@ -10,7 +10,7 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
       <Header />
       <main>
         <section className="section section--full-height">
-          <div className="container full-height display-flex">{children}</div>
+          {children}
         </section>
       </main>
     </>

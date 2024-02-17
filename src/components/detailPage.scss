@@ -1,4 +1,31 @@
 @import "color-overrides.scss";
 @import "~bulma/sass/utilities/_all.sass";
 @import "~bulma/sass/elements/container.sass";
+
+$content-heading-color: $dragon-pink;
+$content-heading-weight: $weight-semibold;
+$content-heading-line-height: 1.125;
+
+$content-block-margin-bottom: 1em;
+
+$content-blockquote-background-color: $dragon-dark;
+$content-blockquote-border-left: 5px solid $dragon-pink;
+$content-blockquote-padding: 1.25em 1.5em;
+
+$content-pre-padding: 1.25em 1.5em;
+
+$content-table-cell-border: 1px solid $border;
+$content-table-cell-border-width: 0 0 1px;
+$content-table-cell-padding: 0.5em 0.75em;
+$content-table-cell-heading-color: $text-strong;
+$content-table-head-cell-border-width: 0 0 2px;
+$content-table-head-cell-color: $text-strong;
+$content-table-body-last-row-cell-border-bottom-width: 0;
+$content-table-foot-cell-border-width: 2px 0 0;
+$content-table-foot-cell-color: $text-strong;
+
 @import "~bulma/sass/elements/content.sass";
+
+blockquote p {
+  color: $light;
+}

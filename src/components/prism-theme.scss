@@ -1,0 +1,93 @@
+@import "color-overrides.scss";
+// Assuming you've already imported Bulma's variables and your custom ones
+@import "~bulma/sass/utilities/initial-variables.sass";
+@import "~bulma/sass/utilities/derived-variables.sass";
+
+$dragon-blue-lighter: lighten($dragon-blue, 5%);
+$dragon-purple-lighter: lighten($dragon-purple, 35%);
+$dragon-purple-even-lighter: lighten($dragon-purple, 25%);
+
+// Custom PrismJS Theme
+code[class*="language-"],
+pre[class*="language-"] {
+  color: white; // Use the text color for the code
+  background: $dragon-dark; // Dark background for the code blocks
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  font-size: 1em;
+  line-height: 1.5;
+}
+
+// Token colors
+.token.comment,
+.token.block-comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: lighten($dragon-cyan, 10%); // Lighter cyan for comments
+}
+
+.token.punctuation {
+  color: $light-dragon-pink; // Light pink for punctuation
+}
+
+.token.namespace {
+  opacity: 0.7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: $dragon-blue-lighter; // Blue for properties, tags, etc.
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: $dragon-pink; // Pink for strings, selectors, etc.
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: $dragon-purple-lighter; // Purple for operators, entities, and URLs
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: $dragon-purple-even-lighter; // Use the primary color for keywords
+}
+
+.token.function,
+.token.class-name {
+  color: white; // Dark color for functions and class names
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: $warning; // Cyan for regex, important, and variables
+}
+
+.token.important {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+// Ensure links within code blocks are visible
+.token.url a {
+  text-decoration: underline;
+  color: $link;
+}

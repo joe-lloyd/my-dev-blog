@@ -11,10 +11,130 @@ published: false
 ---
 
 import { Link } from "gatsby";
+import Highlight from '../../src/components/Highlight';
 
-# Paragraph 1
+# Your First Post Title
+
+Welcome to your first post! Let's dive into a variety of content types.
+
+## Subheading - A Closer Look
 
 Your post content goes here. You can use Markdown and even JSX components.
 
+### Smaller Subheading - Details Matter
+
 Check out my <Link to="/your-second-post">second post</Link> for more information!
 
+#### Tiny Heading - Fine Points
+
+Let's not forget the minor details that make content rich.
+
+- **Bold** text for emphasis
+- *Italic* text for style
+- `Inline code` for quick references
+
+##### List Time!
+
+1. First item in a numbered list
+2. Second item with more details
+3. Third item with a link to [Google](https://www.google.com)
+
+###### Blockquote Moment
+
+> "To be or not to be, that is the question." - A very famous quote
+
+###### Image Showcase
+
+![Alt text for your image](../images/generated-thumb-2.webp "An image title")
+
+###### Table for Structured Data
+
+| Header One  | Header Two  |
+|-------------|-------------|
+| Row 1 Col 1 | Row 1 Col 2 |
+| Row 2 Col 1 | Row 2 Col 2 |
+
+## Table
+
+| a | b | c | d |
+|---|:--|--:|:-:|
+
+###### Code Snippet Time
+
+Inline `code` snippets are cool, but let's look at a block of code:
+
+```javascript
+// This is a comment: it should be in a lighter cyan color
+
+/**
+ * Multi-line comment
+ * Class definition with inheritance
+ */
+class Dragon extends Creature {
+  constructor(name, element) {
+    super(name);
+    this.element = element; // Property: dragon's element
+  }
+
+  // Method: describe the dragon
+  describe() {
+    console.log(`This dragon breathes ${this.element}.`);
+  }
+
+  // Static method: belongs to the class, not an instance
+  static roar() {
+    console.log("The dragon lets out a mighty roar!");
+  }
+}
+
+// Function: creates a new dragon and describes it
+function createDragon(name, element) {
+  const dragon = new Dragon(name, element);
+  dragon.describe(); // Should call the describe method
+  Dragon.roar(); // Static method call
+}
+
+// Variable declarations
+const fireDragon = "Smaug"; // String: dragon's name
+let element = "fire"; // String: element
+
+// Conditionals and operators
+if (element === "fire") {
+  console.log(`${fireDragon} is a fire dragon.`); // Template string
+} else {
+  console.log(`${fireDragon} is not a fire dragon.`);
+}
+
+// Calling a function
+createDragon(fireDragon, element);
+
+// Regex example: match all digits
+const pattern = /\d+/g; // Should be in a distinct color
+
+// Keyword: try-catch-finally structure
+try {
+  throw new Error("Something went wrong");
+} catch (error) {
+  console.error("Caught an error:", error);
+} finally {
+  console.log("Always runs, regardless of errors");
+}
+
+// Boolean value
+const isActive = true; // Boolean: should be styled differently
+
+// Numeric value
+let count = 42; // Number: should have its own style
+```
+And here's a snippet using your JSX component for syntax highlighting:
+
+<Highlight language="javascript">
+  {`function highlightMe() {
+    console.log("Syntax highlighting is awesome!");
+  }`}
+</Highlight>
+
+This should give you a comprehensive set of examples to test your MDX processing, styling, and code conversion capabilities. Happy coding! 🚀
+
+
+Just a heads-up, I've added a mix of markdown headings beyond the standard (going up to `#########` for demonstration), but keep in mind that in actual markdown syntax, you should only use headings `#` through `######` (1-6). The additional ones are for illustrative purposes, and you might want to adjust or remove those depending on your needs and the capabilities of your MDX parser.
