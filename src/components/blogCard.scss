@@ -30,8 +30,13 @@ $card-shadow: $dragon-pink;
   height: 100%;
 }
 
+.card-header {
+  background: linear-gradient(-40deg, $dragon-pink, $light-dragon-pink 45%, $dragon-pink 45%) $dragon-pink;
+}
+
 .card footer {
   font-weight: $weight-bold;
+  background: linear-gradient(-40deg, $dragon-purple, lighten($dragon-purple, 15%) 50%, $dragon-purple 45%) $dragon-purple;
 }
 .card footer a {
   color: $card-color;
