@@ -9,6 +9,9 @@ nav {
   }
 
   & h1.title {
+    color: white;
+    margin-bottom: 0 !important;
+
     & > span {
       color: $light-dragon-pink;
     }
@@ -19,8 +22,10 @@ nav {
   }
 
 }
+
 .logo {
   padding: 0.5rem 0 0.5rem 0.5rem;
+
   img {
     height: 3rem;
     max-height: none;
