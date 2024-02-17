@@ -35,10 +35,18 @@ $card-shadow: $dragon-pink;
   animation: backgroundShift 20s infinite linear;
 }
 
-.card footer {
+.card-footer {
   font-weight: $weight-bold;
   background: linear-gradient(-40deg, $dragon-purple, lighten($dragon-purple, 15%) 50%, $dragon-purple 45%) $dragon-purple;
+  background-size: 150% 100%;
+  background-position: 0 center;
+  transition: background-position 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  &:hover {
+    background-position: 100% center;
+  }
 }
+
 
 .card footer a {
   color: $card-color;
