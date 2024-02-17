@@ -16,7 +16,7 @@ section.hero .subtitle {
   @include tablet {
     font-size: 1.5rem;
   }
-  color: black;
+  color: $dragon-dark;
 }
 
 section.hero .title {
@@ -24,7 +24,7 @@ section.hero .title {
   @include tablet {
     font-size: 3.5rem;
   }
-  color: black;
+  color: $dragon-dark;
 }
 
 .hero .container .section {

@@ -18,13 +18,11 @@ const Hero = () => {
                 </p>
               </div>
             </div>
-            <div className="column is-justify-content-flex-end is-hidden-mobile">
+            <div className="column is-justify-content-flex-end is-hidden-mobile" style={{maxWidth: "400px"}}>
               <StaticImage
-                src="../images/my-logo-2.png"
+                src="../images/logo.png"
                 alt="logo"
                 placeholder="blurred"
-                width={394}
-                height={333}
                 formats={["auto", "webp", "avif"]}
               />
             </div>
