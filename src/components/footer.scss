@@ -1,0 +1,27 @@
+@import "base";
+
+.footer {
+  background: linear-gradient(-40deg, lighten($dragon-purple, 10%), lighten($dragon-purple, 15%) 45%, lighten($dragon-purple, 10%) 45%) lighten($dragon-purple, 10%);
+  //background-color: $footer-background-color;
+  color: $footer-color;
+  padding: $footer-padding;
+
+  .level {
+    justify-content: center;
+  }
+
+  .level-item {
+    margin: 0 1rem;
+  }
+
+  a {
+    color: $footer-color;
+    &:hover {
+      color: lighten($footer-color, 10%);
+    }
+  }
+
+  .icon {
+    margin-right: 0.5rem;
+  }
+}

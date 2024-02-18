@@ -15,7 +15,7 @@ const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
   return (
     <Layout>
       <div className="container full-height display-flex is-max-desktop">
-        <article>
+        <article className="section">
           <div className="content">
             {children}
           </div>

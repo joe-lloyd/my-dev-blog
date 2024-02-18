@@ -1,7 +1,4 @@
-@import "color-overrides";
-
-@import "~bulma/sass/utilities/_all";
-@import "~bulma/sass/components/navbar";
+@import "base";
 
 nav {
   .navbar-brand {
@@ -21,16 +18,16 @@ nav {
     text-decoration: none;
   }
 
-}
+  .logo {
+    padding: 0.5rem 0 0.5rem 0.5rem;
 
-.logo {
-  padding: 0.5rem 0 0.5rem 0.5rem;
-
-  img {
-    height: 3rem;
-    max-height: none;
+    img {
+      height: 3rem;
+      max-height: none;
+    }
   }
 }
+
 
 nav h1.title {
   @include mobile {
@@ -43,3 +40,5 @@ nav h1.title {
     }
   }
 }
+
+

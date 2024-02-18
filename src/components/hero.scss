@@ -1,14 +1,8 @@
-@import "color-overrides";
-
-@import "~bulma/sass/utilities/_all";
-@import "~bulma/sass/elements/title.sass";
-@import "~bulma/sass/layout/hero";
-@import "~bulma/sass/helpers/flexbox.sass";
-@import "~bulma/sass/helpers/visibility.sass";
+@import "base";
 
 section.hero {
   padding-top: 80px;
-  background: linear-gradient(-40deg, $dragon-purple, $dragon-pink 45%, $dragon-purple 45%) $dragon-purple;
+  background: linear-gradient(-40deg, lighten($dragon-purple, 8%), $dragon-pink 45%, lighten($dragon-purple, 8%) 45%) lighten($dragon-purple, 8%);
 }
 
 section.hero .subtitle {

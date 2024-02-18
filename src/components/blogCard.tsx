@@ -39,7 +39,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
         <Link to={slug} className="card-footer-item">
           Read More
         </Link>
-        <time className="card-footer-item" dateTime="2016-1-1">
+        <time className="card-footer-item" dateTime={date}>
           {date}
         </time>
       </footer>

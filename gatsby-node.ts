@@ -77,7 +77,7 @@ export const createPages: GatsbyNode["createPages"] = async ({
   });
 }
 
-exports.createSchemaCustomization = ({ actions }) => {
+export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] = ({ actions }) => {
   const { createTypes } = actions
   const typeDefs = `
     type MdxFrontmatter {
@@ -92,4 +92,10 @@ exports.createSchemaCustomization = ({ actions }) => {
     }
   `
   createTypes(typeDefs)
+}
+
+export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = ({ stage, getConfig, rules, loaders, actions }) => {
+  actions.setWebpackConfig({
+    devtool: "cheap-module-source-map"
+  });
 }

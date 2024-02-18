@@ -38,10 +38,6 @@ const Index: React.FC<PageProps<OverviewPageQuery, { postIds: string[] }>> = ({
             ))}
           </div>
         </div>
-        <p>
-          You're currently on the page <code>{location.pathname}</code> which was
-          built on {data.site!.buildTime}.
-        </p>
       </div>
     </Layout>
   )
@@ -62,7 +58,7 @@ export const blogOverviewPageQuery = graphql`
             published
             slug
             title
-            date(formatString: "MMMM D, YYYY")
+            date(formatString: "YYYY, DD MMM")
             excerpt
             featuredImage {
               childImageSharp {

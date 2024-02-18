@@ -1,7 +1,4 @@
-@import "color-overrides.scss";
-// Assuming you've already imported Bulma's variables and your custom ones
-@import "~bulma/sass/utilities/initial-variables.sass";
-@import "~bulma/sass/utilities/derived-variables.sass";
+@import "base";
 
 $dragon-blue-lighter: lighten($dragon-blue, 5%);
 $dragon-purple-lighter: lighten($dragon-purple, 35%);

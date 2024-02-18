@@ -1,7 +1,7 @@
-@import "~bulma/sass/utilities/initial-variables.sass";
-@import "~bulma/sass/utilities/derived-variables.sass";
+@import "~bulma/sass/utilities/_all";
+@import "~bulma/sass/base/_all";
+@import "~bulma/sass/helpers/_all";
 
-// Your dragon theme colors
 $dragon-dark: #0A0A0A;
 $dragon-purple: #5C2D91;
 $light-dragon-pink: #E03F8E;
@@ -25,8 +25,8 @@ $navbar-item-color: white;
 $navbar-item-hover-color: $dragon-pink;
 
 // Overriding Bulma's default card colors
-$body-background-color: $dragon-dark;
-$body-color: white;
+$body-background-color: white;
+$body-color: $dragon-dark;
 $border-color: $dragon-pink;
 
 $link: white;
@@ -34,3 +34,16 @@ $link: white;
 $box-background-color: $dragon-dark;
 $box-color: white;
 $title-color: $dragon-pink;
+
+$footer-background-color: $dragon-dark;
+$footer-color: white;
+$footer-padding: 3rem 1.5rem 6rem;
+
+@import "~bulma/sass/components/navbar.sass";
+@import "~bulma/sass/layout/section.sass";
+@import "~bulma/sass/elements/container.sass";
+@import "~bulma/sass/layout/footer.sass";
+@import "~bulma/sass/components/level.sass";
+@import "~bulma/sass/elements/title.sass";
+@import "~bulma/sass/layout/hero";
+@import "~bulma/sass/layout/section";

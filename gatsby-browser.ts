@@ -5,4 +5,3 @@
  */
 
 import "prismjs/themes/prism-okaidia.css"
-import "/src/components/normalize.css"
