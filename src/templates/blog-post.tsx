@@ -6,6 +6,7 @@ import "../components/detailPage.scss"
 import { BlogPostPageQuery } from "../generated/graphql"
 import { PropsWithChildren } from "react"
 import Seo from "../components/seo"
+import Breadcrumbs from "../components/breadcrumbs"
 
 const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
   data,
@@ -15,7 +16,8 @@ const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
   return (
     <Layout>
       <div className="container full-height display-flex is-max-desktop">
-        <article className="section">
+        <article>
+        <Breadcrumbs slug={post?.frontmatter.slug || ""} />
           <div className="content">
             {children}
           </div>

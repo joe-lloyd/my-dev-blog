@@ -1,7 +1,6 @@
 import * as React from "react"
 
 import Header from "./header"
-import "./layout.scss"
 import { PropsWithChildren } from "react"
 import Hero from "./hero"
 import Footer from "./footer"
@@ -11,7 +10,7 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
     <>
       <Header />
       <Hero />
-      <main>
+      <main className="section">
         {children}
       </main>
       <Footer twitterLink={"/"} linkedinLink={"/"} />
