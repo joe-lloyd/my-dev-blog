@@ -1,0 +1,66 @@
+@import "base";
+
+$tag-background-color: $background;
+$tag-color: $text;
+$tag-radius: $radius;
+$tag-delete-margin: 1px;
+
+$tag-colors: $colors;
+
+@import "~bulma/sass/elements/tag.sass";
+
+// Defining base colors for JavaScript and React
+$javascript-yellow: #f0db4f; // Classic JS yellow
+$react-blue: #61DAFB; // React's brand blue
+
+// Now, assigning thematic colors for the rest, inspired by your palette
+$state-management-color: #4D91C6; // A stable, reliable blue
+$immutability-color: #E078C1; // A mix of dragon-pink, implying unchanging nature
+$best-practices-color: #7F5CAD; // A wise, deep purple
+$programming-tips-color: #F2A431; // A helpful, guiding gold
+$data-structures-color: #3FC1C9; // Structured, logical cyan
+$debugging-color: #F25C78; // Alert, cautionary pink
+$functional-programming-color: #9D6C7C; // A unique, thoughtful mauve
+$web-development-color: #49A9EE; // Bright, expansive sky blue
+
+.tags {
+  .tag.tag-javascript {
+    background-color: $javascript-yellow;
+  }
+
+  .tag.tag-react {
+    background-color: $react-blue;
+  }
+
+  .tag.tag-statemangement {
+    background-color: $state-management-color;
+  }
+
+  .tag.tag-immutability {
+    background-color: $immutability-color;
+  }
+
+  .tag.tag-bestpractices {
+    background-color: $best-practices-color;
+  }
+
+  .tag.tag-programmingtips {
+    background-color: $programming-tips-color;
+  }
+
+  .tag.tag-datastructures {
+    background-color: $data-structures-color;
+  }
+
+  .tag.tag-debugging {
+    background-color: $debugging-color;
+  }
+
+  .tag.tag-functionalprogramming {
+    background-color: $functional-programming-color;
+  }
+
+  .tag.tag-webdevelopment {
+    background-color: $web-development-color;
+  }
+}

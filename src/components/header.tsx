@@ -28,7 +28,7 @@ const Header = () => {
           </div>
         </Link>
         <h1 className="title navbar-item is-marginless">
-          Joe Lloyd&nbsp;<span>Dev Blog</span>
+          10,000 Hours&nbsp;<span>Dev Blog</span>
         </h1>
         <a
           role="button"

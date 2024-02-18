@@ -39,6 +39,10 @@ export const createPages: GatsbyNode["createPages"] = async ({
     throw new Error(result.errors.join(", "))
   }
 
+  if (!result.data) {
+    throw new Error("No data found!");
+  }
+
   const posts = result.data.allMdx.edges
     .filter(
       ({ node }) =>
@@ -84,6 +88,7 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
       slug: String!
       title: String!
       excerpt: String
+      tags: [String!]!
       featuredImage: File @fileByRelativePath
     }
 
