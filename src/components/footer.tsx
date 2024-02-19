@@ -35,34 +35,27 @@ const Footer: React.FC<FooterProps> = ({
             </div>
             <div className="level-item has-text-centered">
               <div>
-                <p className="heading">Email us</p>
+                <p className="heading">Email Me</p>
                 <p>
-                  <a href="mailto:your-email">
+                  <a href="mailto:info@joe-lloyd.com">
                 <span className="icon">
                   <i className="fas fa-envelope"></i>
                 </span>
-                    your-email@example.com
+                    info@joe-lloyd.com
                   </a>
                 </p>
               </div>
             </div>
             <div className="level-item has-text-centered">
               <div>
-                <p className="heading">More Info</p>
+                <p className="heading">More Links</p>
                 <p>
-                  <a href="your-privacy-policy-link">Privacy Policy</a> |
-                  <a href="your-terms-link">Terms of Use</a>
+                  <a href="https://joe-lloyd.com/">Joe's CV</a> |
+                  <a href="https://joe-lloyd.com/personal-projects"> Joe's Personal Projects</a>
                 </p>
               </div>
             </div>
           </div>
-          <p>
-            <strong>App Name</strong> by <a href="your-website">Your Name</a>. The source code is
-            licensed
-            <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
-            is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA
-            4.0</a>.
-          </p>
         </div>
       </div>
     </footer>

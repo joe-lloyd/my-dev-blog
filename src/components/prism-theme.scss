@@ -25,6 +25,9 @@ pre[class*="language-"] {
   font-size: 1em;
   line-height: 1.5;
 }
+pre[class*="language-"] {
+  border-left: 5px solid $dragon-pink;
+}
 
 // Token colors
 .token.comment,

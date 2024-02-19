@@ -23,6 +23,9 @@ const Index: React.FC<PageProps<OverviewPageQuery, { postIds: string[] }>> = ({
     <Layout>
       <div className="container full-height display-flex">
         <div className="tile is-parent">
+          <h1 className="title is-1">Latest posts</h1>
+        </div>
+        <div className="tile is-parent">
           <div className="columns is-multiline">
             {filteredPosts.map(({ node }, index) => (
               <div className="column is-one-third" key={node.id}>

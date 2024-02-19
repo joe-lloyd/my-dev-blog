@@ -8,6 +8,8 @@ import { PropsWithChildren } from "react"
 import Seo from "../components/seo"
 import Breadcrumbs from "../components/breadcrumbs"
 import Tags from "../components/tags"
+import YouTubeVideo from "../components/video"
+import ArticleFooter from "../components/article-footer"
 
 const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
   data,
@@ -20,11 +22,13 @@ const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
         <article>
         <Breadcrumbs slug={post?.frontmatter.slug || ""} />
           <Tags tags={post?.frontmatter.tags || []} />
+          {post?.frontmatter.videoSrc && <YouTubeVideo videoSrc={post.frontmatter.videoSrc} />}
           <h1 className="title is-1">{post?.frontmatter.title}</h1>
           <div className="content">
             {children}
           </div>
         </article>
+        <ArticleFooter author={post?.frontmatter.author} date={post?.frontmatter.date} gistLink={post?.frontmatter.gistLink} />
       </div>
     </Layout>
   )
@@ -49,10 +53,14 @@ export const query = graphql`
       frontmatter {
         slug
         title
+        author
+        gistLink
+        date(formatString: "YYYY, DD MMM")
         featuredImage {
           absolutePath
         }
         tags
+        videoSrc
         seoTitle
         seoDescription
       }
