@@ -20,12 +20,12 @@ const Footer: React.FC<FooterProps> = ({
               <div>
                 <p className="heading">Follow us</p>
                 <p>
-                  <a href="your-twitter-link" aria-label="Twitter">
+                  <a href="https://twitter.com/Josephl83378898" aria-label="Twitter">
                 <span className="icon">
                   <i className="fab fa-twitter"></i>
                 </span>Twitter
                   </a> |
-                  <a href="your-linkedin-link" aria-label="LinkedIn">
+                  <a href="https://www.linkedin.com/in/josephmlloyd/" aria-label="LinkedIn">
                 <span className="icon">
                   <i className="fab fa-linkedin"></i>
                 </span>LinkedIn
@@ -59,7 +59,6 @@ const Footer: React.FC<FooterProps> = ({
         </div>
       </div>
     </footer>
-
   )
 }
 
