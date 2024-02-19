@@ -4,7 +4,13 @@ import { faTwitter, faLinkedinIn, faGithub } from "@fortawesome/free-brands-svg-
 
 import "./article-footer.scss"
 
-const ArticleFooter = ({ author, date, gistLink }) => (
+type ArticleFooterProps = {
+  author: string
+  date: string
+  gistLink?: string | null
+}
+
+const ArticleFooter: React.FC<ArticleFooterProps> = ({ author, date, gistLink }) => (
   <>
     <hr />
     <footer className="content">
@@ -40,15 +46,17 @@ const ArticleFooter = ({ author, date, gistLink }) => (
             <span>Share on LinkedIn</span>
           </a>
 
-          <a
-            className="button github-black" href={gistLink} target="_blank"
-            rel="noopener noreferrer"
-          >
+          {gistLink && (
+            <a
+              className="button github-black" href={gistLink} target="_blank"
+              rel="noopener noreferrer"
+            >
             <span className="icon">
               <FontAwesomeIcon icon={faGithub} />
             </span>
-            <span>View on GitHub</span>
-          </a>
+              <span>View on GitHub</span>
+            </a>
+          )}
 
         </div>
       </div>

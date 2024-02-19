@@ -8,6 +8,8 @@ const config: GatsbyConfig = {
     siteUrl: `https://dev-blog.joe-lloyd.com/`,
     defaultImage: "image",
     twitterUsername: "@Josephl83378898",
+    microSiteUrl: "https://joe-lloyd.com/",
+    microSitePersonalProjectsUrl: "https://joe-lloyd.com/personal-projects",
   },
   plugins: [
     "gatsby-plugin-sass",

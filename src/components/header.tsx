@@ -46,21 +46,8 @@ const Header = () => {
 
       <div className={`navbar-menu ${isOpen ? "is-active" : ""}`} id="navMenu">
         <div className="navbar-end">
-          <a className="navbar-item" href="https://joe-lloyd.com/">
+          <a className="navbar-item" href="/">
             Home
-          </a>
-
-          <a
-            className="navbar-item"
-            href="https://joe-lloyd.com/personal-projects/"
-          >
-            Personal Projects
-          </a>
-          <a
-            className="navbar-item"
-            href="/"
-          >
-            Blog
           </a>
         </div>
       </div>

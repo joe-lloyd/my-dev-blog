@@ -86,6 +86,7 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
   const typeDefs = `
     type MdxFrontmatter {
       slug: String!
+      author: String!
       title: String!
       excerpt: String
       tags: [String!]!

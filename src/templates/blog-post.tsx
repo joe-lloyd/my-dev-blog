@@ -28,7 +28,7 @@ const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
             {children}
           </div>
         </article>
-        <ArticleFooter author={post?.frontmatter.author} date={post?.frontmatter.date} gistLink={post?.frontmatter.gistLink} />
+        <ArticleFooter author={post!.frontmatter.author} date={post?.frontmatter.date} gistLink={post?.frontmatter.gistLink} />
       </div>
     </Layout>
   )

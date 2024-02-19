@@ -1,15 +1,19 @@
 import * as React from "react"
 import "./footer.scss"
+import { graphql, useStaticQuery } from "gatsby"
 
-type FooterProps = {
-  twitterLink: string
-  linkedinLink: string
-}
-
-const Footer: React.FC<FooterProps> = ({
-  twitterLink,
-  linkedinLink
-}) => {
+const Footer: React.FC = () => {
+  const { site } = useStaticQuery(graphql`
+    query FooterComponent {
+      site {
+        siteMetadata {
+          twitterUsername
+          microSiteUrl
+          microSitePersonalProjectsUrl
+        }
+      }
+    }
+  `)
 
   return (
     <footer className="footer">
@@ -18,9 +22,9 @@ const Footer: React.FC<FooterProps> = ({
           <div className="level">
             <div className="level-item has-text-centered">
               <div>
-                <p className="heading">Follow us</p>
+                <p className="heading">Follow Me</p>
                 <p>
-                  <a href="https://twitter.com/Josephl83378898" aria-label="Twitter">
+                  <a href={`https://twitter.com/${site.siteMetadata.twitterUsername}`} aria-label="Twitter">
                 <span className="icon">
                   <i className="fab fa-twitter"></i>
                 </span>Twitter
@@ -50,8 +54,8 @@ const Footer: React.FC<FooterProps> = ({
               <div>
                 <p className="heading">More Links</p>
                 <p>
-                  <a href="https://joe-lloyd.com/">Joe's CV</a> |
-                  <a href="https://joe-lloyd.com/personal-projects"> Joe's Personal Projects</a>
+                  <a href={site.siteMetadata.microSiteUrl}>Joe's CV</a> |
+                  <a href={site.siteMetadata.microSitePersonalProjectsUrl}> Joe's Personal Projects</a>
                 </p>
               </div>
             </div>

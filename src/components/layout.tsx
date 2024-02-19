@@ -13,7 +13,7 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
       <main className="section">
         {children}
       </main>
-      <Footer twitterLink={"/"} linkedinLink={"/"} />
+      <Footer />
     </>
   )
 }
