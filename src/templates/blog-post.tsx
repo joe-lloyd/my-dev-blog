@@ -20,7 +20,7 @@ const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
     <Layout>
       <div className="container full-height display-flex is-max-desktop">
         <article>
-        <Breadcrumbs slug={post?.frontmatter.slug || ""} />
+          <Breadcrumbs slug={post?.frontmatter.slug || ""} />
           <Tags tags={post?.frontmatter.tags || []} />
           {post?.frontmatter.videoId && <YouTubeVideo videoSrc={post.frontmatter.videoId} />}
           <h1 className="title is-1">{post?.frontmatter.title}</h1>
@@ -28,7 +28,12 @@ const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
             {children}
           </div>
         </article>
-        <ArticleFooter author={post!.frontmatter.author} date={post?.frontmatter.date} gistLink={post?.frontmatter.gistLink} />
+        <ArticleFooter
+          author={post!.frontmatter.author}
+          date={post?.frontmatter.date}
+          gistLink={post?.frontmatter.gistLink}
+          slug={post?.frontmatter.slug}
+        />
       </div>
     </Layout>
   )

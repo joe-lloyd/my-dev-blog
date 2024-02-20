@@ -1,11 +1,14 @@
 import { GatsbyConfig } from "gatsby"
 
 const config: GatsbyConfig = {
+  flags: {
+    DEV_SSR: true,
+  },
   siteMetadata: {
     title: `Developer Blog: Joe Lloyd Web Apps`,
     description: `A blog about web development and other cool stuff.`,
     author: `Joe Lloyd`,
-    siteUrl: `https://dev-blog.joe-lloyd.com/`,
+    siteUrl: `https://dev-blog.joe-lloyd.com`,
     defaultImage: "image",
     twitterUsername: "@Josephl83378898",
     microSiteUrl: "https://joe-lloyd.com/",
