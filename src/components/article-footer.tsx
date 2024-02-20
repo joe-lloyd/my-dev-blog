@@ -1,6 +1,6 @@
 import React from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTwitter, faLinkedinIn, faGithub } from "@fortawesome/free-brands-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTwitter, faLinkedin, faGithub } from "@fortawesome/free-brands-svg-icons";
 
 import "./article-footer.scss"
 import { graphql, useStaticQuery } from "gatsby"
@@ -14,7 +14,7 @@ type ArticleFooterProps = {
 
 const ArticleFooter: React.FC<ArticleFooterProps> = ({ author, date, gistLink, slug }) => {
   const { site } = useStaticQuery(graphql`
-    query FooterComponent {
+    query ArticleFooterComponent {
       site {
         siteMetadata {
           siteUrl
@@ -54,7 +54,7 @@ const ArticleFooter: React.FC<ArticleFooterProps> = ({ author, date, gistLink, s
               href={`https://www.linkedin.com/shareArticle?mini=true&url=${site.siteMetadata.siteUrl}${slug}`}
             >
               <span className="icon">
-                <FontAwesomeIcon icon={faLinkedinIn} />
+                <FontAwesomeIcon icon={faLinkedin} />
               </span>
               <span>Share on LinkedIn</span>
             </a>
