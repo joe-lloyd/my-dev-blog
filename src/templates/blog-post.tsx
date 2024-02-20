@@ -22,7 +22,7 @@ const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
         <article>
         <Breadcrumbs slug={post?.frontmatter.slug || ""} />
           <Tags tags={post?.frontmatter.tags || []} />
-          {post?.frontmatter.videoSrc && <YouTubeVideo videoSrc={post.frontmatter.videoSrc} />}
+          {post?.frontmatter.videoId && <YouTubeVideo videoSrc={post.frontmatter.videoId} />}
           <h1 className="title is-1">{post?.frontmatter.title}</h1>
           <div className="content">
             {children}
@@ -60,7 +60,7 @@ export const query = graphql`
           absolutePath
         }
         tags
-        videoSrc
+        videoId
         seoTitle
         seoDescription
       }

@@ -54,7 +54,7 @@ const ArticleFooter: React.FC<ArticleFooterProps> = ({ author, date, gistLink })
             <span className="icon">
               <FontAwesomeIcon icon={faGithub} />
             </span>
-              <span>View on GitHub</span>
+              <span>View the Gist on GitHub</span>
             </a>
           )}
 

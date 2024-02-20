@@ -9,22 +9,30 @@ tags: ["JavaScript", "React", "StateManagement", "Immutability", "BestPractices"
 seoTitle: "Avoiding State Mutation in React for Better Performance"
 seoDescription: "Discover why avoiding mutations in React state management is crucial for your app's performance and stability. Learn the best practices for immutable state management."
 published: true
-videoSrc: "https://www.youtube.com/embed/JA_o3o8M7-0?si=U6XZZef6o5hAEesm&amp;controls=0"
+videoId: "r2X4ME59CvY?si=In1xnrb8sUNpcu3C"
 gistLink: "https://gist.github.com/joe-lloyd/4d36def9073bf7dfbbd8675a5381b495"
----
-## Cool video bro
 
-Hey there, fellow coders! It's time we talk about something that can silently wreak havoc in your React apps: **mutations**. Ever had your app behave like it's possessed? You might be messing with mutations without even realizing it. Let's break it down, shall we?
+---
+
+Hey there! It's time we talk about something that can silently wreak havoc in your
+React apps: **mutations**. Ever had your app behave like it's possessed? You might be messing with
+mutations without even realizing it. Let's break it down, shall we?
 
 ## What the Hell is a Mutation Anyway?
 
-In the realm of programming, especially when dealing with React, a mutation is like feeding Gremlins after midnight; shit starts to get weird. When you change a non-primitive data type (think objects and arrays), directly altering its contents, you're performing a mutation. Using methods like `splice` on an array can manipulate the original array, which is often not what you want.
+In the realm of programming, especially when dealing with React, a mutation is like feeding Gremlins
+after midnight; shit starts to get weird. When you change a non-primitive data type (think objects and arrays),
+directly altering its contents, you're performing a mutation. Using methods like `splice` on an array can
+mutate the original array, which is often not what you want.
 
-How do you know if a method mutates data? A good rule of thumb is to check if it returns a new array or object or alters the existing one.
+How do you know if a method mutates data? A good rule of thumb is to check if it returns a new array
+or object or alters the existing one.
 
-## Why Mutations Can Fuck Your Code Sideways
+## Why Mutations Can F**k Your Code Sideways
 
-Imagine you've got an object or an array, and you go ahead and change it directly. You've just mutated it. The catch is, any other part of your code that uses this data will now see the updated version, not the original. Confused? Let's look at a spooky example:
+Imagine you've got an object or an array, and you go ahead and change it directly. You've just mutated it.
+The catch is, any other part of your code that uses this data will now see the updated version, not the original.
+Confused? Let's look at a spooky example:
 
 ```javascript
 // Creating a new object
@@ -44,7 +52,9 @@ Scary, right? This behavior can lead to unpredictable app states and debugging n
 
 ## Slicing Through the Madness
 
-Fear not, for there's a way to avoid unleashing chaos: use `slice`, not `splice`. The `slice` method lets you copy parts of an array without changing the original, keeping your state predictable and your components re-rendering correctly.
+Fear not, for there's a way to avoid unleashing chaos: use `slice`, not `splice`. The `slice` method
+lets you copy parts of an array without changing the original, keeping your state predictable and your
+components re-rendering correctly.
 
 ### A Slice of Example
 
@@ -63,7 +73,9 @@ Boom! You've now split your array without mutating the original, avoiding uninte
 
 ## Wrapping Up
 
-Understanding and avoiding mutations in React (and JavaScript in general) is crucial for maintaining a clean, predictable state in your applications. Always keep an eye on how you're manipulating your data structures and opt for non-mutating methods whenever possible. Your future self (and your fellow devs) will thank you.
+Understanding and avoiding mutations in React (and JavaScript in general) is crucial for maintaining a clean,
+predictable state in your applications. Always keep an eye on how you're manipulating your data structures
+and opt for non-mutating methods whenever possible. Your future self (and your fellow devs) will thank you.
 
-Stay coding, and remember, with great power comes great responsibility. Avoid mutations, and keep your React apps sane and efficient!
+Stay coding, and remember, avoid mutations, and keep your React apps sane and efficient!
 
