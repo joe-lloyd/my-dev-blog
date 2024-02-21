@@ -5,7 +5,7 @@ const Tags: React.FC<{ tags: string[] }> = ({ tags }) => {
   return (
     <div className="tags">
       {tags.map(tag => (
-        <span key={tag} className={`tag is-primary tag-${tag.toLowerCase()}`}>{tag}</span>
+        <span key={tag} className={`tag tag-${tag.toLowerCase().replace(/ /g, '-')}`}>{tag}</span>
       ))}
     </div>
   )

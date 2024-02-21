@@ -4,16 +4,21 @@ $dragon-blue-lighter: lighten($dragon-blue, 5%);
 $dragon-purple-lighter: lighten($dragon-purple, 35%);
 $dragon-purple-even-lighter: lighten($dragon-purple, 25%);
 
-// Inline code styling for .language-text
-code.language-text {
-  background-color: lighten($dragon-dark, 10%) !important;
-  color: $light-dragon-pink !important;
-  padding: 0.2em 0.4em;
+// Subtler Inline Code Styling for .language-text
+.content code.language-text {
+  background-color: lighten($dragon-cyan, 25%);
+  color: $dragon-dark;
+  padding: 0.1em 0.2em; // Reduced padding for less emphasis
   margin: 0;
-  font-size: 0.9em;
-  border-radius: 2px !important;
+  font-size: 0.85em;
+  border-radius: 2px;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   word-wrap: break-word;
+}
+
+.content h3 code.language-text {
+  background-color: lighten($dragon-cyan, 30%);
+  color: $dragon-pink;
 }
 
 // Custom PrismJS Theme
@@ -25,6 +30,7 @@ pre[class*="language-"] {
   font-size: 1em;
   line-height: 1.5;
 }
+
 pre[class*="language-"] {
   border-left: 5px solid $dragon-pink;
 }
@@ -103,3 +109,32 @@ pre[class*="language-"] {
   text-decoration: underline;
   color: $link;
 }
+
+.token.tag .token.punctuation {
+  color: $dragon-purple-lighter; // Lighter purple for tag punctuation
+}
+
+.token.attr-name {
+  color: $dragon-pink; // Pink for attribute names, giving a nice contrast
+}
+
+.token.attr-value {
+  color: $dragon-purple-even-lighter; // Lighter purple for attribute values
+}
+
+.token.punctuation {
+  color: $light-dragon-pink; // Ensures punctuation outside tags also matches
+}
+
+.token.string {
+  color: $dragon-pink; // Ensures strings within or outside tags stand out
+}
+
+// Ensuring a cohesive look for all elements
+pre[class*="language-"] .token.tag {
+  border-radius: 2px; // Optional: adds a subtle rounded look to tags if you want
+  padding: 0.1em 0.2em; // Also optional: a bit of padding to make tags slightly elevated
+  background-color: $dragon-dark; // Ensures tags have the same background color as the code block
+  font-size: 1rem;
+}
+

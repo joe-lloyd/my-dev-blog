@@ -1,0 +1,158 @@
+---
+title: "React's Double Agent: Strict Mode"
+author: "Joe Lloyd"
+date: "2024-02-21"
+slug: "/react-strict-mode-explained"
+excerpt: "Unravel the mystery of React's Strict Mode and its double-rendering detective work. Discover how it keeps your app clean from bugs and promotes best practices in development."
+featuredImage: "../images/generated-thumb-react-strict-mode.webp"
+tags: ["JavaScript", "React", "Best Practices", "Strict Mode", "Debugging"]
+seoTitle: "Harnessing React Strict Mode for Bulletproof Applications"
+seoDescription: "Dive deep into React's Strict Mode and learn how its double-rendering feature helps detect and fix bugs early in the development process. A must-read for developers seeking to elevate their React apps."
+published: false
+videoId: ""
+gistLink: "https://gist.github.com/joe-lloyd/4d36def9073bf7dfbbd8675a5381b495"
+---
+
+Hey, all! This time we're diving into a feature of React that often leaves developers
+scratching their heads—**Strict Mode**. Ever wonder why React includes a mode that seems to just make life
+harder by double-rendering everything? Let's crack the case wide open.
+
+## The Double-Rendering Detective: What is React Strict Mode?
+
+Think of React Strict Mode as your app's internal affairs department. It's not here to bust your chops but
+to make sure everything's running smoothly under the hood. By enabling additional checks and warnings, it acts
+like a development detective, uncovering problems you might not even know you have.
+
+## The Mystery of Double Rendering
+
+"Why the hell does it render everything twice?!" you might ask. This intentional double-tap is React's way of
+flushing out the bad practices hiding in your code. It's like a sting operation to catch state mutations, impure
+functions, and rogue side effects in the act.
+
+## The Basic Concept of Strict Mode
+
+Consider this scenario: a developer stumbles upon their `useEffect` firing off twice because of Strict Mode.
+By understanding this behavior, they can ensure their code is clean, with side effects right where they belong—safely
+within `useEffect` or other lifecycle methods.
+
+```jsx
+useEffect(() => {
+  // Code that should run only once but fires twice in Strict Mode
+  console.log('This fires on every mount');
+}, []);
+```
+
+## Turning the Tables on Double Rendering
+
+Don't run from Strict Mode; embrace it as your ally in the fight against buggy code. Use its insights
+to refine your components, ensuring they are free from side effects and ready for prime time.
+
+## Case Study
+### A Sticky Situation: Misusing `useEffect` with API Calls
+
+Imagine you're building a React component that fetches data from an API and displays it. You decide to kick
+off the API call within `useEffect` with an empty dependency array, thinking it'll only run once when the
+component mounts. Here's what your code might look like:
+
+```jsx
+import React, { useState, useEffect } from 'react';
+
+function UserData() {
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch('https://api.example.com/user');
+      const data = await response.json();
+      setUserData(data);
+    };
+
+    fetchData();
+  }, []); // Intended to run only once, but here's where things get tricky.
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
+
+  return <div>Welcome back, {userData.name}!</div>;
+}
+```
+
+### The Bug: Unintended Side Effects
+
+This seems straightforward, right? However, there's a potential pitfall here. While this example
+doesn't directly introduce a bug due to the empty dependency array, the subtlety lies in what you
+might be tempted to include within the `useEffect`.
+
+Consider if `userData` were a prop or if you decided to include some state variable inside the `useEffect`
+that changes over time, and you inadvertently include that variable in the dependency array or use it
+directly within the fetch call without accounting for its changes.
+
+```jsx
+useEffect(() => {
+  const fetchData = async () => {
+    // Imagine this URL is constructed dynamically based on some state/props
+    const url = `https://api.example.com/user?userId=${userId}`; // Assuming userId is a prop or state
+    const response = await fetch(url);
+    const data = await response.json();
+    setUserData(data);
+  };
+
+  fetchData();
+}, [userId]); // Now, userId changes cause the effect to re-run, possibly introducing bugs.
+```
+
+### The Problem
+
+If `userId` changes frequently or if its initial value is undefined and then set, you could inadvertently
+trigger multiple API calls or calls with incorrect parameters. This can lead to:
+
+- Excessive network requests
+- Flickering UI states
+- Inconsistent app state
+- Memory leaks if clean-up is not handled correctly
+
+### The Solution
+
+To mitigate this, ensure that your `useEffect` hook accounts for changes in dependencies responsibly.
+Use conditions within your `useEffect` to guard against unnecessary API calls, and consider using clean-up
+functions to cancel outstanding requests if your component unmounts before the request completes.
+
+```jsx
+useEffect(() => {
+  let cancel = false; // Flag to indicate if the component has unmounted
+
+  const fetchData = async () => {
+    const response = await fetch(`https://api.example.com/user?userId=${userId}`);
+    if (cancel) return; // Prevents setting state if the component has unmounted
+    const data = await response.json();
+    setUserData(data);
+  };
+
+  fetchData();
+
+  return () => {
+    cancel = true; // Clean-up function sets the flag to true
+  };
+}, [userId]); // Properly handling dependencies
+```
+
+### Conclusion
+
+The key takeaway is to be mindful of what you include in the `useEffect` dependency array and to
+understand the implications of those dependencies changing. React's Strict Mode can help uncover such
+issues by double-rendering components in development, prompting you to investigate and fix potential
+bugs before they become problematic.
+
+Incorporating real-world examples like this into your blog will not only make it more engaging but also
+provide valuable insights into common pitfalls in React development and how to avoid them.
+
+## The Verdict
+
+Strict Mode might seem like a tough love approach from React, but it's all about building stronger,
+more reliable apps. By leveraging this feature, you can ensure your projects are not just bug-free, but bulletproof.
+
+So, there you have it—a deeper dive into React's Strict Mode, demystified and ready to serve your development process.
+Remember, in the world of React, Strict Mode isn't just a feature; it's your partner in crime prevention.
+
+Stay sharp, and happy coding!
