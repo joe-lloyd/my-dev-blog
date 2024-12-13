@@ -3,7 +3,7 @@ title: "The Silent Killer in Your React Code: Mutation"
 author: "Joe Lloyd"
 date: "2024-02-16"
 slug: "/mutation-in-javascript"
-excerpt: "Mutations in React can stealthily wreck your app's predictability. Learn why mutating state is a big no-no and how using slice instead of splice keeps your code behaving as expected."
+excerpt: "Mutations in Javascript, why they are bad in React"
 featuredImage: "../images/generated-thumb-mutation.webp"
 tags: ["JavaScript", "React", "State Management", "Immutability", "Best Practices"]
 seoTitle: "Avoiding State Mutation in React for Better Performance"
@@ -15,10 +15,10 @@ gistLink: "https://gist.github.com/joe-lloyd/4d36def9073bf7dfbbd8675a5381b495"
 ---
 
 Hey there! It's time we talk about something that can silently wreak havoc in your
-React apps: **mutations**. Ever had your app behave like it's possessed? You might be messing with
-mutations without even realizing it. Let's break it down, shall we?
+React apps: **mutations**. Ever had your app behave in unexpected ways, like it doesn't update and then updates all at once
+You might be messing with mutations without even realizing it. Let's break it down, shall we?
 
-## What the Hell is a Mutation Anyway?
+## What are Mutation Anyway?
 
 In the realm of programming, especially when dealing with React, a mutation is like feeding Gremlins
 after midnight; shit starts to get weird. When you change a non-primitive data type (think objects and arrays),
@@ -28,10 +28,11 @@ mutate the original array, which is often not what you want.
 How do you know if a method mutates data? A good rule of thumb is to check if it returns a new array
 or object or alters the existing one.
 
-## Why Mutations Can F**k Your Code Sideways
+## Why Mutations Can Mess Up Your Code (Specifically in React)
 
 Imagine you've got an object or an array, and you go ahead and change it directly. You've just mutated it.
 The catch is, any other part of your code that uses this data will now see the updated version, not the original.
+In React that means state changes don't render. This is because state changes are only detected with new values.
 Confused? Let's look at a spooky example:
 
 ```javascript
@@ -56,7 +57,7 @@ Fear not, for there's a way to avoid unleashing chaos: use `slice`, not `splice`
 lets you copy parts of an array without changing the original, keeping your state predictable and your
 components re-rendering correctly.
 
-### A Slice of Example
+### A Slice Example
 
 Let's say you need to split an array into two halves in React:
 
