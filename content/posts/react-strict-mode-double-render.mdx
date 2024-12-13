@@ -1,158 +1,184 @@
 ---
-title: "React's Double Agent: Strict Mode"
+title: "React Strict Mode and the useEffect double rerender"
 author: "Joe Lloyd"
-date: "2024-02-21"
+date: "2024-12-13"
 slug: "/react-strict-mode-explained"
-excerpt: "Unravel the mystery of React's Strict Mode and its double-rendering detective work. Discover how it keeps your app clean from bugs and promotes best practices in development."
+excerpt: "Lets figure out React's Strict Mode and its double-rendering \"problem\". Discover how it keeps your app clean from bugs and promotes best practices in development."
 featuredImage: "../images/generated-thumb-react-strict-mode.webp"
 tags: ["JavaScript", "React", "Best Practices", "Strict Mode", "Debugging"]
-seoTitle: "Harnessing React Strict Mode for Bulletproof Applications"
-seoDescription: "Dive deep into React's Strict Mode and learn how its double-rendering feature helps detect and fix bugs early in the development process. A must-read for developers seeking to elevate their React apps."
-published: false
+seoTitle: "React Strict Mode Explained with examples (useEffect renders twice)"
+seoDescription: "Learn how React's Strict Mode helps you avoid common pitfalls in your app. Why does my useEffect render twice? Find out how to fix it and write cleaner code."
+published: true
 videoId: ""
 gistLink: "https://gist.github.com/joe-lloyd/4d36def9073bf7dfbbd8675a5381b495"
 ---
 
-Hey, all! This time we're diving into a feature of React that often leaves developers
-scratching their heads—**Strict Mode**. Ever wonder why React includes a mode that seems to just make life
-harder by double-rendering everything? Let's crack the case wide open.
+In the ever-evolving world of web development, keeping your code clean and error-free is paramount. That's where React's Strict Mode comes into play, quietly safeguarding your app from potential pitfalls. Today, we dive deep into the essence of Strict Mode, exploring its significance and how it can drastically improve your development process. Let's walk through practical examples, uncovering the common mistakes it helps you avoid and how to correct them. This is Strict Mode in React, demystified.
 
-## The Double-Rendering Detective: What is React Strict Mode?
+## What is React's Strict Mode?
 
-Think of React Strict Mode as your app's internal affairs department. It's not here to bust your chops but
-to make sure everything's running smoothly under the hood. By enabling additional checks and warnings, it acts
-like a development detective, uncovering problems you might not even know you have.
+React's Strict Mode assists development by highlighting problems like unsafe lifecycles, deprecated API usage, and unexpected side effects, Strict Mode prepares you to tackle these issues head-on, ensuring your app is robust and efficient.
 
-## The Mystery of Double Rendering
+### Example 1: The Right Way to Handle Socket Connections
 
-"Why the hell does it render everything twice?!" you might ask. This intentional double-tap is React's way of
-flushing out the bad practices hiding in your code. It's like a sting operation to catch state mutations, impure
-functions, and rogue side effects in the act.
+First on our list is correctly closing socket connections. Resource cleanup is crucial, and neglecting it will cause chaos into your codebase. Consider the following example where we implement a socket API:
 
-## The Basic Concept of Strict Mode
+```javascript
+const socketApi = {
+  connect: () => { console.log("✅ connected") },
+  disconnect: () => { console.log("❌ disconnected") },
+};
 
-Consider this scenario: a developer stumbles upon their `useEffect` firing off twice because of Strict Mode.
-By understanding this behavior, they can ensure their code is clean, with side effects right where they belong—safely
-within `useEffect` or other lifecycle methods.
-
-```jsx
-useEffect(() => {
-  // Code that should run only once but fires twice in Strict Mode
-  console.log('This fires on every mount');
-}, []);
+export { socketApi };
 ```
 
-## Turning the Tables on Double Rendering
+And here's how we correctly manage the connection in our component:
 
-Don't run from Strict Mode; embrace it as your ally in the fight against buggy code. Use its insights
-to refine your components, ensuring they are free from side effects and ready for prime time.
+```javascript
+import React from 'react';
+import { socketApi } from './fake-api';
 
-## Case Study
-### A Sticky Situation: Misusing `useEffect` with API Calls
+export function App(props) {
+  React.useEffect(() => {
+    socketApi.connect();
+    return () => socketApi.disconnect();
+  }, []);
 
-Imagine you're building a React component that fetches data from an API and displays it. You decide to kick
-off the API call within `useEffect` with an empty dependency array, thinking it'll only run once when the
-component mounts. Here's what your code might look like:
-
-```jsx
-import React, { useState, useEffect } from 'react';
-
-function UserData() {
-  const [userData, setUserData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch('https://api.example.com/user');
-      const data = await response.json();
-      setUserData(data);
-    };
-
-    fetchData();
-  }, []); // Intended to run only once, but here's where things get tricky.
-
-  if (!userData) {
-    return <div>Loading...</div>;
-  }
-
-  return <div>Welcome back, {userData.name}!</div>;
+  return (
+    <div className='App'>
+      <h1>This is a Strict mode example</h1>
+      <p>Check the console</p>
+    </div>
+  );
 }
 ```
 
-### The Bug: Unintended Side Effects
+By ensuring the cleanup of our socket connection, we avoid memory leaks and unexpected behaviors. This keeps our application's performant and reliable.
 
-This seems straightforward, right? However, there's a potential pitfall here. While this example
-doesn't directly introduce a bug due to the empty dependency array, the subtlety lies in what you
-might be tempted to include within the `useEffect`.
+### Example 2: Mastering API Request Management
 
-Consider if `userData` were a prop or if you decided to include some state variable inside the `useEffect`
-that changes over time, and you inadvertently include that variable in the dependency array or use it
-directly within the fetch call without accounting for its changes.
+Handling API requests with care is essential. The following example demonstrates a rest API interaction:
 
-```jsx
-useEffect(() => {
-  const fetchData = async () => {
-    // Imagine this URL is constructed dynamically based on some state/props
-    const url = `https://api.example.com/user?userId=${userId}`; // Assuming userId is a prop or state
-    const response = await fetch(url);
-    const data = await response.json();
-    setUserData(data);
-  };
+```javascript
+const restApi = {
+  requestData: async () => {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve({ data: { item: "data" } }), 500);
+    });
+  },
+};
 
-  fetchData();
-}, [userId]); // Now, userId changes cause the effect to re-run, possibly introducing bugs.
+export { restApi };
 ```
 
-### The Problem
+And here's how we handle the request in our component:
 
-If `userId` changes frequently or if its initial value is undefined and then set, you could inadvertently
-trigger multiple API calls or calls with incorrect parameters. This can lead to:
+```javascript
+import React from 'react';
+import { restApi } from './fake-api';
 
-- Excessive network requests
-- Flickering UI states
-- Inconsistent app state
-- Memory leaks if clean-up is not handled correctly
+export function App(props) {
+  const [restData, setRestData] = React.useState();
 
-### The Solution
+  React.useEffect(() => {
+    let ignoreResult = false;
 
-To mitigate this, ensure that your `useEffect` hook accounts for changes in dependencies responsibly.
-Use conditions within your `useEffect` to guard against unnecessary API calls, and consider using clean-up
-functions to cancel outstanding requests if your component unmounts before the request completes.
+    const fetchData = async () => {
+      console.log('Data requested');
+      const { data } = await restApi.requestData();
+      if (!ignoreResult) {
+        console.log('Data set');
+        setRestData(data);
+      }
+    };
 
-```jsx
-useEffect(() => {
-  let cancel = false; // Flag to indicate if the component has unmounted
+    fetchData();
 
-  const fetchData = async () => {
-    const response = await fetch(`https://api.example.com/user?userId=${userId}`);
-    if (cancel) return; // Prevents setting state if the component has unmounted
-    const data = await response.json();
-    setUserData(data);
-  };
+    return () => {
+      ignoreResult = true;
+    };
+  }, []);
 
-  fetchData();
-
-  return () => {
-    cancel = true; // Clean-up function sets the flag to true
-  };
-}, [userId]); // Properly handling dependencies
+  return (
+    <div className='App'>
+      <h1>This is a Strict mode example</h1>
+      <p>Check the console</p>
+    </div>
+  );
+}
 ```
 
-### Conclusion
+This example highlights the importance of ignoring API responses when the component unmounts, preventing attempts to set state on an unmounted component—a classic mistake that leads to memory leaks and error-prone code.
 
-The key takeaway is to be mindful of what you include in the `useEffect` dependency array and to
-understand the implications of those dependencies changing. React's Strict Mode can help uncover such
-issues by double-rendering components in development, prompting you to investigate and fix potential
-bugs before they become problematic.
+### Example 3: Handling Scroll Events Gracefully
 
-Incorporating real-world examples like this into your blog will not only make it more engaging but also
-provide valuable insights into common pitfalls in React development and how to avoid them.
+Handling event listeners in React, especially for actions like scrolling, requires careful consideration to avoid performance issues and memory leaks. Here's how you can set up a scroll listener in a way that Strict Mode would approve:
 
-## The Verdict
+```javascript
+import React, { useEffect } from 'react';
 
-Strict Mode might seem like a tough love approach from React, but it's all about building stronger,
-more reliable apps. By leveraging this feature, you can ensure your projects are not just bug-free, but bulletproof.
+export function ScrollComponent(props) {
+  useEffect(() => {
+    const handleScroll = () => {
+      console.log(window.scrollY);
+    };
 
-So, there you have it—a deeper dive into React's Strict Mode, demystified and ready to serve your development process.
-Remember, in the world of React, Strict Mode isn't just a feature; it's your partner in crime prevention.
+    // Adding scroll listener
+    window.addEventListener('scroll', handleScroll);
 
-Stay sharp, and happy coding!
+    // Cleanup function to remove scroll listener
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  return (
+    <div className='ScrollComponent' style={{ height: '200vh' }}>
+      <h1>Scroll down to see the listener in action!</h1>
+    </div>
+  );
+}
+```
+
+In this example, we attach a scroll event listener to the window when the component mounts and importantly, remove it when the component unmounts. This cleanup is crucial to prevent the listener from firing even after the component is no longer in the DOM, ensuring our app remains efficient and leak-free.
+
+### Example 4: Ensuring Animations Play Nice
+
+Animations can enhance user experience, but they can also lead to user frustration if not managed correctly, especially when components unmount before an animation completes. Let’s see how we can safely implement animations:
+
+```javascript
+import React, { useEffect, useState } from 'react';
+
+export function AnimatedComponent(props) {
+  const [isAnimating, setAnimating] = useState(false);
+
+  useEffect(() => {
+    setAnimating(true);
+    const animationId = window.requestAnimationFrame(() => {
+      // Animation logic here
+      console.log('Animating...');
+      // Reset animation state if needed
+      setAnimating(false);
+    });
+
+    // Cleanup function to cancel the animation frame request
+    return () => {
+      window.cancelAnimationFrame(animationId);
+    };
+  }, []);
+
+  return (
+    <div className='AnimatedComponent'>
+      {isAnimating ? <p>Animating...</p> : <h1>Animation Complete</h1>}
+    </div>
+  );
+}
+```
+
+This snippet demonstrates setting up an animation with `requestAnimationFrame` and ensuring that if the component unmounts, we cancel the animation request. This step is essential to prevent the animation callback from executing on an unmounted component, which could lead to errors or unexpected behaviors.
+
+## Wrapping Up
+
+Strict Mode in React is more than just a tool; it's a mindset. It encourages developers to write cleaner, more reliable code by exposing potential issues early in the development process. Through the examples discussed, we've seen how adhering to best practices and leveraging Strict Mode can help prevent common mistakes, leading to a more stable and efficient application.
+
+So, as you embark on your next React project, remember to enable Strict Mode and let it guide you towards writing better, more resilient code.
