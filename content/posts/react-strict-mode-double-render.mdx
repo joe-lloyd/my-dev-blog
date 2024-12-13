@@ -1,0 +1,184 @@
+---
+title: "React Strict Mode and the useEffect double rerender"
+author: "Joe Lloyd"
+date: "2024-12-13"
+slug: "/react-strict-mode-explained"
+excerpt: "Lets figure out React's Strict Mode and its double-rendering \"problem\". Discover how it keeps your app clean from bugs and promotes best practices in development."
+featuredImage: "../images/generated-thumb-react-strict-mode.webp"
+tags: ["JavaScript", "React", "Best Practices", "Strict Mode", "Debugging"]
+seoTitle: "React Strict Mode Explained with examples (useEffect renders twice)"
+seoDescription: "Learn how React's Strict Mode helps you avoid common pitfalls in your app. Why does my useEffect render twice? Find out how to fix it and write cleaner code."
+published: true
+videoId: ""
+gistLink: "https://gist.github.com/joe-lloyd/4d36def9073bf7dfbbd8675a5381b495"
+---
+
+In the ever-evolving world of web development, keeping your code clean and error-free is paramount. That's where React's Strict Mode comes into play, quietly safeguarding your app from potential pitfalls. Today, we dive deep into the essence of Strict Mode, exploring its significance and how it can drastically improve your development process. Let's walk through practical examples, uncovering the common mistakes it helps you avoid and how to correct them. This is Strict Mode in React, demystified.
+
+## What is React's Strict Mode?
+
+React's Strict Mode assists development by highlighting problems like unsafe lifecycles, deprecated API usage, and unexpected side effects, Strict Mode prepares you to tackle these issues head-on, ensuring your app is robust and efficient.
+
+### Example 1: The Right Way to Handle Socket Connections
+
+First on our list is correctly closing socket connections. Resource cleanup is crucial, and neglecting it will cause chaos into your codebase. Consider the following example where we implement a socket API:
+
+```javascript
+const socketApi = {
+  connect: () => { console.log("✅ connected") },
+  disconnect: () => { console.log("❌ disconnected") },
+};
+
+export { socketApi };
+```
+
+And here's how we correctly manage the connection in our component:
+
+```javascript
+import React from 'react';
+import { socketApi } from './fake-api';
+
+export function App(props) {
+  React.useEffect(() => {
+    socketApi.connect();
+    return () => socketApi.disconnect();
+  }, []);
+
+  return (
+    <div className='App'>
+      <h1>This is a Strict mode example</h1>
+      <p>Check the console</p>
+    </div>
+  );
+}
+```
+
+By ensuring the cleanup of our socket connection, we avoid memory leaks and unexpected behaviors. This keeps our application's performant and reliable.
+
+### Example 2: Mastering API Request Management
+
+Handling API requests with care is essential. The following example demonstrates a rest API interaction:
+
+```javascript
+const restApi = {
+  requestData: async () => {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve({ data: { item: "data" } }), 500);
+    });
+  },
+};
+
+export { restApi };
+```
+
+And here's how we handle the request in our component:
+
+```javascript
+import React from 'react';
+import { restApi } from './fake-api';
+
+export function App(props) {
+  const [restData, setRestData] = React.useState();
+
+  React.useEffect(() => {
+    let ignoreResult = false;
+
+    const fetchData = async () => {
+      console.log('Data requested');
+      const { data } = await restApi.requestData();
+      if (!ignoreResult) {
+        console.log('Data set');
+        setRestData(data);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      ignoreResult = true;
+    };
+  }, []);
+
+  return (
+    <div className='App'>
+      <h1>This is a Strict mode example</h1>
+      <p>Check the console</p>
+    </div>
+  );
+}
+```
+
+This example highlights the importance of ignoring API responses when the component unmounts, preventing attempts to set state on an unmounted component—a classic mistake that leads to memory leaks and error-prone code.
+
+### Example 3: Handling Scroll Events Gracefully
+
+Handling event listeners in React, especially for actions like scrolling, requires careful consideration to avoid performance issues and memory leaks. Here's how you can set up a scroll listener in a way that Strict Mode would approve:
+
+```javascript
+import React, { useEffect } from 'react';
+
+export function ScrollComponent(props) {
+  useEffect(() => {
+    const handleScroll = () => {
+      console.log(window.scrollY);
+    };
+
+    // Adding scroll listener
+    window.addEventListener('scroll', handleScroll);
+
+    // Cleanup function to remove scroll listener
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  return (
+    <div className='ScrollComponent' style={{ height: '200vh' }}>
+      <h1>Scroll down to see the listener in action!</h1>
+    </div>
+  );
+}
+```
+
+In this example, we attach a scroll event listener to the window when the component mounts and importantly, remove it when the component unmounts. This cleanup is crucial to prevent the listener from firing even after the component is no longer in the DOM, ensuring our app remains efficient and leak-free.
+
+### Example 4: Ensuring Animations Play Nice
+
+Animations can enhance user experience, but they can also lead to user frustration if not managed correctly, especially when components unmount before an animation completes. Let’s see how we can safely implement animations:
+
+```javascript
+import React, { useEffect, useState } from 'react';
+
+export function AnimatedComponent(props) {
+  const [isAnimating, setAnimating] = useState(false);
+
+  useEffect(() => {
+    setAnimating(true);
+    const animationId = window.requestAnimationFrame(() => {
+      // Animation logic here
+      console.log('Animating...');
+      // Reset animation state if needed
+      setAnimating(false);
+    });
+
+    // Cleanup function to cancel the animation frame request
+    return () => {
+      window.cancelAnimationFrame(animationId);
+    };
+  }, []);
+
+  return (
+    <div className='AnimatedComponent'>
+      {isAnimating ? <p>Animating...</p> : <h1>Animation Complete</h1>}
+    </div>
+  );
+}
+```
+
+This snippet demonstrates setting up an animation with `requestAnimationFrame` and ensuring that if the component unmounts, we cancel the animation request. This step is essential to prevent the animation callback from executing on an unmounted component, which could lead to errors or unexpected behaviors.
+
+## Wrapping Up
+
+Strict Mode in React is more than just a tool; it's a mindset. It encourages developers to write cleaner, more reliable code by exposing potential issues early in the development process. Through the examples discussed, we've seen how adhering to best practices and leveraging Strict Mode can help prevent common mistakes, leading to a more stable and efficient application.
+
+So, as you embark on your next React project, remember to enable Strict Mode and let it guide you towards writing better, more resilient code.

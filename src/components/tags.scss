@@ -22,6 +22,8 @@ $data-structures-color: #3FC1C9; // Structured, logical cyan
 $debugging-color: #F25C78; // Alert, cautionary pink
 $functional-programming-color: #9D6C7C; // A unique, thoughtful mauve
 $web-development-color: #49A9EE; // Bright, expansive sky blue
+$development-tools-color: #C0C0C0; // A versatile, metallic silver
+$strict-mode-color: #606C88; // A disciplined, authoritative grey
 
 .tags {
   .tag.tag-javascript {
@@ -32,7 +34,7 @@ $web-development-color: #49A9EE; // Bright, expansive sky blue
     background-color: $react-blue;
   }
 
-  .tag.tag-statemangement {
+  .tag.tag-state-management {
     background-color: $state-management-color;
   }
 
@@ -40,11 +42,11 @@ $web-development-color: #49A9EE; // Bright, expansive sky blue
     background-color: $immutability-color;
   }
 
-  .tag.tag-bestpractices {
+  .tag.tag-best-practices {
     background-color: $best-practices-color;
   }
 
-  .tag.tag-programmingtips {
+  .tag.tag-programming-tips {
     background-color: $programming-tips-color;
   }
 
@@ -56,11 +58,45 @@ $web-development-color: #49A9EE; // Bright, expansive sky blue
     background-color: $debugging-color;
   }
 
-  .tag.tag-functionalprogramming {
+  .tag.tag-functional-programming {
     background-color: $functional-programming-color;
   }
 
-  .tag.tag-webdevelopment {
+  .tag.tag-web-development {
     background-color: $web-development-color;
+  }
+
+  .tag.tag-development-tools {
+    background-color: $development-tools-color;
+  }
+
+  .tag.tag-strict-mode {
+    background-color: $strict-mode-color;
+  }
+}
+
+// Adding text color for readability
+$text-dark: #333333; // Dark gray for light backgrounds
+$text-light: #FFFFFF; // White for dark backgrounds
+
+.tags {
+  .tag {
+    &.tag-javascript,
+    &.tag-react,
+    &.tag-web-development,
+    &.tag-development-tools,
+    &.tag-datastructures { // Light backgrounds
+      color: $text-dark;
+    }
+
+    &.tag-state-management,
+    &.tag-immutability,
+    &.tag-best-practices,
+    &.tag-programming-tips,
+    &.tag-debugging,
+    &.tag-functional-programming,
+    &.tag-strict-mode { // Dark backgrounds
+      color: $text-light;
+    }
   }
 }
