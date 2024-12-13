@@ -7,6 +7,14 @@
 /**
  * @type {import('gatsby').GatsbySSR['onRenderBody']}
  */
-exports.onRenderBody = ({ setHtmlAttributes }) => {
-  setHtmlAttributes({ lang: `en` })
+exports.onRenderBody = ({ setHtmlAttributes, setHeadComponents }) => {
+  setHtmlAttributes({ lang: `en` });
+  setHeadComponents([
+    <script
+      key="adsense"
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3335320516280697"
+      crossOrigin="anonymous"
+    />,
+  ]);
 }
