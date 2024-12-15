@@ -9,10 +9,11 @@ type ArticleFooterProps = {
   author: string
   date: string
   gistLink?: string | null
+  gitHubLink?: string | null
   slug?: string
 }
 
-const ArticleFooter: React.FC<ArticleFooterProps> = ({ author, date, gistLink, slug }) => {
+const ArticleFooter: React.FC<ArticleFooterProps> = ({ author, date, gitHubLink, gistLink, slug }) => {
   const { site } = useStaticQuery(graphql`
     query ArticleFooterComponent {
       site {
@@ -68,6 +69,18 @@ const ArticleFooter: React.FC<ArticleFooterProps> = ({ author, date, gistLink, s
                 <FontAwesomeIcon icon={faGithub} />
               </span>
                 <span>View the Gist on GitHub</span>
+              </a>
+            )}
+
+            {gitHubLink && (
+              <a
+                className="button github-black" href={gitHubLink} target="_blank"
+                rel="noopener noreferrer"
+              >
+              <span className="icon">
+                <FontAwesomeIcon icon={faGithub} />
+              </span>
+                <span>View on GitHub</span>
               </a>
             )}
 

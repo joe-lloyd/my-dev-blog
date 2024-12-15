@@ -1,0 +1,163 @@
+---
+title: "How I Built My this blog with Gatsby and MDX"
+author: "Joe"
+date: "2024-12-14"
+slug: "/mdx-gatsby-blog"
+excerpt: "Discover how I built this blog using Gatsby and MDX. Learn about the benefits of static site generation, MDX, and more."
+featuredImage: "../images/generated-thumb-building-mdx-gatsby.png"
+tags: ["gatsby", "react", "mdx", "web development"]
+seoTitle: "building a blog without a database and with mdx and gatsby"
+seoDescription: "Discover how I built my blog using Gatsby, MDX and no database. Learn about the benefits of static site generation, MDX, and more."
+published: true
+videoId: ""
+gistLink: ""
+gitHubLink: "https://github.com/joe-lloyd/my-dev-blog"
+---
+
+import { Link } from "gatsby";
+
+
+## Introduction: The Vision
+
+I built this blog back at the start of 2024. It came from a want to share what i've learned in my first decade of coding.
+My backend skills were rusty after spending 5 years on frontend development at Polestar. So I opted for an all-in-one platform, gatsby.
+Gatsby is good for this use case since SEO & SSR are king in blogging.
+As for data storage, I wanted to keep it simple and avoid databases. That's where MDX came in. The cool thing about it is that through gatsby we still get a graphql layer to query our data.
+Its flexible as well, since we can just add react components to our markdown files.
+
+## Starting the Project
+
+I setup basic Gatbsy project with the gatsby-cli. Using Gatsby is like a double-edged sword, it's great because it's a powerful build tool but it obfuscates a lot of the underlying process.
+I generally use npx to avoid global installations.
+
+```bash
+npx gatsby new my-mdx-site
+```
+
+## Integrating MDX
+
+The Problem I Wanted to Solve was that writing markdown felt limiting because I wanted dynamic elements in blog posts.
+But I didn't want to use a database and manage migrations etc. plus hosting is cheaper with static sites.
+
+```bash
+npm install gatsby-plugin-mdx @mdx-js/react
+```
+
+Just update the config to include the plugin. Here I also use the gatsby-remark-prismjs plugin for syntax highlighting.
+
+```javascript
+const config: GatsbyConfig = {
+  plugins: [
+  // Other plugins...
+    {
+      resolve: `gatsby-plugin-mdx`,
+      options: {
+        gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-remark-prismjs`,
+            options: {},
+          },
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 590,
+            },
+          },
+        ]
+      }
+    }
+  ]
+}
+```
+
+## Adding Dynamic Features
+
+In MDX we have access to react components. So that means we can use Gatbsy's Link component to link to other pages in our site.
+You can see it working with <Link to="/">this link</Link> to the home page.
+
+```md
+import { Link } from "gatsby";
+
+## Adding Dynamic Features
+
+You can see it working with <Link to="/">this link</Link> to the home page.
+```
+
+## Gatsby & GraphQL
+
+The Mdx Files have a list at the top of the file, this is called frontmatter and we can query it with graphql.
+This is great because when we generate pages for each post we can get the frontmatter like metadata for the post.
+
+```mdx
+---
+title: "How I Built My this blog with Gatsby and MDX"
+author: "Joe"
+date: "2024-12-14"
+slug: "/mdx-gatsby-blog"
+---
+
+MDX content/body here
+```
+
+Then in the page templates we can query the data with graphql.
+
+```graphql
+query BlogPostPage($id: String!) {
+  mdx(id: { eq: $id }) {
+    id
+    frontmatter {
+      slug
+      title
+      author
+      date(formatString: "YYYY, DD MMM")
+    }
+  }
+}
+```
+
+## Styling with Bulma
+
+I wanted to keep the styling simple so I used Bulma. I installed it with npm and added the scss files to the gatsby-browser.js file.
+Then just impot everything in my base scss file.
+
+```scss
+@import "~bulma/sass/utilities/_all";
+@import "~bulma/sass/helpers/_all";
+
+// You can just modify bulma variables to customize the theme
+$navbar-background-color: red;
+$navbar-item-color: white;
+$navbar-item-hover-color: blue;
+```
+
+## Generating Types
+
+If you check the codebase you'll see that its mainly written in typescript. I generated types for the graphql queries with the gatsby plugin gatsby-plugin-typegen.
+
+```bash
+npm install gatsby-plugin-typegen
+```
+
+In the package.json there's a script to generate the types. I always add core scripts here, the package.json is the first place I look when I open a new project.
+It should tell me how to run the project, test it, and build it.
+
+```json
+"scripts": {
+  "generate": "graphql-codegen --config codegen.yml"
+}
+```
+
+These are not tracked since a user should generate their own types locally.
+Principally because generated code shouldn't be tracked, think about it like npm modules.
+
+## Deploying
+
+I pushed the code to [github](https://github.com/joe-lloyd/my-dev-blog) and set up a hook for [netlify](https://www.netlify.com/).
+This will trigger a build every time a new commit is pushed to the main branch. Since the app is statically generated, it's fast and cheap (free) to host.
+
+## Conclusion
+
+I'm happy enough with the result since its very easy to deploy more posts & if I want something custom in the code I can just add a react component.
+The site is fast and cheap to host.
+I kept things simple with Bulma SCSS for styling with primsjs for syntax highlighting.
+

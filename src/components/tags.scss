@@ -9,21 +9,21 @@ $tag-colors: $colors;
 
 @import "~bulma/sass/elements/tag.sass";
 
-// Defining base colors for JavaScript and React
-$javascript-yellow: #f0db4f; // Classic JS yellow
-$react-blue: #61DAFB; // React's brand blue
+$javascript-yellow: #f0db4f;
+$react-blue: #61DAFB;
+$mdx-yellow: #faaf19;
+$gatsby-purple: #6b3a9c;
 
-// Now, assigning thematic colors for the rest, inspired by your palette
-$state-management-color: #4D91C6; // A stable, reliable blue
-$immutability-color: #E078C1; // A mix of dragon-pink, implying unchanging nature
-$best-practices-color: #7F5CAD; // A wise, deep purple
-$programming-tips-color: #F2A431; // A helpful, guiding gold
-$data-structures-color: #3FC1C9; // Structured, logical cyan
-$debugging-color: #F25C78; // Alert, cautionary pink
-$functional-programming-color: #9D6C7C; // A unique, thoughtful mauve
-$web-development-color: #49A9EE; // Bright, expansive sky blue
-$development-tools-color: #C0C0C0; // A versatile, metallic silver
-$strict-mode-color: #606C88; // A disciplined, authoritative grey
+$state-management-color: #4D91C6;
+$immutability-color: #E078C1;
+$best-practices-color: #7F5CAD;
+$programming-tips-color: #F2A431;
+$data-structures-color: #3FC1C9;
+$debugging-color: #F25C78;
+$functional-programming-color: #9D6C7C;
+$web-development-color: #49A9EE;
+$development-tools-color: #C0C0C0;
+$strict-mode-color: #606C88;
 
 .tags {
   .tag.tag-javascript {
@@ -73,11 +73,19 @@ $strict-mode-color: #606C88; // A disciplined, authoritative grey
   .tag.tag-strict-mode {
     background-color: $strict-mode-color;
   }
+
+  .tag.tag-mdx {
+    background-color: $mdx-yellow;
+  }
+
+  .tag.tag-gatsby {
+    background-color: $gatsby-purple;
+  }
 }
 
 // Adding text color for readability
-$text-dark: #333333; // Dark gray for light backgrounds
-$text-light: #FFFFFF; // White for dark backgrounds
+$text-dark: #333333;
+$text-light: #FFFFFF;
 
 .tags {
   .tag {
@@ -85,7 +93,7 @@ $text-light: #FFFFFF; // White for dark backgrounds
     &.tag-react,
     &.tag-web-development,
     &.tag-development-tools,
-    &.tag-datastructures { // Light backgrounds
+    &.tag-datastructures {
       color: $text-dark;
     }
 
@@ -95,7 +103,8 @@ $text-light: #FFFFFF; // White for dark backgrounds
     &.tag-programming-tips,
     &.tag-debugging,
     &.tag-functional-programming,
-    &.tag-strict-mode { // Dark backgrounds
+    &.tag-gatsby,
+    &.tag-strict-mode {
       color: $text-light;
     }
   }

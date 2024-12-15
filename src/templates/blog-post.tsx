@@ -32,6 +32,7 @@ const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
           author={post!.frontmatter.author}
           date={post?.frontmatter.date}
           gistLink={post?.frontmatter.gistLink}
+          gitHubLink={post?.frontmatter.gitHubLink}
           slug={post?.frontmatter.slug}
         />
       </div>
@@ -60,6 +61,7 @@ export const query = graphql`
         title
         author
         gistLink
+        gitHubLink
         date(formatString: "YYYY, DD MMM")
         featuredImage {
           absolutePath
