@@ -19,10 +19,11 @@ const config: GatsbyConfig = {
     `gatsby-plugin-image`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
+    'gatsby-plugin-offline',
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-default`,
+        name: `developer-blog-joe-lloyd-web-apps`,
         short_name: `starter`,
         start_url: `/`,
         background_color: `#663399`,

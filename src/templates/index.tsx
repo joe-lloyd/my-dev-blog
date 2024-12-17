@@ -7,6 +7,7 @@ import BlogCard from "../components/blogCard"
 
 import "../components/overviewPage.scss"
 import { OverviewPageQuery, SeoComponentQuery } from "../generated/graphql"
+import Ad from "../components/ad"
 
 const Index: React.FC<PageProps<OverviewPageQuery, { postIds: string[] }>> = ({
   data,
@@ -41,6 +42,7 @@ const Index: React.FC<PageProps<OverviewPageQuery, { postIds: string[] }>> = ({
             ))}
           </div>
         </div>
+        <Ad className="bottom-banner-ad" />
       </div>
     </Layout>
   )

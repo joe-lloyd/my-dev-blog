@@ -10,6 +10,7 @@ import Breadcrumbs from "../components/breadcrumbs"
 import Tags from "../components/tags"
 import YouTubeVideo from "../components/video"
 import ArticleFooter from "../components/article-footer"
+import Ad from "../components/ad"
 
 const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
   data,
@@ -28,6 +29,11 @@ const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
             {children}
           </div>
         </article>
+        {/*<Ad className="in-article-ad" />*/}
+
+        {/*<Ad className="sidebar-ad" />*/}
+
+        <Ad className="bottom-banner-ad" />
         <ArticleFooter
           author={post!.frontmatter.author}
           date={post?.frontmatter.date}

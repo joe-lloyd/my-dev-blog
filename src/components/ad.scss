@@ -1,0 +1,40 @@
+@import "base";
+
+/* ad.scss */
+.ad-container {
+  margin: 20px 0;
+  padding: 10px;
+  text-align: center;
+
+  /* Make sure ads are responsive */
+  max-width: 100%;
+}
+
+.sidebar-ad {
+  @include mobile {
+    position: fixed;
+    top: 20%;
+    right: 0;
+    width: 300px;
+    height: 250px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+  }
+}
+
+.bottom-banner-ad {
+  width: 100%;
+  height: 90px;
+  background-color: #f9f9f9;
+  margin-top: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.in-article-ad {
+  width: 100%;
+  height: 250px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
