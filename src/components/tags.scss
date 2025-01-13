@@ -13,6 +13,9 @@ $javascript-yellow: #f0db4f;
 $react-blue: #61DAFB;
 $mdx-yellow: #faaf19;
 $gatsby-purple: #6b3a9c;
+$node-green: #8CC84B;
+$rust-orange: #DEA584;
+$cpp-blue: #00599C;
 
 $state-management-color: #4D91C6;
 $immutability-color: #E078C1;
@@ -30,6 +33,18 @@ $strict-mode-color: #606C88;
     background-color: $javascript-yellow;
   }
 
+  .tag.tag-node {
+    background-color: $node-green;
+  }
+
+  .tag.tag-rust {
+    background-color: $rust-orange;
+  }
+
+  .tag.tag-cpp {
+    background-color: $cpp-blue;
+  }
+
   .tag.tag-react {
     background-color: $react-blue;
   }
@@ -42,11 +57,14 @@ $strict-mode-color: #606C88;
     background-color: $immutability-color;
   }
 
-  .tag.tag-best-practices {
+  .tag.tag-best-practices,
+  .tag.tag-ffmpeg {
     background-color: $best-practices-color;
   }
 
-  .tag.tag-programming-tips {
+  .tag.tag-programming-tips,
+  .tag.tag-sharp,
+  .tag.tag-image-optimization {
     background-color: $programming-tips-color;
   }
 
@@ -104,6 +122,8 @@ $text-light: #FFFFFF;
     &.tag-debugging,
     &.tag-functional-programming,
     &.tag-gatsby,
+    &.tag-cpp,
+    &.tag-ffmpeg,
     &.tag-strict-mode {
       color: $text-light;
     }

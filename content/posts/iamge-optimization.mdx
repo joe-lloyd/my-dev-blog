@@ -1,0 +1,101 @@
+---
+title: "Rust aint that fast"
+author: "Joe"
+date: "2025-01-13"
+slug: "/rust-vs-node-for-image-optimization"
+excerpt: "Rust vs Node for image optimization, cropping and resizing, which is faster?"
+featuredImage: ../images/thumb-rust-aint-that-fast.png
+tags: ["rust", "node", "image-optimization", "ffmpeg", "sharp", "c++"]
+seoTitle: "Rust vs Node for Image Optimization"
+seoDescription: "Rust vs Node for image optimization, cropping and resizing, which is faster?"
+published: true
+videoId: ""
+gistLink: ""
+gitHubLink: "https://github.com/joe-lloyd/rusty-media-optimizer"
+---
+
+I'm going to be real with you from the get go, the title & thumb are bait. Rust is fast, very fast and faster than JS in almost every metric.
+But what I found out when I tried to optimize my blog images shocked me.
+
+## The Why/What
+
+So I have a [site](https://minis.joe-lloyd.com/) where I show off pictures of my models that I've painted over the years. It's nothing special, just JAM stack with next.js and mdx.
+Since we're talking about a lot of images and a static site I decided I needed to optimize the images I have, so I can store them cheaply and serve them quickly.
+I also need to do some videos and I want to upload them to an s3 bucket, so I need to optimize them too.
+
+I want to make 1 image into 5 images
+
+```js
+const sizes = {
+  thumbnail: 480,
+  small: 600,
+  medium: 800,
+  large: 1200,
+  extraLarge: 1920,
+};
+```
+
+The thumbnail image will be cropped to a square as well as resized. All images we be transformed to webp format.
+
+## JS Everything
+
+So since I'm a basic React Andy I decided to use JS for everything. I used `sharp` for images and `ffmpeg` for videos.
+I wrote some scripts, basic JS plumbing. I just had to install the packages and run the scripts. It works, it makes all my images and videos
+the correct size and format.
+
+But, I've recently been watching [ThePrimeagen](https://youtube.com/@ThePrimeTimeagen) and he's been basically calling me out, feelsbatman.jpg.
+So I decided to look into the right tool for the job instead of the tool I know for the job.
+
+## Lets Rust
+
+This led me to Rust. I've never written any rust before, but I've heard its crazy fast.
+It looks complicated but the task I wanna do is simple enough (implementing libs that smarter people than me wrote).
+For starters I'm sure Chat Gippity can guide me.
+
+My first attempt sucks, I end up processing one image after another instead of batching. Its slow but technically it works.
+
+Lets see if video processing works better/faster.
+
+...ffmpeg path or installation is busted (somehow it works with Node but not Rust)...
+
+For now, I'm skipping the video part. Lets go back and make the image processing faster. To increase speed I need to
+look into parallel processing. So I find this library called [rayon](https://github.com/rayon-rs/rayon). It's a data parallelism library for Rust.
+
+```rust
+use rayon::prelude::*;
+```
+
+It makes it a lot faster, but I'm still not happy with the speed. I was pretty sure the Node implementation was faster,
+but it had been a couple of days since I ran it so I decided to make some benchmarks.
+
+# Benchmark
+
+For the test I used everything I had which is only 21 images.
+This becomes 105 images after the transformation.
+
+Our results for Rust
+
+```bash
+$ Image processing completed in 175.91s seconds.
+```
+
+
+Our results for Node
+
+```bash
+$ Total Processing Time: 3.591s
+```
+
+I was shocked, how bad can my Rust code be that Node is faster?? I was kinda annoyed that I spent time on a slower solution but I
+decided to make this a learning opportunity, lets go deeper, why is Rust slower?
+
+# Findings & Conclusion
+
+My initial thought was that my Rust code sucks, we all know that Chat Gippity is a Jr dev and actually nothing special when it comes to code quality.
+So, yeah, the code probably sucks, you can make up your own mind by looking in the [repo as the image_processing.rs file](https://github.com/joe-lloyd/rusty-media-optimizer/blob/master/src/image_processing.rs).
+But actually I'm gonna rug pull you and tell you we were't really comparing Node to Rust, since the Node script was using the sharp package. Sharp is a C++ library that is wrapped in JS, so all the "heavy lifting" is done in C++.
+So, Rust is still fast, but not as fast as C++.
+
+As an additional side note, I was also using the [webp library for rust](https://github.com/jaredforth/webp/) & I read that it's just not a fast formatter.
+
+It was a fun and eye-opening experiment, its always good to go a little deeper, understand what packages you're using and what they're doing under the hood.
