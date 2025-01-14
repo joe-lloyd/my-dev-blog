@@ -16,9 +16,9 @@ const config: GatsbyConfig = {
   },
   plugins: [
     "gatsby-plugin-sass",
-    `gatsby-plugin-image`,
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
+    'gatsby-plugin-image',
+    'gatsby-transformer-sharp',
+    'gatsby-plugin-sharp',
     'gatsby-plugin-offline',
     {
       resolve: `gatsby-plugin-manifest`,
@@ -74,6 +74,7 @@ const config: GatsbyConfig = {
               // the content container as this plugin uses this as the
               // base for generating different widths of each image.
               maxWidth: 590,
+              wrapperStyle: `margin: 3rem auto;`,
             },
           },
         ]

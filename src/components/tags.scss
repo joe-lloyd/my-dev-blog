@@ -27,79 +27,8 @@ $functional-programming-color: #9D6C7C;
 $web-development-color: #49A9EE;
 $development-tools-color: #C0C0C0;
 $strict-mode-color: #606C88;
-
-.tags {
-  .tag.tag-javascript {
-    background-color: $javascript-yellow;
-  }
-
-  .tag.tag-node {
-    background-color: $node-green;
-  }
-
-  .tag.tag-rust {
-    background-color: $rust-orange;
-  }
-
-  .tag.tag-cpp {
-    background-color: $cpp-blue;
-  }
-
-  .tag.tag-react {
-    background-color: $react-blue;
-  }
-
-  .tag.tag-state-management {
-    background-color: $state-management-color;
-  }
-
-  .tag.tag-immutability {
-    background-color: $immutability-color;
-  }
-
-  .tag.tag-best-practices,
-  .tag.tag-ffmpeg {
-    background-color: $best-practices-color;
-  }
-
-  .tag.tag-programming-tips,
-  .tag.tag-sharp,
-  .tag.tag-image-optimization {
-    background-color: $programming-tips-color;
-  }
-
-  .tag.tag-datastructures {
-    background-color: $data-structures-color;
-  }
-
-  .tag.tag-debugging {
-    background-color: $debugging-color;
-  }
-
-  .tag.tag-functional-programming {
-    background-color: $functional-programming-color;
-  }
-
-  .tag.tag-web-development {
-    background-color: $web-development-color;
-  }
-
-  .tag.tag-development-tools {
-    background-color: $development-tools-color;
-  }
-
-  .tag.tag-strict-mode {
-    background-color: $strict-mode-color;
-  }
-
-  .tag.tag-mdx {
-    background-color: $mdx-yellow;
-  }
-
-  .tag.tag-gatsby {
-    background-color: $gatsby-purple;
-  }
-}
+$anecdote-orange: #FFA07A;
+$dev-life-teal: #20B2AA;
 
 // Adding text color for readability
 $text-dark: #333333;
@@ -107,24 +36,100 @@ $text-light: #FFFFFF;
 
 .tags {
   .tag {
-    &.tag-javascript,
-    &.tag-react,
-    &.tag-web-development,
-    &.tag-development-tools,
-    &.tag-datastructures {
+    &.tag-javascript {
+      background-color: $javascript-yellow;
       color: $text-dark;
     }
 
-    &.tag-state-management,
-    &.tag-immutability,
+    &.tag-node {
+      background-color: $node-green;
+      color: $text-light;
+    }
+
+    &.tag-rust {
+      background-color: $rust-orange;
+      color: $text-light;
+    }
+
+    &.tag-cpp {
+      background-color: $cpp-blue;
+      color: $text-light;
+    }
+
+    &.tag-react {
+      background-color: $react-blue;
+      color: $text-dark;
+    }
+
+    &.tag-state-management {
+      background-color: $state-management-color;
+      color: $text-light;
+    }
+
+    &.tag-immutability {
+      background-color: $immutability-color;
+      color: $text-light;
+    }
+
     &.tag-best-practices,
+    &.tag-ffmpeg {
+      background-color: $best-practices-color;
+      color: $text-light;
+    }
+
     &.tag-programming-tips,
-    &.tag-debugging,
-    &.tag-functional-programming,
-    &.tag-gatsby,
-    &.tag-cpp,
-    &.tag-ffmpeg,
+    &.tag-sharp,
+    &.tag-image-optimization {
+      background-color: $programming-tips-color;
+      color: $text-light;
+    }
+
+    &.tag-datastructures {
+      background-color: $data-structures-color;
+      color: $text-dark;
+    }
+
+    &.tag-debugging {
+      background-color: $debugging-color;
+      color: $text-light;
+    }
+
+    &.tag-functional-programming {
+      background-color: $functional-programming-color;
+      color: $text-light;
+    }
+
+    &.tag-web-development {
+      background-color: $web-development-color;
+      color: $text-dark;
+    }
+
+    &.tag-development-tools {
+      background-color: $development-tools-color;
+      color: $text-dark;
+    }
+
     &.tag-strict-mode {
+      background-color: $strict-mode-color;
+      color: $text-light;
+    }
+
+    &.tag-mdx {
+      background-color: $mdx-yellow;
+      color: $text-light;
+    }
+
+    &.tag-gatsby {
+      background-color: $gatsby-purple;
+      color: $text-light;
+    }
+    &.tag-anecdote {
+      background-color: $anecdote-orange;
+      color: $text-dark;
+    }
+
+    &.tag-dev-life {
+      background-color: $dev-life-teal;
       color: $text-light;
     }
   }
