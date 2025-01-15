@@ -51,7 +51,7 @@ const Index: React.FC<PageProps<OverviewPageQuery, { postIds: string[] }>> = ({
 export const Head: HeadFC<OverviewPageQuery> = ({data}) => {
   const lastPost = data.allMdx.edges[0].node
   return (
-    <Seo title="Using TypeScript" image={lastPost.frontmatter.featuredImage as ImageDataLike} />
+    <Seo title="Overview Page" image={lastPost.frontmatter.featuredImage as ImageDataLike} />
   )
 }
 

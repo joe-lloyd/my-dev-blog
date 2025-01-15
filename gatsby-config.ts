@@ -6,7 +6,7 @@ const config: GatsbyConfig = {
   },
   siteMetadata: {
     title: "Developer Blog: Joe Lloyd Web Apps",
-    description: "A blog about web development and other cool stuff.",
+    description: "Thoughts, Experiences and Life of a Dev.",
     author: "Joe Lloyd",
     siteUrl: "https://dev-blog.joe-lloyd.com",
     defaultImage: "image",
