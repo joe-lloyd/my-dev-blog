@@ -1,10 +1,11 @@
 import * as React from "react"
 import { graphql, useStaticQuery } from "gatsby"
+import { getImage, ImageDataLike } from "gatsby-plugin-image"
 
 interface SEOProps {
   title?: string | null
   description?: string | null
-  image?: string | null
+  image?: ImageDataLike
   pathname?: string | null
   article?: boolean
 }
@@ -23,19 +24,19 @@ const SEO: React.FC<SEOProps> = ({
           defaultTitle: title
           defaultDescription: description
           siteUrl
-          defaultImage
           twitterUsername
         }
       }
     }
   `)
 
+
+  const imageData = image ? getImage(image) : null;
+
   const seo = {
     title: title || site.siteMetadata.defaultTitle,
     description: description || site.siteMetadata.defaultDescription,
-    image: `${site.siteMetadata.siteUrl}${
-      image || site.siteMetadata.defaultImage
-    }`,
+    image: imageData ? `${site.siteMetadata.siteUrl}${imageData!.images.fallback!.src}` : '',
     url: `${site.siteMetadata.siteUrl}${pathname || "/"}`,
   }
 

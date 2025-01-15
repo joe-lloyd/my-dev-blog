@@ -8,6 +8,7 @@ import BlogCard from "../components/blogCard"
 import "../components/overviewPage.scss"
 import { OverviewPageQuery, SeoComponentQuery } from "../generated/graphql"
 import Ad from "../components/ad"
+import { ImageDataLike } from "gatsby-plugin-image"
 
 const Index: React.FC<PageProps<OverviewPageQuery, { postIds: string[] }>> = ({
   data,
@@ -47,9 +48,12 @@ const Index: React.FC<PageProps<OverviewPageQuery, { postIds: string[] }>> = ({
     </Layout>
   )
 }
-export const Head: HeadFC<SeoComponentQuery> = () => (
-  <Seo title="Using TypeScript" />
-)
+export const Head: HeadFC<OverviewPageQuery> = ({data}) => {
+  const lastPost = data.allMdx.edges[0].node
+  return (
+    <Seo title="Using TypeScript" image={lastPost.frontmatter.featuredImage as ImageDataLike} />
+  )
+}
 
 export default Index
 

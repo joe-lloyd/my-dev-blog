@@ -11,6 +11,7 @@ import Tags from "../components/tags"
 import YouTubeVideo from "../components/video"
 import ArticleFooter from "../components/article-footer"
 import Ad from "../components/ad"
+import { ImageDataLike } from "gatsby-plugin-image"
 
 const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
   data,
@@ -50,7 +51,7 @@ export const Head: HeadFC<BlogPostPageQuery> = ({ data }) => (
   <Seo
     title={data.mdx?.frontmatter.seoTitle}
     description={data.mdx?.frontmatter.seoDescription}
-    image={data.mdx?.frontmatter.featuredImage?.absolutePath}
+    image={data.mdx?.frontmatter.featuredImage as ImageDataLike}
     pathname={data.mdx?.frontmatter.slug}
     article={true}
   />
@@ -70,7 +71,9 @@ export const query = graphql`
         gitHubLink
         date(formatString: "YYYY, DD MMM")
         featuredImage {
-          absolutePath
+          childImageSharp {
+            gatsbyImageData(width: 800)
+          }
         }
         tags
         videoId
