@@ -64,20 +64,20 @@ const createPixelArt = async (inputPath, outputPath) => {
     .modulate({
       brightness: 1.1 // Step 1: Increase brightness
     })
-    .linear(1, 30) // Step 2: Raise all pixel values by 30
-    .tint(colors.magenta)
+    .linear(1, 15) // Step 2: Raise all pixel values by 30
+    .tint(colors.darkRed)
     .resize(downscaleWidth, downscaleHeight, { kernel: sharp.kernel.nearest })
     .toBuffer()
     .then(data =>
       sharp(data)
         .resize(width, height, { kernel: sharp.kernel.nearest })
         .blur(0.5)
-        .resize(696, 391)
+        .resize(620, 465)
         .toBuffer()
     )
 
-  const canvasWidth = 696
-  const canvasHeight = 391
+  const canvasWidth = 620
+  const canvasHeight = 465
   const canvas = createCanvas(canvasWidth, canvasHeight)
   const ctx = canvas.getContext("2d")
 
@@ -92,12 +92,13 @@ const createPixelArt = async (inputPath, outputPath) => {
   // Add text to canvas using the utility function
   addTextToCanvas({
     ctx,
-    text: "KNOW YOUR PLACE TRASH",
-    x: (canvasWidth / 3) * 2,
-    y: 25,
+    text: "I DONT GIVE A FUCK",
+    // x: (canvasWidth / 3) * 2,
+    x: 20,
+    y: canvasHeight * .75,
     lineHeight: 75,
     padding: canvasHeight * 0.1,
-    oneWordPerLine: true
+    oneWordPerLine: false
   })
 
   const textBuffer = canvas.toBuffer()
@@ -113,4 +114,4 @@ const createPixelArt = async (inputPath, outputPath) => {
   console.log(`Pixelated image with outlined text and margin saved to ${outputPath}`)
 }
 
-createPixelArt("scripts/img.png", "scripts/thumb-know-your-place.webp")
+createPixelArt("scripts/img.png", "scripts/i-dont-give-a-fuck.webp")

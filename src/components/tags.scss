@@ -84,6 +84,7 @@ $text-light: #FFFFFF;
       color: $text-light;
     }
 
+    &.tag-ai,
     &.tag-datastructures {
       background-color: $data-structures-color;
       color: $text-dark;
@@ -128,6 +129,7 @@ $text-light: #FFFFFF;
       color: $text-dark;
     }
 
+    &.tag-co-pilot,
     &.tag-dev-life {
       background-color: $dev-life-teal;
       color: $text-light;
