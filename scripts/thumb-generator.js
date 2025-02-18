@@ -28,6 +28,13 @@ const colors = {
   dragonBlue: { r: 59, g: 95, b: 206 },         // #3B5FCE
   dragonCyan: { r: 49, g: 216, b: 242 }        // #31D8F2
 }
+
+
+const mainVariables = {
+  color: colors.pink,
+  pixilation: 23, // between 5-10
+}
+
 const addTextToCanvas = ({
   ctx,
   text,
@@ -57,21 +64,21 @@ const createPixelArt = async (inputPath, outputPath) => {
   const metadata = await inputImage.metadata()
 
   const { width, height } = metadata
-  const downscaleWidth = Math.max(Math.round(width / 8), 1)
-  const downscaleHeight = Math.max(Math.round(height / 8), 1)
+  const downscaleWidth = Math.max(Math.round(width / mainVariables.pixilation), 1)
+  const downscaleHeight = Math.max(Math.round(height / mainVariables.pixilation), 1)
 
   const pixelatedBuffer = await inputImage
     .modulate({
       brightness: 1.1 // Step 1: Increase brightness
     })
-    .linear(1, 15) // Step 2: Raise all pixel values by 30
-    .tint(colors.darkRed)
+    .linear(1, 25) // Step 2: Raise all pixel values by 30
+    .tint(mainVariables.color)
     .resize(downscaleWidth, downscaleHeight, { kernel: sharp.kernel.nearest })
     .toBuffer()
     .then(data =>
       sharp(data)
         .resize(width, height, { kernel: sharp.kernel.nearest })
-        .blur(0.5)
+        .blur(1.5)
         .resize(620, 465)
         .toBuffer()
     )
@@ -92,10 +99,9 @@ const createPixelArt = async (inputPath, outputPath) => {
   // Add text to canvas using the utility function
   addTextToCanvas({
     ctx,
-    text: "I DONT GIVE A FUCK",
-    // x: (canvasWidth / 3) * 2,
-    x: 20,
-    y: canvasHeight * .75,
+    text: "DOUBLES GET",
+    x: 100,
+    y: canvasHeight - 180,
     lineHeight: 75,
     padding: canvasHeight * 0.1,
     oneWordPerLine: false
@@ -114,4 +120,4 @@ const createPixelArt = async (inputPath, outputPath) => {
   console.log(`Pixelated image with outlined text and margin saved to ${outputPath}`)
 }
 
-createPixelArt("scripts/img.png", "scripts/i-dont-give-a-fuck.webp")
+createPixelArt("./img.png", "./doubles.webp")
