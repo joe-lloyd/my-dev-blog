@@ -10,7 +10,6 @@ import Breadcrumbs from "../components/breadcrumbs"
 import Tags from "../components/tags"
 import YouTubeVideo from "../components/video"
 import ArticleFooter from "../components/article-footer"
-import Ad from "../components/ad"
 import { ImageDataLike } from "gatsby-plugin-image"
 
 const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
@@ -24,17 +23,14 @@ const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({
         <article>
           <Breadcrumbs slug={post?.frontmatter.slug || ""} />
           <Tags tags={post?.frontmatter.tags || []} />
+          <p className="mb-1 has-text-dark">{post?.fields!.readingTime!.text}</p>
           {post?.frontmatter.videoId && <YouTubeVideo videoSrc={post.frontmatter.videoId} />}
           <h1 className="title is-1">{post?.frontmatter.title}</h1>
           <div className="content">
             {children}
           </div>
         </article>
-        {/*<Ad className="in-article-ad" />*/}
 
-        {/*<Ad className="sidebar-ad" />*/}
-
-        <Ad className="bottom-banner-ad" />
         <ArticleFooter
           author={post!.frontmatter.author}
           date={post?.frontmatter.date}
@@ -79,6 +75,11 @@ export const query = graphql`
         videoId
         seoTitle
         seoDescription
+      }
+      fields {
+        readingTime {
+          text
+        }
       }
     }
   }

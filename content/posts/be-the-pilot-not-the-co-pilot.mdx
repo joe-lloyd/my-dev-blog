@@ -22,8 +22,8 @@ I've recently been on the job market, doing lots of interviews and take home ass
 eye-opening process <Link to="/youre-just-not-that-good">here</Link>). During one of the technical interviews we started with a
 classic [FizzBuzz](https://en.wikipedia.org/wiki/Fizz_buzz) question. I have done this a million times, and I've given this as a code
 challenge as well. But somehow I froze up, "*how do I write a for loop??*". For the last few years all I type is "*for*" and then Co-pilot
-does the rest. I said I was nervous was then able to compose myself, took a second to check the syntax and write the loop. That was the worst
-part of the interview, but I still made a lot of mini mistakes, that sort of felt like I was tripping over my own feet.
+does the rest. I said I was nervous and was then able to compose myself, took a second to check the syntax and write the loop. That was the worst
+part of the interview, but I still made a lot of mini mistakes, that sort of felt like I was tripping over my own feet without the code assistance.
 
 It's the first time I've really felt regression in my skills. Like I lost something with my speed and accuracy. Before I blame co-pilot for my
 mistakes, Lets look at other factors that could have contributed to this.
@@ -31,8 +31,8 @@ mistakes, Lets look at other factors that could have contributed to this.
 ## Skill Issues
 
 So for starters I had not been working for about 8 months when I had this test. I had still been coding, but not professionally, only hobby
-projects. I also hadn't done a live tech test ever in a job interview. In previous job interviews I brought my own code and talk through things
-I did. This last factor is kinda a weird one, but I **love** the AirBnB strict linter rules, I basically pushed for and enforced no for loops when
+projects. I also hadn't done a live tech test ever in a job interview at that point. In previous job interviews I brought my own code or got a take home.
+This last factor is kinda a weird one, but I **love** the AirBnB strict linter rules, I basically pushed for and enforced no "*for*" loops when
 I was working at Polestar (react doesn't link mutation, and for loops sort of encourage that). So all in all I had not written a for loop in
 about 7 years.
 
@@ -41,9 +41,9 @@ about 7 years.
 ### Digital Crack
 
 Ai tools definitely became part of my main work flow, I spend less and less time on StackOverflow ([22k rep btw](https://stackoverflow.com/users/2504407/joe-lloyd)).
-Even though the answers the bots give are pretty basic and pretty much always need to be fixed I still found myself relying on it more and more.
+Even though the answers the LLMs give are pretty basic and pretty much always need to be fixed I still found myself relying on it more and more.
 Feels nearly like the social media addiction we have where we scroll and scroll or refresh that home page for the chance at something
-interesting. Like we generate and generate in hopes that it will solve the issue this time, because when it works it's amazing. I think it was
+interesting and shiny. Like we generate and generate in hopes that it will solve the issue this time, because when it works it's amazing. I think it was
 the experiment with the skinner box.
 
 ### Why Care?
@@ -51,19 +51,26 @@ the experiment with the skinner box.
 So why do I care about this? Well, first off the embarrassment of being stuck on a basic bitch question will haunt me for a long time. But
 that's the purpose, anger pushes you to protect your boundary, anxiety pushes you to prepare for something and embarrassment pushes you to
 do better. For me, it's unacceptable to not know the syntax of your main language, especially something so basic. So because of this I don't
-have co-pilot installed in my neovim. I do still use it in php storm for now since it does increase my speed (or perceived speed?).
+have co-pilot installed in my neovim and I've changed the order I do things when I debug. I first actually read the error, yeah, what a novel
+idea, I see if I can solve it without help. After that I search documentation based on key-words, then it's time for StackOverflow and finally
+a large LLM context dump.
+
+For me this is the most productive way to use these tools. But I'd be lying if I said it was easy to follow. Like the rats in that skinner box,
+dumping my problem and getting an instant solution is still tempting even if the solution sucks. No cold turkey for me. I still use it in php storm
+but just spend more time ignoring suggestions than before.
 
 ![image i dont give a fuck](../../content/images/in-post/i-dont-give-a-fuck.webp)
 
 ## Being a Pilot
 
-I'm currently working on a team builder application for the bord game Bloodbowl (This American football but Ogres, Goblins, Orcs and Elves
-are playing). I used a lot of ChatGPT to get me started, to spit out a lot of dumb template stuff at the start, but now I'm fine-tuning it
+I'm currently working on a team builder application for the bord game Bloodbowl (think American football but Ogres, Goblins, Orcs and Elves
+as players). I used a lot of ChatGPT to get me started, to spit out a lot of dumb template stuff at the start, but now I'm fine-tuning it
 myself. I find that taking the time to design the app structure how I want and solve problems with my own brain gives far better results
-than blindly following the co-pilot. Because I already have to refactor some really tightly coupled get functions for firestore in my page
-level react components.
+than blindly following the co-pilot. I already have to refactor some really tightly coupled get functions for firestore in my page
+level react components that was template stuff from the LLMs (I did like 6 months ago). This process is kinda frustrating, removing subpar code
+to replace it with much better solution.
 
-On a side note, I find it more enjoyable as well, it gets me back solving problems rather than just dumping errors into co-pilot or ChatGPT.
+In general, I find solving my own problems more enjoyable, it gets me back solving problems rather than just dumping errors into co-pilot or ChatGPT.
 I'm not saying don't use these tools, they can be a great enhancement, but don't let them be the only thing you use.
 
 You should be the pilot, not the co-pilot.

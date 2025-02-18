@@ -7,6 +7,7 @@
 import * as path from "path"
 import { GatsbyNode } from "gatsby"
 import { GatsbyNodeGetPostsQuery } from "./src/generated/graphql"
+import readingTime from "reading-time"
 
 export const createPages: GatsbyNode["createPages"] = async ({
   graphql,
@@ -96,6 +97,10 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
     type Mdx implements Node {
       frontmatter: MdxFrontmatter!
     }
+    
+    type ReadingTime {
+      text: String!
+    }
   `
   createTypes(typeDefs)
 }
@@ -104,4 +109,15 @@ export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = ({ sta
   actions.setWebpackConfig({
     devtool: "cheap-module-source-map"
   });
+}
+
+export const onCreateNode: GatsbyNode["onCreateNode"] = ({ node, actions }) => {
+  const { createNodeField } = actions
+  if (node.internal.type === `Mdx`) {
+    createNodeField({
+      node,
+      name: `readingTime`,
+      value: readingTime(node.body as string)
+    })
+  }
 }
