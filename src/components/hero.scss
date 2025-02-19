@@ -1,5 +1,88 @@
 @import "base";
 
+@keyframes glitch {
+  0%, 9.99%, 12%, 32.99%, 35%, 49.99%, 52%, 54.99%, 56%, 100% {
+    opacity: 0;
+  }
+  10%, 11.99%, 33%, 34.99%, 50%, 51.99%, 55%, 55.99% {
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0%, 9.99%, 12%, 32.99%, 35%, 49.99%, 52%, 54.99%, 56%, 100% {
+    transform: translate(0, 0);
+  }
+
+  // 10 to 11
+  10.1% {
+    transform: translate(-3px, -0px);
+  }
+  10.3% {
+    transform: translate(3px, 0px);
+  }
+  10.6% {
+    transform: translate(-5px, -0px);
+  }
+
+  // 33 to 35
+  33% {
+    transform: translate(17px, 0px);
+  }
+  33.3% {
+    transform: translate(-13px, -0px);
+  }
+  33.6% {
+    transform: translate(-14px, 0px);
+  }
+  33.9% {
+    transform: translate(-16px, -0px);
+  }
+  34.2% {
+    transform: translate(19px, 0px);
+  }
+  34.5% {
+    transform: translate(-17px, -0px);
+  }
+  34.8% {
+    transform: translate(16px, 0px);
+  }
+
+  // 50 to 52
+  50% {
+    transform: translate(-15px, -0px);
+  }
+  50.3% {
+    transform: translate(18px, 0px);
+  }
+  50.6% {
+    transform: translate(-13px, 0px);
+  }
+  50.9% {
+    transform: translate(-0px, 0px);
+  }
+  51.2% {
+    transform: translate(-12px, -0px);
+  }
+  51.5% {
+    transform: translate(15px, 0px);
+  }
+  51.8% {
+    transform: translate(-19px, 0px);
+  }
+
+  // 55 to 56
+  55% {
+    transform: translate(28px, 0px);
+  }
+  55.3% {
+    transform: translate(-17px, -0px);
+  }
+  55.6% {
+    transform: translate(27px, 0px);
+  }
+}
+
 section.hero {
   padding-top: 80px;
   background: linear-gradient(-40deg, lighten($dragon-purple, 8%), $dragon-pink 45%, lighten($dragon-purple, 8%) 45%) lighten($dragon-purple, 8%);
@@ -42,7 +125,15 @@ section.hero .title {
 }
 
 .hovering-element {
-  animation: hoverEffect 4s ease-in-out infinite;
+  animation: hoverEffect 5s ease-in-out infinite;
+}
+
+.glitch-shake {
+  animation: shake 12s linear infinite;
+}
+
+.glitch {
+  animation: glitch 12s linear infinite;
 }
 
 .cursor {
