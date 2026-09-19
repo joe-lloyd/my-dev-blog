@@ -1,31 +1,22 @@
-// Read-only AdSense report: sites, ad units and the last 30 days per unit.
+// Read-only AdSense report: sites, ad units and the last N days per unit.
 //   node scripts/adsense-report.mjs [--days 30]
-// Auth: a service account key at $ADSENSE_SA_KEY (default ~/.config/homelab-dev/adsense-sa.json)
-// whose email has been added as a user in AdSense → Account → Access and authorization.
-// The AdSense Management API is read-only; placements and Auto ads are dashboard-only.
-import { createSign } from "node:crypto"
+// Auth: OAuth as the account owner (the Management API has no service-account
+// support). One-time setup with scripts/adsense-auth.mjs stores a refresh token
+// at ~/.config/homelab-dev/adsense-token.json next to the OAuth client.
+// The API is read-only; placements and Auto ads are dashboard-only.
 import { readFileSync } from "node:fs"
 import { homedir } from "node:os"
 
-const keyPath = process.env.ADSENSE_SA_KEY ?? `${homedir()}/.config/homelab-dev/adsense-sa.json`
+const dir = `${homedir()}/.config/homelab-dev`
 const days = Number(process.argv[process.argv.indexOf("--days") + 1] || 30)
-const key = JSON.parse(readFileSync(keyPath, "utf8"))
+const client = JSON.parse(readFileSync(`${dir}/adsense-oauth-client.json`, "utf8"))
+const stored = JSON.parse(readFileSync(`${dir}/adsense-token.json`, "utf8"))
 
-const b64 = (o) => Buffer.from(JSON.stringify(o)).toString("base64url")
 async function accessToken() {
-  const now = Math.floor(Date.now() / 1000)
-  const unsigned = `${b64({ alg: "RS256", typ: "JWT" })}.${b64({
-    iss: key.client_email,
-    scope: "https://www.googleapis.com/auth/adsense.readonly",
-    aud: key.token_uri,
-    iat: now,
-    exp: now + 3600,
-  })}`
-  const sig = createSign("RSA-SHA256").update(unsigned).sign(key.private_key, "base64url")
-  const r = await fetch(key.token_uri, {
+  const r = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
     headers: { "content-type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({ grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer", assertion: `${unsigned}.${sig}` }),
+    body: new URLSearchParams({ grant_type: "refresh_token", refresh_token: stored.refresh_token, client_id: client.client_id, client_secret: client.client_secret }),
   })
   if (!r.ok) throw new Error(`token: ${r.status} ${await r.text()}`)
   return (await r.json()).access_token
@@ -43,8 +34,7 @@ const api = async (path, params = {}) => {
 
 const { accounts = [] } = await api("accounts")
 if (!accounts.length) {
-  console.log(`No AdSense accounts visible to ${key.client_email}.`)
-  console.log("Add that email as a user in AdSense → Account → Access and authorization → User management.")
+  console.log("No AdSense accounts visible to the authorised Google user.")
   process.exit(2)
 }
 
@@ -57,9 +47,12 @@ for (const a of accounts) {
   const { sites = [] } = await api(`${a.name}/sites`)
   console.log("sites:")
   for (const s of sites) console.log(`  ${s.domain.padEnd(28)} ${s.state}${s.autoAdsEnabled ? "  auto ads ON" : ""}`)
-  const { adUnits = [] } = await api(`${a.name}/adclients/-/adunits`)
+  const { adClients = [] } = await api(`${a.name}/adclients`)
   console.log("ad units:")
-  for (const u of adUnits) console.log(`  ${u.displayName.padEnd(28)} slot ${u.name.split("/").pop().split(":").pop()}  ${u.state}  ${u.contentAdsSettings?.type ?? ""}`)
+  for (const c of adClients) {
+    const { adUnits = [] } = await api(`${c.name}/adunits`)
+    for (const u of adUnits) console.log(`  ${u.displayName.padEnd(28)} slot ${u.name.split("/").pop().split(":").pop()}  ${u.state}  ${u.contentAdsSettings?.type ?? ""}`)
+  }
 
   const dr = { "startDate.year": ymd(start).year, "startDate.month": ymd(start).month, "startDate.day": ymd(start).day, "endDate.year": ymd(end).year, "endDate.month": ymd(end).month, "endDate.day": ymd(end).day }
   const rep = await api(`${a.name}/reports:generate`, { ...dr, dimensions: ["AD_UNIT_NAME", "DOMAIN_NAME"], metrics: ["PAGE_VIEWS", "IMPRESSIONS", "CLICKS", "AD_REQUESTS_COVERAGE", "ESTIMATED_EARNINGS"], orderBy: "-ESTIMATED_EARNINGS" })
