@@ -1,21 +1,14 @@
-import React from "react"
-import "./tags.scss"
+import * as React from "react"
 
-const Tags: React.FC<{ tags: string[] }> = ({ tags }) => {
-  return (
-    <div className="tags">
-      {tags.map(tag => (
-        <span
-          key={tag}
-          className={`tag tag-${tag
-            .toLowerCase()
-            .replace(/ /g, "-")
-            .replace(/\+/g, "p")
-          }`}
-        >{tag}</span>
+const Tags: React.FC<{ tags: string[] }> = ({ tags }) =>
+  tags.length ? (
+    <ul className="post__tags" aria-label="Tags">
+      {tags.map((tag) => (
+        <li key={tag} className="chip">
+          {tag}
+        </li>
       ))}
-    </div>
-  )
-}
+    </ul>
+  ) : null
 
 export default Tags

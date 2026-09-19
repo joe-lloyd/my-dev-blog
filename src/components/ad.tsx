@@ -1,6 +1,5 @@
 import React from "react"
 
-import './ad.scss';
 
 interface AdProps {
   className?: string;

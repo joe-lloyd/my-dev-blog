@@ -4,4 +4,5 @@
  * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-browser/
  */
 
-import "prismjs/themes/prism-okaidia.css"
+// Syntax colours live in src/styles/theme.scss (prism section), so no theme import here.
+export {}

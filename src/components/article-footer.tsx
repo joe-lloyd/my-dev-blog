@@ -1,8 +1,4 @@
-import React from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTwitter, faLinkedin, faGithub } from "@fortawesome/free-brands-svg-icons";
-
-import "./article-footer.scss"
+import * as React from "react"
 import { graphql, useStaticQuery } from "gatsby"
 
 type ArticleFooterProps = {
@@ -23,71 +19,47 @@ const ArticleFooter: React.FC<ArticleFooterProps> = ({ author, date, gitHubLink,
       }
     }
   `)
+  const url = `${site.siteMetadata.siteUrl}${slug ?? ""}`
 
   return (
-    <>
-      <hr />
-      <footer className="content">
-        <div className="box">
-          <article className="media">
-            <div className="media-content">
-              <div className="content">
-                <p>
-                  <strong>Written by {author}</strong> <small>on {date}</small>
-                </p>
-              </div>
-            </div>
-          </article>
-          <br />
-          <div className="buttons">
-            <a
-              className="button twitter-blue"
-              href={`https://twitter.com/intent/tweet?url=${site.siteMetadata.siteUrl}${slug}&text=Check out this awesome article by ${author}!`}
-            >
-              <span className="icon">
-                <FontAwesomeIcon icon={faTwitter} />
-              </span>
-              <span>Tweet</span>
-            </a>
-
-            <a
-              className="button linkedin-blue"
-              href={`https://www.linkedin.com/shareArticle?mini=true&url=${site.siteMetadata.siteUrl}${slug}`}
-            >
-              <span className="icon">
-                <FontAwesomeIcon icon={faLinkedin} />
-              </span>
-              <span>Share on LinkedIn</span>
-            </a>
-
-            {gistLink && (
-              <a
-                className="button github-black" href={gistLink} target="_blank"
-                rel="noopener noreferrer"
-              >
-              <span className="icon">
-                <FontAwesomeIcon icon={faGithub} />
-              </span>
-                <span>View the Gist on GitHub</span>
-              </a>
-            )}
-
-            {gitHubLink && (
-              <a
-                className="button github-black" href={gitHubLink} target="_blank"
-                rel="noopener noreferrer"
-              >
-              <span className="icon">
-                <FontAwesomeIcon icon={faGithub} />
-              </span>
-                <span>View on GitHub</span>
-              </a>
-            )}
-
-          </div>
-        </div>
-      </footer>
-    </>
+    <footer className="article-footer tile">
+      <p className="article-footer__byline">
+        <span>
+          <strong>{author}</strong> · {date}
+        </span>
+        <span>{slug}</span>
+      </p>
+      <div className="article-footer__actions">
+        <a
+          className="btn-term"
+          href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(
+            `Read this by ${author}`,
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Tweet ↗
+        </a>
+        <a
+          className="btn-term"
+          href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          LinkedIn ↗
+        </a>
+        {gistLink && (
+          <a className="btn-term btn-term--pink" href={gistLink} target="_blank" rel="noopener noreferrer">
+            Gist ↗
+          </a>
+        )}
+        {gitHubLink && (
+          <a className="btn-term btn-term--pink" href={gitHubLink} target="_blank" rel="noopener noreferrer">
+            Source ↗
+          </a>
+        )}
+      </div>
+    </footer>
   )
 }
 

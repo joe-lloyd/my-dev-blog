@@ -1,43 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import * as React from "react"
 
+const WORDS = ["debugging", "testing", "coding", "designing", "building", "ranting"]
+
+/** Typewriter for the hero accent line: types a word, holds, deletes, next. */
 const TypingEffect: React.FC = () => {
-  const words: string[] = ["Debugging", "Testing", "Coding", "Designing", "Building"];
-  const [currentWord, setCurrentWord] = useState<number>(0);
-  const [letterIndex, setLetterIndex] = useState<number>(0);
-  const [deleting, setDeleting] = useState<boolean>(false);
-  const [displayedWord, setDisplayedWord] = useState<string>("");
+  const [word, setWord] = React.useState(0)
+  const [len, setLen] = React.useState(0)
+  const [deleting, setDeleting] = React.useState(false)
 
-  useEffect(() => {
-    const updateText = () => {
-      if (deleting) {
-        if (letterIndex > 0) {
-          setLetterIndex(prevIndex => prevIndex - 1);
-          setDisplayedWord(words[currentWord].slice(0, letterIndex - 1));
-        } else {
-          setDeleting(false);
-          setCurrentWord(prevCurrent => (prevCurrent + 1) % words.length);
-        }
-      } else {
-        if (letterIndex < words[currentWord].length) {
-          setLetterIndex(prevIndex => prevIndex + 1);
-          setDisplayedWord(words[currentWord].slice(0, letterIndex + 1));
-        } else {
-          setTimeout(() => { setDeleting(true); }, 1000);
-        }
+  React.useEffect(() => {
+    const full = WORDS[word]
+    let delay = deleting ? 70 : 140
+    if (!deleting && len === full.length) delay = 1400
+    if (deleting && len === 0) delay = 300
+
+    const t = setTimeout(() => {
+      if (!deleting && len === full.length) return setDeleting(true)
+      if (deleting && len === 0) {
+        setDeleting(false)
+        return setWord((w) => (w + 1) % WORDS.length)
       }
-    };
-
-    const typingSpeed = deleting ? 100 : 200;
-    const timeout = setTimeout(updateText, typingSpeed);
-
-    return () => clearTimeout(timeout);
-  }, [currentWord, deleting, letterIndex, words]);
+      setLen((n) => n + (deleting ? -1 : 1))
+    }, delay)
+    return () => clearTimeout(t)
+  }, [word, len, deleting])
 
   return (
-    <p className="title">
-      10,000 Hours <br/>of <span>{displayedWord}</span><span className="cursor">|</span>
-    </p>
-  );
-};
+    <span className="hero__accent">
+      of {WORDS[word].slice(0, len)}
+      <span className="typed-caret" aria-hidden="true" />
+    </span>
+  )
+}
 
-export default TypingEffect;
+export default TypingEffect

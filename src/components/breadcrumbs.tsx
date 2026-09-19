@@ -1,15 +1,17 @@
-import React from "react"
-import './breadcrumbs.scss'
+import * as React from "react"
+import { Link } from "gatsby"
 
-const Breadcrumbs: React.FC<{ slug: string }> = ({ slug }) => {
-  return (
-    <nav className="breadcrumb" aria-label="breadcrumbs">
-      <ul>
-        <li><a href="/">Overview</a></li>
-        <li className="is-active"><a href={slug} aria-current="page">{slug.replace(/^\//, '')}</a></li>
-      </ul>
-    </nav>
-  )
-}
+const Breadcrumbs: React.FC<{ slug: string }> = ({ slug }) => (
+  <nav className="breadcrumb" aria-label="Breadcrumb">
+    <ol>
+      <li>
+        <Link to="/">~/posts</Link>
+      </li>
+      <li>
+        <span aria-current="page">{slug.replace(/^\//, "")}</span>
+      </li>
+    </ol>
+  </nav>
+)
 
 export default Breadcrumbs

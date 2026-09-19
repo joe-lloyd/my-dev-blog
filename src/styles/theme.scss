@@ -1,0 +1,1333 @@
+/*
+  Neon Terminal theme, ported from joe-lloyd.com (tailwind.config.mjs and
+  src/styles/global.css there). The palette is locked: every dragon-* value
+  matches the main site, and the semantic term-* names are the same too, so a
+  component can be read side by side with its Astro counterpart.
+*/
+
+// ---- tokens ---------------------------------------------------------------
+
+$dragon-dark: #0a0a0a;
+$dragon-bg: #171423;
+$dragon-purple: #5a1ba1;
+$dragon-pink: #da257d;
+$dragon-pink-light: #e03f8e;
+$dragon-blue: #2e59dc;
+$dragon-cyan: #43cadf;
+$dragon-purple-l15: #873bde;
+
+$term-accent: $dragon-cyan;
+$term-prompt: $dragon-pink;
+$term-dim: #8f9ba8; // 7.1:1 on dragon-dark, 6.4:1 on dragon-bg
+$term-ink: #d7e7ea;
+$term-edge: rgba(215, 231, 234, 0.12);
+
+$font-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, "Cascadia Code", Consolas, monospace;
+$font-sans: Inter, -apple-system, "Segoe UI", system-ui, sans-serif;
+
+$header-h: 3.25rem;
+$container: 80rem;
+$prose: 72ch;
+
+// ---- font -----------------------------------------------------------------
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+// ---- base -----------------------------------------------------------------
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding-top: $header-h;
+  background: $dragon-bg;
+  color: $term-ink;
+  font-family: $font-sans;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: $dragon-cyan;
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $dragon-pink-light;
+  }
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+:focus-visible {
+  outline: 2px solid $dragon-cyan;
+  outline-offset: 2px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: $container;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// ---- keyframes ------------------------------------------------------------
+
+@keyframes caretBlink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes hoverFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes gradientSweep {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes gridRecede {
+  from {
+    transform: rotateX(74deg) translate3d(0, 0, 0);
+  }
+  to {
+    transform: rotateX(74deg) translate3d(0, -66px, 0);
+  }
+}
+
+// ---- shared pieces --------------------------------------------------------
+
+.kicker {
+  margin: 0 0 1rem;
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: $dragon-cyan;
+
+  .kicker__prompt {
+    color: $dragon-pink-light;
+  }
+}
+
+.section-kicker {
+  margin: 0 0 0.25rem;
+  font-family: $font-mono;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: $dragon-pink-light;
+
+  span {
+    margin-left: 0.5rem;
+    color: $term-dim;
+  }
+}
+
+.eyebrow {
+  margin: 0 0 0.75rem;
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: $dragon-cyan;
+}
+
+// Bento surface, same gradient as .tile on the main site.
+.tile {
+  border: 1px solid $term-edge;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
+}
+
+// Terminal button: the fill sweeps in from the left on hover.
+.btn-term {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding-inline: 1.25rem;
+  overflow: hidden;
+  border: 1px solid $dragon-cyan;
+  border-radius: 0;
+  background: transparent;
+  color: $dragon-cyan;
+  font-family: $font-mono;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: color 0.2s;
+  isolation: isolate;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: $dragon-cyan;
+    transform: translateX(-101%);
+    transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+  }
+
+  &:hover {
+    color: $dragon-dark;
+
+    &::before {
+      transform: none;
+    }
+  }
+
+  &--pink {
+    border-color: $dragon-pink;
+    color: $dragon-pink-light;
+
+    &::before {
+      background: $dragon-pink;
+    }
+
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  &--edge {
+    border-color: $term-edge;
+    color: #fff;
+
+    &::before {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    &:hover {
+      color: $dragon-cyan;
+      border-color: $dragon-cyan;
+    }
+  }
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding-inline: 0.6rem;
+  border: 1px solid rgba($dragon-purple-l15, 0.35);
+  border-radius: 0.25rem;
+  font-family: $font-mono;
+  font-size: 0.7rem;
+  color: $term-dim;
+}
+
+.mono {
+  font-family: $font-mono;
+}
+
+// CRT overlay: scanlines and vignette in one fixed, non-blending layer.
+.crt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  height: 100lvh;
+  z-index: 60;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.45) 100%),
+    repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 3px);
+
+  @media (prefers-reduced-motion: reduce) {
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.4) 100%);
+  }
+}
+
+// ---- header ---------------------------------------------------------------
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+
+  &:focus {
+    position: fixed;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 999;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    background: $dragon-pink;
+    color: #fff;
+  }
+}
+
+.site-header {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid rgba($dragon-cyan, 0.2);
+  background: rgba($dragon-dark, 0.85);
+  backdrop-filter: blur(8px);
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+.brand {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.625rem;
+  color: #fff;
+  font-family: $font-mono;
+  font-size: 0.875rem;
+  font-weight: 600;
+
+  &:hover {
+    color: #fff;
+  }
+
+  span {
+    color: $dragon-pink-light;
+  }
+}
+
+.prompt {
+  display: none;
+  margin-left: 0.5rem;
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  color: $term-dim;
+
+  @media (min-width: 640px) {
+    display: inline;
+  }
+
+  .caret {
+    display: inline-block;
+    width: 0.375rem;
+    height: 0.75rem;
+    transform: translateY(1px);
+    background: $dragon-pink;
+    animation: caretBlink 1.05s steps(1) infinite;
+  }
+}
+
+.site-nav {
+  display: none;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0 0 0 auto;
+  padding: 0;
+  list-style: none;
+
+  @media (min-width: 1024px) {
+    display: flex;
+  }
+
+  a {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    font-family: $font-mono;
+    font-size: 0.875rem;
+    color: $term-dim;
+
+    &:hover,
+    &[aria-current="page"] {
+      color: $dragon-cyan;
+    }
+  }
+
+  .hire {
+    margin-left: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba($dragon-pink, 0.5);
+    border-radius: 999px;
+    background: rgba($dragon-pink, 0.15);
+    color: #fff;
+
+    &:hover {
+      background: $dragon-pink;
+      color: #fff;
+    }
+  }
+}
+
+.nav-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  width: 44px;
+  height: 44px;
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  cursor: pointer;
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
+
+  span {
+    display: block;
+    width: 1.5rem;
+    height: 2px;
+    background: #fff;
+    transition:
+      transform 0.2s,
+      opacity 0.2s;
+  }
+
+  &[aria-expanded="true"] {
+    span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    span:nth-child(2) {
+      opacity: 0;
+    }
+    span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+  }
+}
+
+.nav-panel {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 40;
+  height: 100vh;
+  height: 100lvh;
+  overflow-y: auto;
+  padding-top: 4rem;
+  background: rgba($dragon-dark, 0.97);
+  backdrop-filter: blur(8px);
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 1.5rem 1rem;
+    list-style: none;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: 0.5rem;
+    border-bottom: 1px solid $term-edge;
+    font-family: $font-mono;
+    font-size: 1.125rem;
+    color: #fff;
+
+    &[aria-current="page"] {
+      color: $dragon-cyan;
+    }
+
+    .bracket {
+      color: $dragon-pink-light;
+
+      &:first-child {
+        margin-right: 0.5rem;
+      }
+      &:last-child {
+        margin-left: 0.5rem;
+      }
+    }
+  }
+
+  .hire {
+    justify-content: center;
+    margin-top: 1rem;
+    border: 0;
+    border-radius: 999px;
+    background: $dragon-pink;
+  }
+}
+
+// ---- hero -----------------------------------------------------------------
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid $term-edge;
+  padding: 5rem 0 2.5rem;
+
+  @media (min-width: 768px) {
+    padding-top: 6rem;
+  }
+
+  &--post {
+    padding: 4.5rem 0 2rem;
+  }
+
+  .container {
+    position: relative;
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+
+    @media (min-width: 768px) {
+      grid-template-columns: 1.05fr 0.95fr;
+    }
+  }
+
+  .hero__copy {
+    min-width: 0;
+  }
+
+  .hero__crest {
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+
+    @media (min-width: 768px) {
+      justify-content: flex-end;
+    }
+  }
+}
+
+.hero__title {
+  margin: 0 0 1.25rem;
+  font-family: $font-mono;
+  font-size: clamp(2.25rem, 1.4rem + 3.6vw, 4rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: #fff;
+
+  &--compact {
+    font-size: clamp(1.85rem, 1.3rem + 2.8vw, 3rem);
+  }
+
+  .hero__accent {
+    display: block;
+    background: linear-gradient(90deg, $dragon-cyan, $dragon-pink-light, $dragon-purple-l15);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradientSweep 8s ease-in-out infinite;
+  }
+
+  .typed-caret {
+    display: inline-block;
+    width: 0.08em;
+    height: 0.9em;
+    margin-left: 0.1em;
+    transform: translateY(0.08em);
+    background: $dragon-pink;
+    animation: caretBlink 1.05s steps(1) infinite;
+  }
+}
+
+.hero__lede {
+  max-width: 58ch;
+  margin: 0;
+  font-size: 1.05rem;
+  color: $term-dim;
+}
+
+.hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  color: $term-dim;
+}
+
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 70% at 22% 55%, rgba(16, 14, 24, 0.92), transparent 72%),
+    linear-gradient(to top, rgba(16, 14, 24, 0.55), transparent 45%);
+}
+
+// Infinite synthwave grid, transform-driven so the lines never re-rasterise.
+.hero-grid {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 44vh;
+  height: 44lvh;
+  overflow: hidden;
+  perspective: 300px;
+  perspective-origin: 50% 0%;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(transparent 0%, #000 55%);
+  mask-image: linear-gradient(transparent 0%, #000 55%);
+}
+
+.hero-grid__plane {
+  position: absolute;
+  left: -60%;
+  right: -60%;
+  bottom: -132px;
+  height: calc(260% + 132px);
+  transform-origin: 50% 100%;
+  transform: rotateX(74deg);
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 62px,
+      rgba($dragon-cyan, 0.05) 62.5px,
+      rgba($dragon-cyan, 0.34) 64px,
+      rgba($dragon-cyan, 0.05) 65.5px,
+      transparent 66px
+    ),
+    repeating-linear-gradient(
+      to right,
+      transparent 0px,
+      transparent 62px,
+      rgba($dragon-pink, 0.04) 62.5px,
+      rgba($dragon-pink, 0.26) 64px,
+      rgba($dragon-pink, 0.04) 65.5px,
+      transparent 66px
+    );
+  will-change: transform;
+  animation: gridRecede 9s linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+// Crest with the datamosh glitch. The canvas replaces the image during a burst.
+.glitch-logo {
+  position: relative;
+  width: 100%;
+  flex-shrink: 1;
+
+  .glitch-stage {
+    position: relative;
+    z-index: 10;
+    animation: hoverFloat 6s ease-in-out infinite;
+  }
+
+  .glitch-src {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 24px rgba($dragon-pink, 0.35));
+  }
+
+  .glitch-px {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 0 24px rgba($dragon-pink, 0.35));
+  }
+
+  &[data-firing] .glitch-px {
+    opacity: 1;
+  }
+  &[data-firing] .glitch-src {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glitch-px {
+      display: none;
+    }
+    &[data-firing] .glitch-src {
+      opacity: 1;
+    }
+  }
+}
+
+// ---- post index -----------------------------------------------------------
+
+.posts {
+  padding: 2.5rem 0 3.5rem;
+
+  @media (min-width: 768px) {
+    padding: 3.5rem 0 4rem;
+  }
+}
+
+.posts__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+
+  h2 {
+    margin: 0;
+    font-size: clamp(1.5rem, 1.1rem + 2vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  .count {
+    font-family: $font-mono;
+    font-size: 0.75rem;
+    color: $term-dim;
+  }
+}
+
+.posts__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 1280px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.post-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  transition: transform 0.3s;
+
+  &:hover {
+    transform: translateY(-4px);
+
+    .post-card__image .gatsby-image-wrapper {
+      transform: scale(1.04);
+      filter: saturate(1);
+    }
+  }
+
+  &__image {
+    position: relative;
+    aspect-ratio: 5 / 3;
+    overflow: hidden;
+
+    .gatsby-image-wrapper {
+      width: 100%;
+      height: 100%;
+      filter: saturate(0.75);
+      transition:
+        transform 0.5s,
+        filter 0.5s;
+    }
+
+    // Scanline tint so thumbnails sit inside the aesthetic.
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: repeating-linear-gradient(180deg, rgba($dragon-bg, 0.3) 0 2px, transparent 2px 4px);
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(to top, $dragon-bg, transparent 60%);
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 2;
+    padding: 0.125rem 0.5rem;
+    border: 1px solid $term-edge;
+    border-radius: 0.25rem;
+    background: rgba($dragon-dark, 0.75);
+    backdrop-filter: blur(4px);
+    font-family: $font-mono;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: $dragon-cyan;
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  &__title {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin: 0 0 0.375rem;
+    font-family: $font-mono;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.35;
+
+    a {
+      color: #fff;
+
+      &:hover {
+        color: $dragon-cyan;
+      }
+
+      // Whole card is the click target.
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+      }
+    }
+
+    time {
+      flex-shrink: 0;
+      font-size: 0.65rem;
+      font-weight: 400;
+      color: $term-dim;
+    }
+  }
+
+  &__excerpt {
+    flex: 1;
+    margin: 0 0 0.75rem;
+    font-size: 0.875rem;
+    color: $term-dim;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin: 0 0 0.75rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__cta {
+    margin-top: auto;
+    font-family: $font-mono;
+    font-size: 0.75rem;
+    color: $dragon-cyan;
+  }
+}
+
+// ---- post page ------------------------------------------------------------
+
+.post {
+  padding: 2rem 0 3.5rem;
+
+  .container {
+    max-width: calc(#{$prose} + 2rem);
+  }
+}
+
+.breadcrumb {
+  margin: 0 0 1rem;
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  color: $term-dim;
+
+  ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li + li::before {
+    content: "/";
+    margin-right: 0.5rem;
+    color: $dragon-pink-light;
+  }
+
+  [aria-current="page"] {
+    color: $term-ink;
+  }
+}
+
+.post__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  margin: 0 0 1.5rem;
+  border: 1px solid $term-edge;
+  border-radius: 1rem;
+  overflow: hidden;
+
+  iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+}
+
+// Long-form prose. MDX output is unstyled, so everything is set here.
+.prose {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: $term-ink;
+
+  > * + * {
+    margin-top: 1.25em;
+  }
+
+  h2,
+  h3,
+  h4 {
+    margin: 2em 0 0.6em;
+    font-family: $font-mono;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: #fff;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+
+    &::before {
+      content: "## ";
+      color: $dragon-pink-light;
+    }
+  }
+
+  h3 {
+    font-size: 1.25rem;
+
+    &::before {
+      content: "### ";
+      color: $dragon-pink-light;
+    }
+  }
+
+  h4 {
+    font-size: 1.05rem;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: $dragon-cyan;
+    text-decoration: underline;
+    text-decoration-color: rgba($dragon-cyan, 0.4);
+    text-underline-offset: 0.2em;
+
+    &:hover {
+      color: $dragon-pink-light;
+      text-decoration-color: currentColor;
+    }
+  }
+
+  strong {
+    color: #fff;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.5rem;
+  }
+
+  li + li {
+    margin-top: 0.35em;
+  }
+
+  li::marker {
+    color: $dragon-pink-light;
+  }
+
+  blockquote {
+    margin: 0;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid $dragon-pink;
+    border-radius: 0 0.75rem 0.75rem 0;
+    background: rgba(255, 255, 255, 0.035);
+    color: $term-ink;
+    font-style: italic;
+  }
+
+  hr {
+    height: 1px;
+    margin: 2.5rem 0;
+    border: 0;
+    background: $term-edge;
+  }
+
+  img {
+    border: 1px solid $term-edge;
+    border-radius: 0.75rem;
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  figcaption {
+    margin-top: 0.5rem;
+    font-family: $font-mono;
+    font-size: 0.75rem;
+    color: $term-dim;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+
+  th,
+  td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid $term-edge;
+    text-align: left;
+  }
+
+  th {
+    font-family: $font-mono;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: $dragon-cyan;
+  }
+
+  // Inline code and blocks. Prism classes below.
+  code {
+    font-family: $font-mono;
+    font-size: 0.875em;
+  }
+
+  :not(pre) > code {
+    padding: 0.1em 0.4em;
+    border: 1px solid $term-edge;
+    border-radius: 0.3rem;
+    background: rgba($dragon-dark, 0.7);
+    color: $dragon-cyan;
+  }
+
+  .gatsby-highlight {
+    position: relative;
+    margin: 0;
+    border: 1px solid $term-edge;
+    border-radius: 0.75rem;
+    background: $dragon-dark;
+    overflow: hidden;
+
+    // Language tag in the corner, from gatsby-remark-prismjs's data attribute.
+    &::before {
+      content: attr(data-language);
+      position: absolute;
+      top: 0.5rem;
+      right: 0.75rem;
+      font-family: $font-mono;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: $term-dim;
+    }
+  }
+
+  pre[class*="language-"] {
+    margin: 0;
+    padding: 1.25rem 1.25rem;
+    overflow: auto;
+    background: transparent;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: $term-ink;
+    text-shadow: none;
+  }
+}
+
+// ---- prism ----------------------------------------------------------------
+// Palette-aligned token colours. Replaces the okaidia theme.
+
+.token {
+  &.comment,
+  &.prolog,
+  &.doctype,
+  &.cdata {
+    color: $term-dim;
+    font-style: italic;
+  }
+  &.punctuation {
+    color: rgba($term-ink, 0.7);
+  }
+  &.property,
+  &.tag,
+  &.constant,
+  &.symbol,
+  &.deleted {
+    color: $dragon-pink-light;
+  }
+  &.boolean,
+  &.number {
+    color: $dragon-purple-l15;
+  }
+  &.selector,
+  &.attr-name,
+  &.string,
+  &.char,
+  &.builtin,
+  &.inserted {
+    color: $dragon-cyan;
+  }
+  &.operator,
+  &.entity,
+  &.url {
+    color: $term-ink;
+  }
+  &.atrule,
+  &.attr-value,
+  &.keyword {
+    color: $dragon-pink-light;
+  }
+  &.function,
+  &.class-name {
+    color: #fff;
+  }
+  &.regex,
+  &.important,
+  &.variable {
+    color: $dragon-cyan;
+  }
+  &.important,
+  &.bold {
+    font-weight: 700;
+  }
+}
+
+.gatsby-highlight-code-line {
+  display: block;
+  margin-inline: -1.25rem;
+  padding-inline: 1.25rem;
+  border-left: 3px solid $dragon-pink;
+  background: rgba($dragon-pink, 0.1);
+}
+
+// ---- article footer -------------------------------------------------------
+
+.article-footer {
+  margin-top: 3rem;
+
+  .article-footer__byline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin: 0 0 1rem;
+    font-family: $font-mono;
+    font-size: 0.8rem;
+    color: $term-dim;
+
+    strong {
+      color: #fff;
+    }
+  }
+
+  .article-footer__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+
+// ---- ad slot --------------------------------------------------------------
+
+.ad-container {
+  margin-top: 2.5rem;
+  min-height: 0;
+
+  ins {
+    display: block;
+  }
+}
+
+// ---- footer ---------------------------------------------------------------
+
+.site-footer {
+  padding: 2.5rem 0;
+  border-top: 1px solid rgba($dragon-cyan, 0.2);
+  background: rgba($dragon-dark, 0.6);
+
+  .site-footer__grid {
+    display: grid;
+    gap: 2rem;
+
+    @media (min-width: 640px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li a,
+  .site-footer__mail {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    font-size: 0.875rem;
+    color: #fff;
+
+    &:hover {
+      color: $dragon-cyan;
+    }
+
+    small {
+      font-family: $font-mono;
+      font-size: 0.75rem;
+      color: $term-dim;
+    }
+  }
+
+  .site-footer__mail {
+    font-family: $font-mono;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: $term-dim;
+  }
+
+  .site-footer__legal {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid $term-edge;
+    font-family: $font-mono;
+    font-size: 0.75rem;
+    color: $term-dim;
+  }
+}
+
+// ---- 404 -------------------------------------------------------------------
+
+.not-found {
+  padding: 6rem 0;
+  text-align: center;
+
+  h1 {
+    font-family: $font-mono;
+    font-size: clamp(2rem, 1.4rem + 3vw, 3.5rem);
+    color: #fff;
+  }
+
+  p {
+    color: $term-dim;
+  }
+}
