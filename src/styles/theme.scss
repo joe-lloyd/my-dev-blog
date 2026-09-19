@@ -1285,6 +1285,11 @@ video {
     display: block;
     width: 100%;
   }
+
+  // Never let a served creative escape the box on a narrow screen.
+  iframe {
+    max-width: 100%;
+  }
 }
 
 // ---- footer ---------------------------------------------------------------

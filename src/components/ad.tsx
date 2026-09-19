@@ -73,7 +73,8 @@ const Ad: React.FC<AdProps> = ({ format = "horizontal" }) => {
         data-ad-slot={slotId}
         data-ad-format={inArticle ? "fluid" : "horizontal"}
         data-ad-layout={inArticle ? "in-article" : undefined}
-        data-full-width-responsive={inArticle ? undefined : "true"}
+        // No data-full-width-responsive: on phones it stretches the unit to the
+        // viewport with negative margins and pushes it out of the box.
       />
     </div>
   )
