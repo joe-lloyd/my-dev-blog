@@ -54,7 +54,7 @@ const Index: React.FC<PageProps<OverviewPageQuery, { postIds: string[] }>> = ({ 
             ))}
           </div>
 
-          <Ad className="bottom-banner-ad" />
+          <Ad />
         </div>
       </section>
     </Layout>

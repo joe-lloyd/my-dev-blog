@@ -18,7 +18,9 @@ const pick = (xs: number[]) => xs[(Math.random() * xs.length) | 0]
 const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v))
 
 function arm(root: HTMLElement) {
-  const img = root.querySelector<HTMLImageElement>("img.glitch-src, .glitch-src img")
+  // gatsby-plugin-image renders a placeholder <img> before the real one; only the
+  // main image has pixels to sample.
+  const img = root.querySelector<HTMLImageElement>("img[data-main-image]")
   const canvas = root.querySelector<HTMLCanvasElement>(".glitch-px")
   if (!img || !canvas) return () => {}
   const ctx = canvas.getContext("2d", { willReadFrequently: true })!

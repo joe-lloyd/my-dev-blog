@@ -1,13 +1,8 @@
-interface AdConfig {
-  google_ad_client: string;
-  enable_page_level_ads: boolean;
-  [key: string]: any;
-}
-
 declare global {
   interface Window {
-    adsbygoogle: AdConfig;
+    /** AdSense queue: one push per <ins class="adsbygoogle"> to request an ad. */
+    adsbygoogle: Array<Record<string, unknown>>
   }
 }
 
-declare var adsbygoogle: AdConfig;
+export {}

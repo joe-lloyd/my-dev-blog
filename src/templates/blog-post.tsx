@@ -10,6 +10,7 @@ import Breadcrumbs from "../components/breadcrumbs"
 import Tags from "../components/tags"
 import YouTubeVideo from "../components/video"
 import ArticleFooter from "../components/article-footer"
+import Ad from "../components/ad"
 import { BlogPostPageQuery } from "../generated/graphql"
 
 const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({ data, children }) => {
@@ -34,6 +35,7 @@ const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({ da
           <Tags tags={fm.tags || []} />
           {fm.videoId && <YouTubeVideo videoSrc={fm.videoId} />}
           <article className="prose">{children}</article>
+          <Ad format="in-article" />
           <ArticleFooter
             author={fm.author}
             date={fm.date}

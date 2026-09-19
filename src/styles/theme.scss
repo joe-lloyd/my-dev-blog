@@ -1240,13 +1240,42 @@ video {
 }
 
 // ---- ad slot --------------------------------------------------------------
+// A reserved box so an ad arriving late never shifts the page. If AdSense
+// sends nothing, the component unmounts and the space goes with it.
 
-.ad-container {
-  margin-top: 2.5rem;
-  min-height: 0;
+.ad-slot {
+  position: relative;
+  margin: 2.5rem auto 0;
+  padding: 1.75rem 1rem 1rem;
+  border: 1px solid $term-edge;
+  border-radius: 1rem;
+  background: rgba($dragon-dark, 0.5);
+  text-align: center;
 
-  ins {
+  &--horizontal {
+    min-height: calc(90px + 2.75rem);
+    max-width: 970px;
+  }
+
+  &--in-article {
+    min-height: calc(250px + 2.75rem);
+    margin-top: 3rem;
+  }
+
+  &__label {
+    position: absolute;
+    top: 0.5rem;
+    left: 1rem;
+    font-family: $font-mono;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: $term-dim;
+  }
+
+  ins.adsbygoogle {
     display: block;
+    width: 100%;
   }
 }
 
