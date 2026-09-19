@@ -1240,8 +1240,9 @@ video {
 }
 
 // ---- ad slot --------------------------------------------------------------
-// A reserved box so an ad arriving late never shifts the page. If AdSense
-// sends nothing, the component unmounts and the space goes with it.
+// Invisible until AdSense reports a fill; the component removes itself if
+// nothing arrives. While pending the box keeps its width (AdSense needs it to
+// pick a size) but no height, so an empty slot never shows.
 
 .ad-slot {
   position: relative;
@@ -1253,13 +1254,20 @@ video {
   text-align: center;
 
   &--horizontal {
-    min-height: calc(90px + 2.75rem);
     max-width: 970px;
   }
 
   &--in-article {
-    min-height: calc(250px + 2.75rem);
     margin-top: 3rem;
+  }
+
+  &.is-pending {
+    height: 0;
+    margin: 0 auto;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    visibility: hidden;
   }
 
   &__label {
