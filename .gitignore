@@ -73,3 +73,4 @@ yarn-error.log
 docs
 
 src/generated
+scripts/vlog/out/
