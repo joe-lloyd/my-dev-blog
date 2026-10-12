@@ -62,6 +62,7 @@ const component = (trackId, componentName, props, startFrame, durationFrames, ex
 
 let at = 0; // timeline position in frames
 const voice = []; // every voiceover line: where it starts on the timeline and how fast it plays
+const cues = []; // the script for Neon's prompter: each line at the time its footage expects it
 for (const section of episode.sections) {
   const recPath = join(out, 'rec', `${section.id}.json`);
   if (!existsSync(recPath)) {
@@ -104,6 +105,7 @@ for (const section of episode.sections) {
     const speed = line.seconds > slot ? Math.min(1.25, line.seconds / slot) : 1;
     if (speed > 1) fits.push(`${i}@${speed.toFixed(2)}x`);
     voice.push({ file: join(out, 'tts', line.file), at: (at + f(start)) / FPS, speed });
+    cues.push({ id: id('cue'), startFrame: at + f(start), durationFrames: Math.max(1, f(slot)), text: line.say });
   });
   if (fits.length) console.log(`  ${section.id}: sped up ${fits.join(' ')}`);
 
@@ -142,6 +144,7 @@ const project = core.ProjectSchema.parse({
   clips,
   assets,
   transcripts: [],
+  cues, // dropped by a Neon older than 0.9.1, which has no prompter
 });
 writeFileSync(join(projectDir, 'project.json'), JSON.stringify(project, null, 2));
 console.log(`${basename(projectDir)}: ${(at / FPS / 60).toFixed(2)} min, ${clips.length} clips, ${assets.length} assets`);
