@@ -20,3 +20,14 @@ episode. A lower `cfg` gives slower, calmer narration.
 
 Speed: about one second of speech per second on the 3090. A 10-minute episode takes about ten
 minutes.
+
+## A better reference
+
+The first clone, from a stfu dictation clip, came out with an Australian lilt. The reference was
+recorded on a poor mic and in casual speech, and a low `cfg` follows the reference least. For the
+next attempt, record a purpose-made reference:
+
+- 1 to 2 minutes of Joe reading script-like text at narration pace, on a good mic, close up,
+  in a quiet room, with noise suppression and auto-gain off. Save as WAV.
+- Cut a clean 15 to 20 second stretch into `refs/`, then compare Chatterbox at `cfg` 0.5 with
+  other cloning models (Qwen3-TTS is already on Jellybingus, F5-TTS) on the same lines.
