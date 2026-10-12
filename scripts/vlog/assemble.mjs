@@ -3,6 +3,7 @@
 // Usage: node assemble.mjs <episodeDir> <neonRepo> <projectDir.neon>
 // Needs the Neon source checkout for its schema and template defaults. The result opens in
 // the app like any project: footage on V1, the voiceover on VO, overlays on FX tracks.
+import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
@@ -60,6 +61,7 @@ const component = (trackId, componentName, props, startFrame, durationFrames, ex
 };
 
 let at = 0; // timeline position in frames
+const voice = []; // every voiceover line: where it starts on the timeline and how fast it plays
 for (const section of episode.sections) {
   const recPath = join(out, 'rec', `${section.id}.json`);
   if (!existsSync(recPath)) {
@@ -101,7 +103,7 @@ for (const section of episode.sections) {
     const slot = (i + 1 < rec.starts.length ? rec.starts[i + 1] - 0.15 : rec.seconds - 0.4) - start;
     const speed = line.seconds > slot ? Math.min(1.25, line.seconds / slot) : 1;
     if (speed > 1) fits.push(`${i}@${speed.toFixed(2)}x`);
-    media('audio', tracks.vo.id, join(out, 'tts', line.file), at + f(start), Math.ceil((line.seconds / speed) * FPS), { name: line.say.slice(0, 48), speed });
+    voice.push({ file: join(out, 'tts', line.file), at: (at + f(start)) / FPS, speed });
   });
   if (fits.length) console.log(`  ${section.id}: sped up ${fits.join(' ')}`);
 
@@ -123,6 +125,15 @@ for (const section of episode.sections) {
   }
   at += length;
 }
+// The narration as one continuous track, so Neon's Script tab can show and cut the whole thing
+// from a single transcript. ffmpeg places each line at its time and stretches the ones that must fit.
+const voFile = join(out, 'voiceover.wav');
+const graph = voice.map((v, i) => `[${i}:a]${v.speed > 1 ? `atempo=${v.speed.toFixed(3)},` : ''}aresample=48000,adelay=${Math.round(v.at * 1000)}:all=1[a${i}]`);
+graph.push(`${voice.map((_, i) => `[a${i}]`).join('')}amix=inputs=${voice.length}:normalize=0:dropout_transition=0,apad=whole_dur=${(at / FPS).toFixed(3)}[vo]`);
+writeFileSync(join(out, 'voiceover.ffgraph'), graph.join(';\n'));
+execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...voice.flatMap((v) => ['-i', v.file]), '-/filter_complex', join(out, 'voiceover.ffgraph'), '-map', '[vo]', '-ac', '1', '-ar', '48000', '-t', (at / FPS).toFixed(3), voFile]);
+media('audio', tracks.vo.id, voFile, 0, at, { name: 'Voiceover' });
+
 component(tracks.brand.id, 'Watermark', { text: 'byteMyFaceOff', corner: 'top-right', opacity: 0.4, fontSize: 18, color: '#FFFFFF' }, f(8), at - f(8));
 
 const project = core.ProjectSchema.parse({
