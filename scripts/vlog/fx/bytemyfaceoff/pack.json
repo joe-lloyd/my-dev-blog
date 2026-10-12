@@ -1,0 +1,84 @@
+{
+  "name": "bytemyfaceoff",
+  "label": "byteMyFaceOff",
+  "version": "1.0.0",
+  "description": "Full-frame explainers for the byteMyFaceOff dev videos: app diagrams, counters, card lists, spec files and blog-post cards, in Git Gud's dark lane colours.",
+  "author": "Joe Lloyd",
+  "category": "Explainers",
+  "tags": ["explainer", "diagram", "stats", "cards"],
+  "entry": "index.tsx",
+  "templates": [
+    {
+      "name": "FourApps",
+      "label": "Four apps",
+      "description": "Four app cards around a central protocol hub, linked by animated lines with packets, revealed one at a time; the newest card glows.",
+      "defaultDurationSeconds": 14,
+      "icon": "Network",
+      "fields": [
+        { "key": "title", "type": "text", "default": "One protocol, four apps", "description": "Heading at the top." },
+        { "key": "hub", "type": "text", "default": "peer\nprotocol", "multiline": true, "description": "Label in the centre hub." },
+        { "key": "apps", "type": "text", "multiline": true, "default": "Desktop app|what you have seen\nHeadless daemon|git on a box with no screen\nRelay|reach it from anywhere\nPhone companion|read-only, live", "description": "Four lines of \"title|subtitle\", clockwise from top-left: desktop, server, relay, phone icons." },
+        { "key": "reveal", "type": "text", "default": "0.5, 3.5, 6.5, 9.5", "description": "Seconds from the clip start at which each card appears, comma separated." },
+        { "key": "backdrop", "type": "number", "default": 0.96, "min": 0, "max": 1, "step": 0.01, "description": "Opacity of the dark backdrop over the footage below." }
+      ]
+    },
+    {
+      "name": "StatCounter",
+      "label": "Stat counter",
+      "description": "Tiles whose numbers count up as each is mentioned.",
+      "defaultDurationSeconds": 10,
+      "icon": "BarChart3",
+      "fields": [
+        { "key": "title", "type": "text", "default": "Since 3 April 2026", "description": "Small heading above the tiles." },
+        { "key": "items", "type": "text", "multiline": true, "default": "179|commits\n56|releases\n30|specs\n28000|lines of TypeScript", "description": "Lines of \"number|label\"." },
+        { "key": "reveal", "type": "text", "default": "0.5, 2, 3.5, 5", "description": "Seconds from the clip start at which each tile appears and starts counting." },
+        { "key": "countSeconds", "type": "number", "default": 1.2, "min": 0.2, "max": 5, "step": 0.1, "description": "How long each count-up takes." },
+        { "key": "backdrop", "type": "number", "default": 0.94, "min": 0, "max": 1, "step": 0.01, "description": "Opacity of the dark backdrop." }
+      ]
+    },
+    {
+      "name": "CardList",
+      "label": "Card list",
+      "description": "Numbered cards that land one at a time; the newest is lit. Column for rules or steps, grid for episode lists.",
+      "defaultDurationSeconds": 8,
+      "icon": "ListOrdered",
+      "fields": [
+        { "key": "title", "type": "text", "default": "Three rules", "description": "Small heading above the cards." },
+        { "key": "items", "type": "text", "multiline": true, "default": "Show me the whole history\nNever hide what git is doing\nReach my repos wherever they live", "description": "Lines of \"title|subtitle\" (subtitle optional)." },
+        { "key": "reveal", "type": "text", "default": "0.5, 2, 3.5", "description": "Seconds from the clip start at which each card lands." },
+        { "key": "layout", "type": "select", "default": "column", "options": ["column", "grid"], "description": "column stacks wide cards; grid is two columns." },
+        { "key": "firstNumber", "type": "number", "default": 1, "min": 0, "max": 99, "description": "Number on the first card; the rest count up from it." },
+        { "key": "backdrop", "type": "number", "default": 0.94, "min": 0, "max": 1, "step": 0.01, "description": "Opacity of the dark backdrop." }
+      ]
+    },
+    {
+      "name": "SpecCard",
+      "label": "Spec card",
+      "description": "A spec file in an editor window, typed out with SHALL, WHEN and THEN lit up.",
+      "defaultDurationSeconds": 10,
+      "icon": "FileText",
+      "fields": [
+        { "key": "path", "type": "text", "default": "openspec/specs/git-activity-log/spec.md", "description": "File path in the window's title bar." },
+        { "key": "text", "type": "text", "multiline": true, "default": "The system SHALL record every git command it runs.\nWHEN the app runs any git operation\nTHEN an entry appears in the git activity log", "description": "The lines to type out." },
+        { "key": "charsPerSecond", "type": "number", "default": 40, "min": 5, "max": 400, "description": "Typing speed." },
+        { "key": "backdrop", "type": "number", "default": 0.94, "min": 0, "max": 1, "step": 0.01, "description": "Opacity of the dark backdrop." }
+      ]
+    },
+    {
+      "name": "PostCard",
+      "label": "Post card",
+      "description": "A blog post as a card, with an optional stamp that thumps on at a set time.",
+      "defaultDurationSeconds": 8,
+      "icon": "Newspaper",
+      "fields": [
+        { "key": "site", "type": "text", "default": "joe's dev blog", "description": "Small label above the title." },
+        { "key": "title", "type": "text", "default": "Be The Pilot, Not The Co-Pilot", "description": "Post title." },
+        { "key": "date", "type": "text", "default": "February 2025", "description": "Date line." },
+        { "key": "excerpt", "type": "text", "multiline": true, "default": "", "description": "Optional line or two from the post." },
+        { "key": "stamp", "type": "text", "default": "", "description": "Optional stamp text, empty for none." },
+        { "key": "stampAt", "type": "number", "default": 3, "min": 0, "max": 60, "step": 0.1, "description": "Seconds from the clip start when the stamp lands." },
+        { "key": "backdrop", "type": "number", "default": 0.94, "min": 0, "max": 1, "step": 0.01, "description": "Opacity of the dark backdrop." }
+      ]
+    }
+  ]
+}

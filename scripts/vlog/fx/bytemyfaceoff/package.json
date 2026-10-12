@@ -1,0 +1,19 @@
+{
+  "name": "@neon-packs/bytemyfaceoff",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "byteMyFaceOff FX pack (type-checked against a Neon checkout, see README)",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "echo 'no unit tests (example pack)'"
+  },
+  "devDependencies": {
+    "@neon/core": "workspace:*",
+    "@neon/fx-kit": "workspace:*",
+    "@types/react": "^19.1.0",
+    "react": "^19.1.0",
+    "remotion": "4.0.515",
+    "typescript": "^5.9.0"
+  }
+}

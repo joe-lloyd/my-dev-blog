@@ -12,6 +12,11 @@ const [episodeDir, neonRepo, projectDir] = process.argv.slice(2).map((p) => reso
 const neon = (p) => import(pathToFileURL(join(neonRepo, p)).href);
 const core = await neon('packages/core/src/index.ts');
 (await neon('apps/remotion-workspace/src/templates/packs/meta.ts')).registerAllPacks();
+const PACKS = ['bytemyfaceoff'];
+for (const name of PACKS) {
+  const manifest = JSON.parse(readFileSync(join(import.meta.dirname, 'fx', name, 'pack.json'), 'utf8'));
+  core.registerPack(core.parsePackManifest(manifest), 'installed');
+}
 
 const episode = (await import(pathToFileURL(join(episodeDir, 'episode.mjs')).href)).default;
 const out = join(episodeDir, 'out');
@@ -64,9 +69,28 @@ for (const section of episode.sections) {
   const rec = JSON.parse(readFileSync(recPath, 'utf8'));
   const length = f(rec.seconds);
   media('video', tracks.video.id, join(out, 'rec', `${section.id}.mp4`), at, length, { name: section.title, fadeIn: at === 0 ? 10 : 6, fadeOut: 6 });
+  const videoClip = clips.at(-1);
 
   // Chapter marker for the first few seconds of each section after the opening.
   if (at > 0) component(tracks.brand.id, 'StepBadge', { step: episode.sections.indexOf(section), title: section.title, position: 'top-left', size: 30, color: ACCENT }, at + 6, f(3.2));
+
+  const zooms = rec.events.filter((e) => e.kind === 'zoom').map((e) => {
+    const until = e.seconds != null ? e.t + e.seconds : (e.line + (e.lines ?? 1) < rec.starts.length ? rec.starts[e.line + (e.lines ?? 1)] : rec.seconds - 1.0);
+    return { start: f(e.t), end: f(until), cx: e.cx, cy: e.cy, zoom: e.zoom, ramp: 14 };
+  });
+  if (zooms.length) videoClip.zooms = zooms;
+  // Overlays are drawn in frame space, so move them with the camera: p -> 0.5 + zoom * (p - centre).
+  const camera = (t) => core.zoomAt(zooms, f(t) + 15);
+  const place = (props, t) => {
+    const c = camera(t);
+    if (c.zoom <= 1.0001) return props;
+    const p = { ...props };
+    if (typeof p.x === 'number') p.x = 0.5 + c.zoom * (p.x - c.cx);
+    if (typeof p.y === 'number') p.y = 0.5 + c.zoom * (p.y - c.cy);
+    if (typeof p.w === 'number') p.w *= c.zoom;
+    if (typeof p.h === 'number') p.h *= c.zoom;
+    return p;
+  };
 
   const lineEnd = (k) => (k + 1 < rec.starts.length ? rec.starts[k + 1] : rec.seconds - 1.0);
   rec.starts.forEach((start, i) => {
@@ -76,14 +100,16 @@ for (const section of episode.sections) {
 
   for (const e of rec.events) {
     const start = at + f(e.t);
+    if (e.kind === 'zoom') continue;
     if (e.kind === 'click') {
-      component(tracks.clicks.id, 'ClickPulse', { x: Math.min(1, Math.max(0, e.x)), y: Math.min(1, Math.max(0, e.y)), color: ACCENT, size: 56 }, start, f(0.9));
+      const at = place({ x: e.x, y: e.y }, e.t);
+      component(tracks.clicks.id, 'ClickPulse', { x: Math.min(1, Math.max(0, at.x)), y: Math.min(1, Math.max(0, at.y)), color: ACCENT, size: 56 }, start, f(0.9));
       continue;
     }
     const until = e.seconds != null ? e.t + e.seconds : lineEnd(Math.min(e.line + (e.lines ?? 1) - 1, rec.starts.length - 1));
     const length = Math.max(f(1), f(until - e.t));
     if (e.dim) component(tracks.dim.id, 'SolidColor', { color: '#07080D', opacity: e.dim }, start, length, { animateIn: { type: 'fade', durationFrames: 8 } });
-    const props = { ...e.props };
+    const props = place({ ...e.props }, e.t);
     for (const k of ['x', 'y', 'w', 'h']) if (typeof props[k] === 'number') props[k] = Math.min(1, Math.max(0, props[k]));
     if ('color' in (core.templateDefaults(e.component) ?? {}) && props.color == null) props.color = ACCENT;
     component(tracks.fx.id, e.component, props, start, length);
@@ -93,7 +119,7 @@ for (const section of episode.sections) {
 // Branding goes on in Neon itself (see the episode README), so it is edited, not generated.
 
 const project = core.ProjectSchema.parse({
-  meta: { id: id('proj'), name: episode.title, fps: FPS, width: 1920, height: 1080, background: '#0B0D14', schemaVersion: core.PROJECT_SCHEMA_VERSION, createdAt: now, updatedAt: now, packs: [] },
+  meta: { id: id('proj'), name: episode.title, fps: FPS, width: 1920, height: 1080, background: '#0B0D14', schemaVersion: core.PROJECT_SCHEMA_VERSION, createdAt: now, updatedAt: now, packs: PACKS },
   tracks: Object.values(tracks),
   clips,
   assets,

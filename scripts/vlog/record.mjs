@@ -88,6 +88,26 @@ async function recordSection(section) {
       const pad = 0.006;
       ctx.fx('Spotlight', { x: b.x - pad, y: b.y - pad, w: b.w + 2 * pad, h: b.h + 2 * pad }, opts);
     },
+    /**
+     * Seconds from the current line's start until `phrase` is spoken in line `line + offset`,
+     * assuming an even pace within a line. For syncing reveals inside a full-frame graphic.
+     */
+    when(offset, phrase) {
+      let t = 0;
+      for (let k = line; k < line + offset; k++) t += tts[`${section.id}.${k}`].seconds + GAP;
+      const say = section.lines[line + offset].say;
+      const idx = say.toLowerCase().indexOf(phrase.toLowerCase());
+      if (idx < 0) throw new Error(`"${phrase}" is not in line ${line + offset}`);
+      const before = say.slice(0, idx).split(/\s+/).filter(Boolean).length;
+      const words = say.split(/\s+/).filter(Boolean).length;
+      return Math.round((t + (before / words) * tts[`${section.id}.${line + offset}`].seconds) * 10) / 10;
+    },
+    /** Push the camera in on an element; holds to the end of the line unless `lines` or `seconds` says otherwise. */
+    async zoom(loc, opts = {}) {
+      const b = await box(loc);
+      const { zoom = 1.7, ...rest } = opts;
+      events.push({ kind: 'zoom', t: now(), line, cx: b.x + b.w / 2, cy: b.y + b.h / 2, zoom, ...rest });
+    },
     async key(combo, label = '') {
       ctx.fx('KeyCombo', { combo, label, platform: 'pc' }, { seconds: 2.2 });
       await win.keyboard.press(combo.replace('Ctrl', 'Control'));
@@ -139,6 +159,14 @@ async function recordSection(section) {
         await action(ctx);
       } catch (e) {
         log('  line', i, 'failed:', e.message.split('\n')[0]);
+      }
+    }
+    const { zoom } = section.lines[i];
+    if (zoom) {
+      try {
+        await ctx.zoom(zoom.on(ctx), zoom);
+      } catch (e) {
+        log('  line', i, 'zoom failed:', e.message.split('\n')[0]);
       }
     }
   }

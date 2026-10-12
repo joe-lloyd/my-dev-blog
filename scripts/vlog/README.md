@@ -6,7 +6,7 @@ voice it, and cut it in Neon Video Studio. Outputs go to git-ignored `out/` fold
 | Step | Script | Runs on |
 |---|---|---|
 | Rank all repos for video potential | `catalog.mjs` | old-mac |
-| Voice every line with Kokoro on hasaki | `tts.mjs <episodeDir>` | old-mac (ssh to hasaki) |
+| Voice every line, in Joe's cloned voice or Kokoro | `tts.mjs <episodeDir>` | old-mac, over ssh to Jellybingus or hasaki |
 | Record each section's demo, timed to the voice | `record.mjs <episodeDir> [section…]` | Jellybingus desktop session |
 | Check each line's footage | `sheets.mjs <episodeDir>` | Jellybingus |
 | Build the Neon project | `assemble.mjs <episodeDir> <neonRepo> <project.neon>` | Jellybingus |
@@ -17,7 +17,9 @@ elements the actions touch, so they land on the right spot. See
 `episodes/git-gud-overview/` for a complete one, and the `video-script` skill for how to write
 the script.
 
-The voice is a placeholder for timing. Joe re-records it over the cut in Neon.
+The voice is Joe's own, cloned with Chatterbox (see `voice/README.md`); he re-records only the
+lines that come out wrong. Custom graphics live in the `fx/bytemyfaceoff` pack, and a line's
+`zoom` pushes the camera in on an element; overlays move with it.
 
 ## Running on Jellybingus
 
