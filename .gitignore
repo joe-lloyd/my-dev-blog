@@ -74,3 +74,4 @@ docs
 
 src/generated
 scripts/vlog/out/
+scripts/vlog/episodes/*/out/
