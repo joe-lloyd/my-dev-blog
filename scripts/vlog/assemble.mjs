@@ -116,7 +116,7 @@ for (const section of episode.sections) {
   }
   at += length;
 }
-// Branding goes on in Neon itself (see the episode README), so it is edited, not generated.
+component(tracks.brand.id, 'Watermark', { text: 'byteMyFaceOff', corner: 'top-right', opacity: 0.4, fontSize: 18, color: '#FFFFFF' }, f(8), at - f(8));
 
 const project = core.ProjectSchema.parse({
   meta: { id: id('proj'), name: episode.title, fps: FPS, width: 1920, height: 1080, background: '#0B0D14', schemaVersion: core.PROJECT_SCHEMA_VERSION, createdAt: now, updatedAt: now, packs: PACKS },
