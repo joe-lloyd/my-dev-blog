@@ -34,8 +34,8 @@ const STATS = 'Since 3 April 2026';
 export default {
   title: 'Git Gud: the git client that hides nothing',
   ticket: 'DEVBLOG-11',
-  // Joe's voice, cloned from a stfu clip that stays on Jellybingus (see ../../voice/README.md).
-  voice: { engine: 'chatterbox', ref: 'b', cfg: 0.3, image: 'nsfwgen-tts' },
+  // Joe's voice, cloned from his own mic take (a reading of the script) that stays on Jellybingus (see ../../voice/README.md).
+  voice: { engine: 'chatterbox', ref: 'joe-mic', cfg: 0.5, image: 'nsfwgen-tts' },
   app: {
     dir: `${HOME}\\Projects\\MyProjects\\git-gud`,
     env: (profile) => ({ GITGUD_USER_DATA: profile }),

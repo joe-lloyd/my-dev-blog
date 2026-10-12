@@ -53,7 +53,7 @@ function addAsset(file, kind, extra) {
 }
 const media = (kind, trackId, file, startFrame, durationFrames, extra = {}) => {
   const { sha, name } = addAsset(file, kind, kind === 'video' ? { durationFrames, width: 1920, height: 1080, fps: FPS } : { durationFrames });
-  clips.push({ id: id('clip'), kind, trackId, name: extra.name ?? name, startFrame, durationFrames, assetId: sha, trimBefore: 0, volume: 1, fit: 'contain', fadeIn: extra.fadeIn ?? 0, fadeOut: extra.fadeOut ?? 0 });
+  clips.push({ id: id('clip'), kind, trackId, name: extra.name ?? name, startFrame, durationFrames, assetId: sha, trimBefore: 0, volume: 1, fit: 'contain', fadeIn: extra.fadeIn ?? 0, fadeOut: extra.fadeOut ?? 0, ...(extra.speed && extra.speed !== 1 ? { speed: Math.round(extra.speed * 100) / 100 } : {}) });
 };
 const component = (trackId, componentName, props, startFrame, durationFrames, extra = {}) => {
   clips.push({ id: id('clip'), kind: 'component', trackId, name: extra.name ?? componentName, startFrame, durationFrames: Math.max(1, durationFrames), componentName, props: core.resolveTemplateProps(componentName, props), ...(extra.animateIn ? { animateIn: extra.animateIn } : {}) });
@@ -93,10 +93,17 @@ for (const section of episode.sections) {
   };
 
   const lineEnd = (k) => (k + 1 < rec.starts.length ? rec.starts[k + 1] : rec.seconds - 1.0);
+  // The footage was timed to the voice it was recorded with. A re-voiced line keeps its start;
+  // if it now runs past the next line, it plays up to 1.25x faster (pitch kept) to fit.
+  const fits = [];
   rec.starts.forEach((start, i) => {
     const line = tts[`${section.id}.${i}`];
-    media('audio', tracks.vo.id, join(out, 'tts', line.file), at + f(start), Math.ceil(line.seconds * FPS), { name: line.say.slice(0, 48) });
+    const slot = (i + 1 < rec.starts.length ? rec.starts[i + 1] - 0.15 : rec.seconds - 0.4) - start;
+    const speed = line.seconds > slot ? Math.min(1.25, line.seconds / slot) : 1;
+    if (speed > 1) fits.push(`${i}@${speed.toFixed(2)}x`);
+    media('audio', tracks.vo.id, join(out, 'tts', line.file), at + f(start), Math.ceil((line.seconds / speed) * FPS), { name: line.say.slice(0, 48), speed });
   });
+  if (fits.length) console.log(`  ${section.id}: sped up ${fits.join(' ')}`);
 
   for (const e of rec.events) {
     const start = at + f(e.t);
