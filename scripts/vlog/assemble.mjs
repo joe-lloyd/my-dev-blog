@@ -12,7 +12,7 @@ import { pathToFileURL } from 'node:url';
 const [episodeDir, neonRepo, projectDir] = process.argv.slice(2).map((p) => resolve(p));
 const neon = (p) => import(pathToFileURL(join(neonRepo, p)).href);
 const core = await neon('packages/core/src/index.ts');
-(await neon('apps/remotion-workspace/src/templates/packs/meta.ts')).registerAllPacks();
+(await neon('apps/compositions/src/templates/packs/meta.ts')).registerAllPacks();
 const PACKS = ['bytemyfaceoff'];
 for (const name of PACKS) {
   const manifest = JSON.parse(readFileSync(join(import.meta.dirname, 'fx', name, 'pack.json'), 'utf8'));
