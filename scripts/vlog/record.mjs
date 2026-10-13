@@ -112,12 +112,19 @@ async function recordSection(section) {
       ctx.fx('KeyCombo', { combo, label, platform: 'pc' }, { seconds: 2.2 });
       await win.keyboard.press(combo.replace('Ctrl', 'Control'));
     },
-    /** Smooth wheel scroll at a point: `dy` pixels over `ms`. */
+    /**
+     * Smooth wheel scroll at a point: `dy` pixels over `ms`, timed by the clock. Each wheel event
+     * is a round trip to the app, so a fixed step count stretched a 5 s scroll to 20 s of dead air;
+     * here each step covers whatever time actually passed.
+     */
     async scroll(x, y, dy, ms) {
       await win.mouse.move(x * viewport[0], y * viewport[1]);
-      const steps = Math.max(1, Math.round(ms / 16));
-      for (let i = 0; i < steps; i++) {
-        await win.mouse.wheel(0, dy / steps);
+      const started = Date.now();
+      let done = 0;
+      while (done < 1) {
+        const target = Math.min(1, (Date.now() - started) / ms);
+        if (target > done) await win.mouse.wheel(0, dy * (target - done));
+        done = target;
         await win.waitForTimeout(16);
       }
     },
