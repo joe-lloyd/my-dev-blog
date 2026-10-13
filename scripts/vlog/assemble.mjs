@@ -62,7 +62,7 @@ const component = (trackId, componentName, props, startFrame, durationFrames, ex
 
 let at = 0; // timeline position in frames
 const voice = []; // every voiceover line: where it starts on the timeline and how fast it plays
-const cues = []; // the script for Neon's prompter: each line at the time its footage expects it
+const sections = []; // the script for Neon: each section's lines, placed where their footage expects them
 for (const section of episode.sections) {
   const recPath = join(out, 'rec', `${section.id}.json`);
   if (!existsSync(recPath)) {
@@ -99,14 +99,16 @@ for (const section of episode.sections) {
   // The footage was timed to the voice it was recorded with. A re-voiced line keeps its start;
   // if it now runs past the next line, it plays up to 1.25x faster (pitch kept) to fit.
   const fits = [];
+  const lines = [];
   rec.starts.forEach((start, i) => {
     const line = tts[`${section.id}.${i}`];
     const slot = (i + 1 < rec.starts.length ? rec.starts[i + 1] - 0.15 : rec.seconds - 0.4) - start;
     const speed = line.seconds > slot ? Math.min(1.25, line.seconds / slot) : 1;
     if (speed > 1) fits.push(`${i}@${speed.toFixed(2)}x`);
     voice.push({ file: join(out, 'tts', line.file), at: (at + f(start)) / FPS, speed });
-    cues.push({ id: id('cue'), startFrame: at + f(start), durationFrames: Math.max(1, f(slot)), text: line.say });
+    lines.push({ id: id('line'), say: line.say, show: section.lines[i].show ?? '', placed: { startFrame: at + f(start), durationFrames: Math.max(1, f(slot)) } });
   });
+  sections.push({ id: id('sec'), title: section.title, intent: section.intent ?? '', status: 'approved', lines });
   if (fits.length) console.log(`  ${section.id}: sped up ${fits.join(' ')}`);
 
   for (const e of rec.events) {
@@ -144,7 +146,7 @@ const project = core.ProjectSchema.parse({
   clips,
   assets,
   transcripts: [],
-  cues, // dropped by a Neon older than 0.9.1, which has no prompter
+  script: { sections, notes: [] }, // needs Neon 0.12; an older app drops it
 });
 writeFileSync(join(projectDir, 'project.json'), JSON.stringify(project, null, 2));
 console.log(`${basename(projectDir)}: ${(at / FPS / 60).toFixed(2)} min, ${clips.length} clips, ${assets.length} assets`);
