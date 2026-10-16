@@ -1,5 +1,4 @@
-// Voice every line of an episode: Kokoro on hasaki's speaches server (loopback only, so
-// over ssh), or Joe's cloned voice with Chatterbox on Jellybingus. Usage: node tts.mjs <episodeDir>
+// Voice every line using Kokoro on hasaki, or Chatterbox/Qwen3 clones on Jellybingus. Usage: node tts.mjs <episodeDir>
 // Writes out/tts/<section>.<line>.wav and out/tts.json with each line's length. Lines
 // whose text has not changed are reused.
 import { execFileSync } from 'node:child_process';
@@ -33,6 +32,8 @@ function wavSeconds(buf) {
 
 const manifest = {};
 const voice = typeof episode.voice === 'string' ? { engine: 'kokoro', name: episode.voice } : episode.voice;
+if (!['kokoro', 'chatterbox', 'qwen3'].includes(voice?.engine)) throw new Error('Unsupported voice engine');
+if (voice.engine === 'qwen3' && !voice.refText?.trim()) throw new Error('Qwen3 cloning requires the exact reference transcript in voice.refText');
 const todo = [];
 for (const section of episode.sections) {
   for (const [i, line] of section.lines.entries()) {
@@ -59,6 +60,17 @@ if (voice.engine === 'kokoro') {
   writeFileSync(join(outDir, 'jobs.json'), JSON.stringify(jobs));
   execFileSync('scp', ['-q', join(outDir, 'jobs.json'), join(import.meta.dirname, 'voice', 'clone.py'), `jellybingus:${remote}/`]);
   execFileSync('ssh', ['jellybingus', `docker run --rm --gpus all --entrypoint python -e HF_HOME=/hf -v C:/Users/joell/.cache/huggingface:/hf -v C:/Users/joell/${remote}:/work -w /work ${voice.image} clone.py jobs.json`], { stdio: ['ignore', 'inherit', 'ignore'], maxBuffer: 64 << 20 });
+  for (const job of todo) execFileSync('scp', ['-q', `jellybingus:${remote}/cache/${job.hash}.wav`, join(outDir, job.file)]);
+}
+
+if (voice.engine === 'qwen3' && todo.length) {
+  const remote = 'vlog/voice';
+  const jobs = { model: voice.model ?? 'Qwen/Qwen3-TTS-12Hz-1.7B-Base', ref: `refs/${voice.ref}.wav`, ref_text: voice.refText,
+    lines: todo.map(j => ({ text: j.text, out: `cache/${j.hash}.wav`, seed: voice.seed ?? 7 })) };
+  writeFileSync(join(outDir, 'jobs-qwen.json'), JSON.stringify(jobs));
+  execFileSync('scp', ['-q', join(outDir, 'jobs-qwen.json'), join(import.meta.dirname, 'voice', 'clone-qwen.py'), `jellybingus:${remote}/`]);
+  // Reuse the existing Qwen Python image and model volume in a disposable container.
+  execFileSync('ssh', ['jellybingus', `docker run --rm --gpus all --entrypoint python -e HF_HUB_OFFLINE=1 -v chinese-speech-data:/data -v C:/Users/joell/${remote}:/work -w /work ${voice.image ?? 'chinese-speech:latest'} clone-qwen.py jobs-qwen.json`], { stdio: 'inherit' });
   for (const job of todo) execFileSync('scp', ['-q', `jellybingus:${remote}/cache/${job.hash}.wav`, join(outDir, job.file)]);
 }
 
