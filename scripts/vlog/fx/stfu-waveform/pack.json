@@ -1,22 +1,124 @@
 {
   "name": "stfu-waveform",
   "label": "STFU waveform",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Waveform backgrounds, title cards and explainers for the STFU video.",
   "author": "Joe Lloyd",
   "category": "Explainers",
   "entry": "index.tsx",
-  "templates": [{
-    "name": "StfuStage",
-    "label": "STFU stage",
-    "description": "An editable shot with animated waveform, diagram or settings still.",
-    "defaultDurationSeconds": 12,
-    "fields": [
-      {"key":"scene","type":"select","default":"title","options":["title","demo","quote","ownership","pipeline","compare","fallback","pill","cloud","local","languages","settings","history","retention","speed","outro","end"]},
-      {"key":"title","type":"text","default":"stfu"},
-      {"key":"subtitle","type":"text","default":"Hold. Talk. Release."},
-      {"key":"chapter","type":"text","default":"01 / Cold open"},
-      {"key":"image","type":"text","default":"","description":"Optional image URL or embedded data URL for a settings still."}
-    ]
-  }]
+  "templates": [
+    {
+      "name": "StfuBackground",
+      "label": "STFU background",
+      "description": "Ink, grid and slow waveform. Put one clip under the whole video.",
+      "defaultDurationSeconds": 60,
+      "fields": []
+    },
+    {
+      "name": "StfuStage",
+      "label": "STFU stage",
+      "description": "The heading and the one graphic a shot is about. Transparent over STFU background.",
+      "defaultDurationSeconds": 12,
+      "fields": [
+        {
+          "key": "scene",
+          "type": "select",
+          "default": "title",
+          "options": [
+            "title",
+            "demo",
+            "quote",
+            "ownership",
+            "pipeline",
+            "compare",
+            "fallback",
+            "pill",
+            "cloud",
+            "local",
+            "languages",
+            "settings",
+            "history",
+            "retention",
+            "speed",
+            "outro",
+            "end"
+          ]
+        },
+        {
+          "key": "title",
+          "type": "text",
+          "default": "stfu"
+        },
+        {
+          "key": "subtitle",
+          "type": "text",
+          "default": "Hold. Talk. Release."
+        },
+        {
+          "key": "chapter",
+          "type": "text",
+          "default": "01 / Cold open"
+        },
+        {
+          "key": "image",
+          "type": "text",
+          "default": "",
+          "description": "Optional image URL or embedded data URL for a settings still."
+        }
+      ]
+    },
+    {
+      "name": "StfuLabels",
+      "label": "STFU labels",
+      "description": "Brand, chapter, kicker, subtitle, footer and diagram notes for one shot. Uses the stage's fields.",
+      "defaultDurationSeconds": 12,
+      "fields": [
+        {
+          "key": "scene",
+          "type": "select",
+          "default": "title",
+          "options": [
+            "title",
+            "demo",
+            "quote",
+            "ownership",
+            "pipeline",
+            "compare",
+            "fallback",
+            "pill",
+            "cloud",
+            "local",
+            "languages",
+            "settings",
+            "history",
+            "retention",
+            "speed",
+            "outro",
+            "end"
+          ]
+        },
+        {
+          "key": "title",
+          "type": "text",
+          "default": "stfu"
+        },
+        {
+          "key": "subtitle",
+          "type": "text",
+          "default": "Hold. Talk. Release."
+        },
+        {
+          "key": "chapter",
+          "type": "text",
+          "default": "01 / Cold open"
+        },
+        {
+          "key": "image",
+          "type": "text",
+          "default": "",
+          "description": "Optional image URL or embedded data URL for a settings still."
+        }
+      ]
+    }
+  ]
 }
