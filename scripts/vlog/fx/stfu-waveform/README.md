@@ -1,27 +1,22 @@
 # STFU waveform pack
 
-The pack draws the STFU episode in three layers, one overlay track each, so a
-layer can be hidden or trimmed without touching the others:
+The pack draws the STFU episode on overlay tracks, and every word on screen is a
+field in Neon's inspector:
 
 - `StfuBackground` on `STFU background` paints the ink, glow, grid and slow
   waveform. One clip runs under the whole video so it keeps moving across cuts.
-- `StfuStage` on `STFU graphics` is the heading and the one graphic a shot is
-  about: the pipeline, before and after text, recording pill, cards or a
-  settings still. It is transparent.
-- `StfuLabels` on `STFU labels` holds everything small: brand, chapter, kicker,
-  subtitle, footer, pipeline step notes and the pill's state captions. It takes
-  the same fields as the stage clip under it. Delete a labels clip to drop the
-  labels from that shot, or hide the track to drop them all.
+  Tracks paint in order, so it must sit below `STFU graphics`.
+- `StfuStage` on `STFU graphics` is the title and the one graphic a shot is
+  about. Its text comes from `Title` and `Items`, one entry per line: a box per
+  line in the pipeline, `Heading: text` per compare panel, a card per line, and
+  so on. The field's description in the inspector lists each scene's format.
+- `StfuLabels` is optional small text: brand, chapter, kicker, subtitle,
+  caption and footer. Each is a field, and an empty field draws nothing. The
+  STFU cut uses none; drop one on a track above the graphics where a shot
+  needs a label.
 
-Tracks paint in order, so `STFU background` must sit below `STFU graphics` and
-`STFU labels` above it. The stage and labels share one heading column, so a
-title that wraps still pushes the subtitle down. Install this folder through
-Neon's pack library or `neon-cli packs install`.
-
-The inspector exposes the scene, heading, subtitle, chapter and optional image URL.
-Animations use the clip frame, so the preview and export agree. Each scene scales
-from a 1920 by 1080 layout. Settings images accept embedded PNG data URLs so they
-travel with the saved project.
+Install this folder through Neon's pack library or `neon-cli packs install`.
+Reinstall after editing, because `packs reload` reads the installed copy.
 
 The pill and pasted message are illustrated demonstrations with example text.
 They do not call a speech provider. Label them as demonstrations when used in a cut.
@@ -37,4 +32,4 @@ track named `STFU graphics`. It keeps the existing notes, section status and
 one editable text box per section. Review questions stay below the draft narration.
 It writes a checkpoint and refuses to replace an existing cut. Run
 `layer-stage.mjs <neonRepo> <host>` afterwards, and again after `revoice-stage.mjs`,
-to rebuild the background and labels layers from the stage clips.
+to rebuild the background clip. Starting text for each scene's Items lives in `stfu-items.mjs`.

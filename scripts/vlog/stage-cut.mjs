@@ -5,6 +5,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { stageProps } from './stfu-items.mjs';
 
 const [episodePath, neonPath, host, remoteDir] = process.argv.slice(2);
 const episodeDir = resolve(episodePath);
@@ -49,7 +50,7 @@ for (const [s, section] of episode.sections.entries()) {
     const duration = voiceFrames + lead + Math.round(fps * (section.id === 'outro' ? 1 : 0.8));
     const imported = push('/api/assets/import', { path: `${remoteDir}/out/tts/${speech.file}` });
     push('/api/timeline/insert', { kind: 'audio', assetId: `$${imported}.asset.id`, at: at + lead, duration: voiceFrames, trackId: vo.id, name: `${section.title} / ${i + 1} · temporary voice`, placement: 'overlap' });
-    const props = { scene: line.scene, title: line.title, subtitle: line.subtitle, chapter: `${String(s + 1).padStart(2, '0')} / ${section.title}`, image: line.image ? `data:image/png;base64,${readFileSync(join(episodeDir, line.image)).toString('base64')}` : '' };
+    const props = stageProps({ ...line, image: line.image ? `data:image/png;base64,${readFileSync(join(episodeDir, line.image)).toString('base64')}` : '' });
     push('/api/timeline/insert', { kind: 'component', componentName: 'StfuStage', props, at, duration, trackId: graphics.id, name: `${section.title} / ${line.title}`, placement: 'overlap' });
     placements.push({ section: section.id, line: i, startFrame: at, durationFrames: duration, say: line.say, scene: line.scene });
     captions.push(`${captions.length + 1}\n${timecode(at + lead)} --> ${timecode(at + lead + voiceFrames)}\n${line.say}\n`);

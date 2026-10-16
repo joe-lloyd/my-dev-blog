@@ -1,10 +1,11 @@
-// Split a StfuStage cut into three overlay layers: one background clip under the whole video,
-// the stage clips, and a labels clip on top of each stage clip. Rerun after any retime.
-// bun layer-stage.mjs <neonRepo> <host>
+// Put one StfuBackground clip under a StfuStage cut and give every stage clip an editable
+// Items field. Labels are left out: add StfuLabels clips by hand where a shot wants them.
+// Rerun after any retime. bun layer-stage.mjs <neonRepo> <host>
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { stageProps } from './stfu-items.mjs';
 
 const [neonPath, host] = process.argv.slice(2);
 const cli = join(resolve(neonPath), 'apps/cli/src/main.ts');
@@ -27,22 +28,20 @@ if (!project.tracks.some(t => t.name === 'STFU background')) {
   const free = project.tracks.find(t => t.kind === 'overlay' && t.order < graphics.order && !project.clips.some(c => c.trackId === t.id));
   if (!free) throw new Error('Need an empty overlay track below STFU graphics for the background.');
   run('tracks', 'update', free.id, '--name', 'STFU background');
+  project = dump();
 }
-if (!project.tracks.some(t => t.name === 'STFU labels')) run('tracks', 'add', '--kind', 'overlay', '--name', 'STFU labels');
-project = dump();
 const background = project.tracks.find(t => t.name === 'STFU background');
-const labels = project.tracks.find(t => t.name === 'STFU labels');
-if (labels.order < graphics.order) throw new Error('STFU labels must sit above STFU graphics.');
 
-const stages = project.clips.filter(c => c.componentName === 'StfuStage').sort((a, b) => a.startFrame - b.startFrame);
+const stages = project.clips.filter(c => c.componentName === 'StfuStage');
 if (!stages.length) throw new Error('No StfuStage clips to layer.');
 const end = Math.max(...project.clips.map(c => c.startFrame + c.durationFrames));
-const old = project.clips.filter(c => c.componentName === 'StfuBackground' || c.componentName === 'StfuLabels');
+const old = project.clips.filter(c => c.componentName === 'StfuBackground');
 const plan = [];
 if (old.length) plan.push({ route: '/api/timeline/remove', body: { ids: old.map(c => c.id) } });
 plan.push({ route: '/api/timeline/insert', body: { kind: 'component', componentName: 'StfuBackground', props: {}, at: 0, duration: end, trackId: background.id, name: 'Background', placement: 'overlap' } });
-for (const stage of stages) {
-  plan.push({ route: '/api/timeline/insert', body: { kind: 'component', componentName: 'StfuLabels', props: stage.props, at: stage.startFrame, duration: stage.durationFrames, trackId: labels.id, name: `${stage.name} · labels`, placement: 'overlap' } });
+// Clips cut before the Items field carry subtitle and chapter instead; convert them once.
+for (const stage of stages.filter(c => !('items' in c.props))) {
+  plan.push({ route: '/api/timeline/update', body: { id: stage.id, patch: { props: stageProps(stage.props) } } });
 }
 const planPath = join(tmpdir(), 'layer-stage-plan.json');
 writeFileSync(planPath, JSON.stringify(plan));
@@ -50,4 +49,4 @@ run('apply', planPath, '--dry-run');
 run('history', 'checkpoint');
 run('apply', planPath);
 run('project', 'save');
-console.log(`Background under ${(end / project.meta.fps).toFixed(1)} seconds, ${stages.length} label clips on STFU labels.`);
+console.log(`Background under ${(end / project.meta.fps).toFixed(1)} seconds. ${stages.length} stage clips with editable Items.`);
