@@ -6,8 +6,8 @@ field in Neon's inspector:
 - `StfuBackground` on `STFU background` paints the ink, glow, grid and slow
   waveform. One clip runs under the whole video so it keeps moving across cuts.
   Tracks paint in order, so it must sit below `STFU graphics`.
-- `StfuStage` on `STFU graphics` is the title and the one graphic a shot is
-  about. Its text comes from `Title` and `Items`, one entry per line: a box per
+- `StfuStage` on `STFU graphics` is the part, title and one graphic a shot is
+  about. `Chapter` names the part, top right. The graphic's text comes from `Items`, one entry per line: a box per
   line in the pipeline, `Heading: text` per compare panel, a card per line, and
   so on. The field's description in the inspector lists each scene's format.
 - `StfuLabels` is optional small text: brand, chapter, kicker, subtitle,

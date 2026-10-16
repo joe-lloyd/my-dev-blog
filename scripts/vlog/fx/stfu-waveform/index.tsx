@@ -55,10 +55,10 @@ const pair = (line: string) => {
   return at < 0 ? [line, ''] : [line.slice(0, at).trim(), line.slice(at + 1).trim()];
 };
 
-type StageProps = { scene: string; title: string; items: string; image: string };
+type StageProps = { scene: string; chapter: string; title: string; items: string; image: string };
 
-/** The title and the one graphic a shot is about. Every word on screen comes from the title or items fields. */
-export const StfuStage: React.FC<StageProps> = ({ scene, title, items, image }) => {
+/** The part, title and one graphic a shot is about. Every word on screen comes from a field. */
+export const StfuStage: React.FC<StageProps> = ({ scene, chapter, title, items, image }) => {
   const { frame, t, pillPhase, waveColor, scale, outro } = useStage();
   const intro = ease(frame / 22);
   const shot = Boolean(image);
@@ -106,6 +106,7 @@ export const StfuStage: React.FC<StageProps> = ({ scene, title, items, image }) 
     content = <div style={{ position: 'absolute', left: 120, top: 420, width: 1050, borderLeft: `5px solid ${cyan}`, padding: '24px 0 24px 40px', fontSize: 43, lineHeight: 1.5, color: '#bbc9db' }}>{list.join(' ')}</div>;
   }
   return <Canvas scale={scale} opacity={outro}>
+    {chapter && <div style={{ position: 'absolute', top: 55, right: 120, fontSize: 22, letterSpacing: 3, color: muted }}>{chapter}</div>}
     <div style={{ position: 'absolute', left: centred ? 0 : 120, right: centred ? 0 : undefined, top: centred ? 330 : 230, textAlign: centred ? 'center' : 'left', opacity: intro, transform: `translateY(${(1 - intro) * 25}px)`, fontSize: centred ? scene === 'title' && title === 'stfu' ? 230 : 110 : shot ? 84 : 100, fontWeight: 750, letterSpacing: -4, lineHeight: 1.1, maxWidth: shot ? 900 : centred ? undefined : 1680 }}>{title}</div>
     {content}
   </Canvas>;

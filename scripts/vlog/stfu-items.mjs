@@ -12,8 +12,9 @@ const sceneItems = {
 };
 const hasNoItems = ['title', 'end', 'pill'];
 
-export const stageProps = ({ scene, title, subtitle = '', image = '' }) => ({
+export const stageProps = ({ scene, chapter = '', title, subtitle = '', image = '' }) => ({
   scene,
+  chapter,
   title,
   items: (sceneItems[scene] ?? (hasNoItems.includes(scene) || image ? [] : [subtitle])).join('\n'),
   image,

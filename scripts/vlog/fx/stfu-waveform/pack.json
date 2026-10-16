@@ -1,7 +1,7 @@
 {
   "name": "stfu-waveform",
   "label": "STFU waveform",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Waveform backgrounds, title cards and explainers for the STFU video.",
   "author": "Joe Lloyd",
   "category": "Explainers",
@@ -17,7 +17,7 @@
     {
       "name": "StfuStage",
       "label": "STFU stage",
-      "description": "The title and the one graphic a shot is about. All text on it comes from Title and Items.",
+      "description": "The part, title and one graphic a shot is about. All text on it comes from its fields.",
       "defaultDurationSeconds": 12,
       "fields": [
         {
@@ -43,6 +43,13 @@
             "outro",
             "end"
           ]
+        },
+        {
+          "key": "chapter",
+          "type": "text",
+          "default": "",
+          "label": "Chapter",
+          "description": "The part this shot belongs to, top right, e.g. 03 / How it works. Empty hides it."
         },
         {
           "key": "title",
