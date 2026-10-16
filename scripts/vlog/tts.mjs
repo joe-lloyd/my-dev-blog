@@ -15,8 +15,8 @@ mkdirSync(outDir, { recursive: true });
 const manifestPath = join(episodeDir, 'out', 'tts.json');
 const old = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, 'utf8')) : {};
 
-// Spellings Kokoro reads better than the written form.
-const SPOKEN = [[/\brerere\b/g, 'ree-ree-ree'], [/\bWip\b/g, 'Whip'], [/\bwip\b/g, 'whip'], [/\bGit Gud\b/g, 'Git Gudd']];
+// Spellings the voice engines read better than the written form.
+const SPOKEN = [[/\brerere\b/g, 'ree-ree-ree'], [/\bWip\b/g, 'Whip'], [/\bwip\b/g, 'whip'], [/\bGit Gud\b/g, 'Git Gudd'], [/\bstfu\b/gi, 'S T F U']];
 const SPEED = 0.94; // Kokoro only
 const spoken = (text) => SPOKEN.reduce((t, [re, to]) => t.replace(re, to), text);
 
