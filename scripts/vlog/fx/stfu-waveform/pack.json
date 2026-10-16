@@ -1,7 +1,7 @@
 {
   "name": "stfu-waveform",
   "label": "STFU waveform",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Waveform backgrounds, title cards and explainers for the STFU video.",
   "author": "Joe Lloyd",
   "category": "Explainers",
@@ -17,7 +17,7 @@
     {
       "name": "StfuStage",
       "label": "STFU stage",
-      "description": "The heading and the one graphic a shot is about. Transparent over STFU background.",
+      "description": "The title and the one graphic a shot is about. All text on it comes from Title and Items.",
       "defaultDurationSeconds": 12,
       "fields": [
         {
@@ -47,17 +47,16 @@
         {
           "key": "title",
           "type": "text",
-          "default": "stfu"
+          "default": "stfu",
+          "label": "Title"
         },
         {
-          "key": "subtitle",
+          "key": "items",
           "type": "text",
-          "default": "Hold. Talk. Release."
-        },
-        {
-          "key": "chapter",
-          "type": "text",
-          "default": "01 / Cold open"
+          "multiline": true,
+          "default": "",
+          "label": "Items",
+          "description": "One entry per line. pipeline: a box per line. compare: 'Heading: text' per panel. demo: pasted message, then placeholder. speed: big figure, then 'Name: share' rows (share 1 = full bar). ownership/retention: a card per line. fallback: a box per line. title/outro/end: chips, or empty for the pill. Other scenes: a quote block. Empty shows nothing."
         },
         {
           "key": "image",
@@ -70,53 +69,57 @@
     {
       "name": "StfuLabels",
       "label": "STFU labels",
-      "description": "Brand, chapter, kicker, subtitle, footer and diagram notes for one shot. Uses the stage's fields.",
+      "description": "Optional small text over a shot. Every label is a field; leave it empty to hide it.",
       "defaultDurationSeconds": 12,
       "fields": [
         {
-          "key": "scene",
-          "type": "select",
-          "default": "title",
-          "options": [
-            "title",
-            "demo",
-            "quote",
-            "ownership",
-            "pipeline",
-            "compare",
-            "fallback",
-            "pill",
-            "cloud",
-            "local",
-            "languages",
-            "settings",
-            "history",
-            "retention",
-            "speed",
-            "outro",
-            "end"
-          ]
-        },
-        {
-          "key": "title",
+          "key": "brand",
           "type": "text",
-          "default": "stfu"
-        },
-        {
-          "key": "subtitle",
-          "type": "text",
-          "default": "Hold. Talk. Release."
+          "default": "",
+          "label": "Brand",
+          "description": "Top left, after a pink dot."
         },
         {
           "key": "chapter",
           "type": "text",
-          "default": "01 / Cold open"
+          "default": "",
+          "label": "Chapter",
+          "description": "Top right."
         },
         {
-          "key": "image",
+          "key": "kicker",
           "type": "text",
           "default": "",
-          "description": "Optional image URL or embedded data URL for a settings still."
+          "label": "Kicker",
+          "description": "Small caps line above the title."
+        },
+        {
+          "key": "subtitle",
+          "type": "text",
+          "default": "",
+          "label": "Subtitle",
+          "description": "Line under the title."
+        },
+        {
+          "key": "caption",
+          "type": "text",
+          "default": "",
+          "label": "Caption",
+          "description": "Centred near the bottom."
+        },
+        {
+          "key": "footer",
+          "type": "text",
+          "default": "",
+          "label": "Footer",
+          "description": "Bottom left."
+        },
+        {
+          "key": "footerNote",
+          "type": "text",
+          "default": "",
+          "label": "Footer note",
+          "description": "Bottom right."
         }
       ]
     }
