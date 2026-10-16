@@ -1,0 +1,75 @@
+{
+  "name": "neon-studio",
+  "label": "Neon Studio",
+  "version": "1.0.0",
+  "description": "Full-frame graphics for the Neon Video Studio episode, in the app's own neon look.",
+  "author": "Joe Lloyd",
+  "category": "Explainers",
+  "entry": "index.tsx",
+  "templates": [
+    {
+      "name": "NeonBackground",
+      "label": "Neon background",
+      "description": "Near-black with a grid, a timeline ruler, a sweeping playhead and a running timecode. Put one clip under the whole video.",
+      "defaultDurationSeconds": 60,
+      "fields": []
+    },
+    {
+      "name": "NeonStage",
+      "label": "Neon stage",
+      "description": "One full-frame graphic: chapter, title and a scene built from Items. Every word on screen is a field.",
+      "defaultDurationSeconds": 10,
+      "fields": [
+        {
+          "key": "scene",
+          "type": "select",
+          "default": "title",
+          "label": "Scene",
+          "options": [
+            "title",
+            "flow",
+            "hub",
+            "terminal",
+            "code",
+            "feed",
+            "timeline",
+            "stats",
+            "cards",
+            "split",
+            "quote",
+            "image",
+            "end"
+          ]
+        },
+        {
+          "key": "chapter",
+          "type": "text",
+          "default": "",
+          "label": "Chapter",
+          "description": "The part this shot belongs to, top right, e.g. 04 / The CLI. Empty hides it."
+        },
+        {
+          "key": "title",
+          "type": "text",
+          "default": "Neon Video Studio",
+          "label": "Title"
+        },
+        {
+          "key": "items",
+          "type": "text",
+          "multiline": true,
+          "default": "",
+          "label": "Items",
+          "description": "One entry per line. title/end: a timeline clip per line. flow: a box per line, 'Name: detail'. hub: first line is the centre, the rest orbit it, 'Name: detail'. terminal: commands; lines starting '>' are output. code: first line is the file name, then the code. feed: 'Source: event' per line. timeline: 'Track: clip, clip' per line. stats: 'Number: label' tiles. cards: 'Name: detail' per card. split: two 'Heading: text' panels. quote: the quote. image: ignored, set Image instead."
+        },
+        {
+          "key": "image",
+          "type": "text",
+          "default": "",
+          "label": "Image",
+          "description": "Optional image URL or embedded data URL. When set, the shot shows the image under the title."
+        }
+      ]
+    }
+  ]
+}
