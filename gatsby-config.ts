@@ -14,6 +14,15 @@ const config: GatsbyConfig = {
     microSiteUrl: "https://joe-lloyd.com/",
     microSitePersonalProjectsUrl: "https://joe-lloyd.com/personal-projects",
   },
+  // Gatsby's Netlify adapter sends referrer-policy: same-origin on every page by default. That
+  // strips the Referer from the YouTube embed, and YouTube refuses embeds without one (Error 153).
+  // Same key, so this replaces the default; YouTube sees only the origin, never the path.
+  headers: [
+    {
+      source: `/*`,
+      headers: [{ key: `referrer-policy`, value: `strict-origin-when-cross-origin` }],
+    },
+  ],
   plugins: [
     "gatsby-plugin-sass",
     'gatsby-plugin-image',
