@@ -4,6 +4,7 @@
  * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-node/
  */
 
+import * as fs from "fs"
 import * as path from "path"
 import { GatsbyNode } from "gatsby"
 import { GatsbyNodeGetPostsQuery } from "./src/generated/graphql"
@@ -127,4 +128,25 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({ node, actions }) => {
       value: readingTime(node.body as string)
     })
   }
+}
+
+/**
+ * gatsby-plugin-offline used to install a service worker at /sw.js that kept serving returning
+ * visitors stale pages, stale headers included (the YouTube embed failed with Error 153 for them
+ * after the fix). Browsers re-check /sw.js on navigation, so publishing one that unregisters
+ * itself and reloads the open tabs clears it out everywhere.
+ */
+const RETIRE_SERVICE_WORKER = `self.addEventListener("install", () => self.skipWaiting());
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    self.registration
+      .unregister()
+      .then(() => self.clients.matchAll({ type: "window" }))
+      .then((clients) => clients.forEach((client) => client.navigate(client.url)))
+  );
+});
+`
+
+export const onPostBuild: GatsbyNode["onPostBuild"] = async () => {
+  await fs.promises.writeFile(path.join("public", "sw.js"), RETIRE_SERVICE_WORKER)
 }
