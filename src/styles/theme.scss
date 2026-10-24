@@ -773,6 +773,9 @@ video {
 }
 
 .post-card {
+  // Containing block for the title link's ::after, which makes the whole card clickable.
+  // Without it that overlay spans the whole grid and the last card's link wins every click.
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;

@@ -53,6 +53,13 @@ export const createPages: GatsbyNode["createPages"] = async ({
   /**
    * Create blog post pages
    */
+  // The slug is the page path, the canonical URL (siteUrl + slug) and the card link, so it must
+  // start with "/". Without it the canonical URL reads "…joe-lloyd.comyour-post".
+  const badSlugs = posts.map(({ node }) => node.frontmatter.slug).filter((slug) => typeof slug !== "string" || !slug.startsWith("/"))
+  if (badSlugs.length) {
+    throw new Error(`Post slugs must start with "/": ${badSlugs.map((s) => JSON.stringify(s)).join(", ")}`)
+  }
+
   posts.forEach(({ node }) => {
     // In production, skip creating pages for unpublished posts
     if (isProduction && !node.frontmatter.published) {
