@@ -1,0 +1,79 @@
+---
+title: "Git Gud 04: Branches, tags, stashes and worktrees"
+author: "Joe"
+date: "2026-10-24"
+slug: "/git-gud-04-branches-tags-stashes"
+excerpt: "Everything in the sidebar. Episode 4 of 13 in the Git Gud video tour."
+featuredImage: ../images/thumbnails/git-gud-04.png
+tags: ["git gud", "git", "electron", "developer tools", "video"]
+seoTitle: "Git Gud 04: Branches, tags, stashes and worktrees. Everything in the sidebar"
+seoDescription: "Everything in the sidebar. Episode 4 of 13 in the Git Gud video tour. The sidebar lists your local branches. The one with the tick is checked"
+published: true
+videoId: ""
+gistLink: ""
+gitHubLink: "https://github.com/joe-lloyd/git-gud"
+---
+
+*Episode 4 of 13 in a video tour of [Git Gud](https://github.com/joe-lloyd/git-gud), a desktop Git client with a lane-colored commit graph. The video is above; this is what it says, with the details.*
+
+The sidebar lists your local branches. The one with the tick is checked out.
+
+Double-click a branch to check it out. The pill in the toolbar follows, and the graph moves the head marker.
+
+The Branch button makes a new branch from where you are. Type a name, press Create, and you're on it.
+
+Right-click a branch for everything else: rename it, merge it into your current branch, rebase onto it, push it, or delete it.
+
+You can also right-click any commit in the graph and choose Create branch here, to start a branch from the past.
+
+## Drag and drop
+
+Here's a shortcut. Drag one branch and drop it on another.
+
+Git Gud asks what you meant: merge one into the other, rebase one onto the other, or just check out the target.
+
+Pick merge, and the merge commit appears in the graph with both lanes joining.
+
+## Tags
+
+To tag a release, right-click its commit and choose Create tag here. Git Gud makes an annotated tag.
+
+Tags are listed in the sidebar too. Right-click one to push it to the remote, rename it, delete it, or start a branch from it.
+
+## Stashes
+
+Stash puts all your uncommitted changes aside, including new files, and leaves a clean working tree. You can give it a message so you remember what it was.
+
+The stash shows up as a diamond in the graph, and in the sidebar's stash list.
+
+Pop brings the most recent stash back and removes it from the list. Right-click a stash to apply it but keep it, drop it, or turn it into a branch.
+
+## Worktrees
+
+A worktree is a second checkout of the same repository, in its own folder, on its own branch. It's handy for a hotfix while your feature work stays put.
+
+Manage worktrees lists them and adds new ones. Give it a branch, and Git Gud suggests a folder next to your project.
+
+Switch to a worktree from the sidebar, and the badge in the toolbar tells you which checkout you're looking at.
+
+---
+
+Previous: [Staging and committing](/git-gud-03-staging-and-committing) · Next: [Working with remotes](/git-gud-05-remotes)
+
+### The series
+
+1. [Meet Git Gud](/git-gud-01-meet-git-gud)
+2. [Reading the commit graph](/git-gud-02-commit-graph)
+3. [Staging and committing](/git-gud-03-staging-and-committing)
+4. **Branches, tags, stashes and worktrees** (this post)
+5. [Working with remotes](/git-gud-05-remotes)
+6. [Rewriting history](/git-gud-06-rewriting-history)
+7. [Conflicts and auto-fix](/git-gud-07-conflicts-and-auto-fix)
+8. [Recovery and power tools](/git-gud-08-recovery-tools)
+9. [Gerrit mode](/git-gud-09-gerrit-mode)
+10. [Settings and updates](/git-gud-10-settings-and-updates)
+11. [Peer connections](/git-gud-11-peer-connections)
+12. [The headless daemon and the relay](/git-gud-12-headless-and-relay)
+13. [The companion app](/git-gud-13-companion-app)
+
+Git Gud is open source. Get it from the [latest release](https://github.com/joe-lloyd/git-gud/releases/latest), or read [every feature in one list](https://github.com/joe-lloyd/git-gud/blob/main/docs/feature-list.md).

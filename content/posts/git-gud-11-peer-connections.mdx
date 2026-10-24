@@ -1,0 +1,91 @@
+---
+title: "Git Gud 11: Peer connections"
+author: "Joe"
+date: "2026-10-24"
+slug: "/git-gud-11-peer-connections"
+excerpt: "Drive another machine's repositories. Episode 11 of 13 in the Git Gud video tour."
+featuredImage: ../images/thumbnails/git-gud-11.png
+tags: ["git gud", "git", "electron", "developer tools", "video"]
+seoTitle: "Git Gud 11: Peer connections. Drive another machine's repositories"
+seoDescription: "Drive another machine's repositories. Episode 11 of 13 in the Git Gud video tour. Peer connections let one Git Gud drive the repositories on another"
+published: true
+videoId: ""
+gistLink: ""
+gitHubLink: "https://github.com/joe-lloyd/git-gud"
+---
+
+*Episode 11 of 13 in a video tour of [Git Gud](https://github.com/joe-lloyd/git-gud), a desktop Git client with a lane-colored commit graph. The video is above; this is what it says, with the details.*
+
+Peer connections let one Git Gud drive the repositories on another machine. Your desktop, a laptop, a build box under the desk.
+
+The machine with the repository is the host. It runs every git command itself. Your Git Gud only shows the results, and streams the host's working tree live as files change.
+
+Nothing is copied. You're looking at the real repository on the other machine.
+
+## Sharing a machine
+
+Here are two Git Guds on two machines. This one is the build box, and it has tidepool open.
+
+On the build box, open Settings and switch on Share with other Git Gud instances.
+
+It shows this machine's name, the port it listens on, and a six-digit pairing code. Generate a new code at any time.
+
+## Pairing
+
+On the left, choose Connect to a Peer. Git Gud finds machines on the same network by itself. The build box is listed under Nearby.
+
+Click it, and type the six-digit code from the build box.
+
+That's it. The two are paired, and the build box lists its repositories.
+
+Open tidepool. The tab says where it lives. Everything you saw in the earlier episodes works here, and the build box runs it.
+
+## Live and safe
+
+Back on the laptop: edit a file on the build box, and the change shows up here within a second.
+
+Commit from the laptop, and the commit is made on the build box. Its own window shows the new commit straight away.
+
+The host stays in charge. In its sharing settings, each paired device has a read-only switch, and Revoke cuts a device off for good.
+
+A global read-only switch locks every device at once, for when you only want to look.
+
+## How pairing stays secure
+
+Pairing is built so the code never crosses the network. When you connect, the host shows its certificate, and your Git Gud remembers its fingerprint.
+
+Instead of sending the code, your side sends a proof: the code mixed with that fingerprint, using HMAC. Only someone who knows the code can make it, and it only works for that one certificate.
+
+The host checks the proof and hands back a token. From then on every connection is encrypted, and checked against the pinned certificate.
+
+If the certificate ever changes, Git Gud stops and warns you instead of trusting it. And after five wrong codes, the host locks pairing for a while.
+
+## Reaching a machine
+
+On the same network, machines find each other with a small broadcast on port 47832, and talk over HTTPS on port 47831.
+
+Away from home, connect by Tailscale name, or by any address, with Connect by address.
+
+And with no VPN at all, a relay you host can pass the connection along. That's in the next episode.
+
+---
+
+Previous: [Settings and updates](/git-gud-10-settings-and-updates) · Next: [The headless daemon and the relay](/git-gud-12-headless-and-relay)
+
+### The series
+
+1. [Meet Git Gud](/git-gud-01-meet-git-gud)
+2. [Reading the commit graph](/git-gud-02-commit-graph)
+3. [Staging and committing](/git-gud-03-staging-and-committing)
+4. [Branches, tags, stashes and worktrees](/git-gud-04-branches-tags-stashes)
+5. [Working with remotes](/git-gud-05-remotes)
+6. [Rewriting history](/git-gud-06-rewriting-history)
+7. [Conflicts and auto-fix](/git-gud-07-conflicts-and-auto-fix)
+8. [Recovery and power tools](/git-gud-08-recovery-tools)
+9. [Gerrit mode](/git-gud-09-gerrit-mode)
+10. [Settings and updates](/git-gud-10-settings-and-updates)
+11. **Peer connections** (this post)
+12. [The headless daemon and the relay](/git-gud-12-headless-and-relay)
+13. [The companion app](/git-gud-13-companion-app)
+
+Git Gud is open source. Get it from the [latest release](https://github.com/joe-lloyd/git-gud/releases/latest), or read [every feature in one list](https://github.com/joe-lloyd/git-gud/blob/main/docs/feature-list.md).
