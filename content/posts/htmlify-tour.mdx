@@ -1,0 +1,131 @@
+---
+title: "htmlify: a tour of the viewer, the daemon and the phone app"
+author: "Joe"
+date: "2026-10-24"
+slug: "/htmlify-tour"
+excerpt: "An Obsidian-style viewer for folders of HTML pages, served from every machine you own to your desktop and your phone."
+featuredImage: ../images/thumbnails/htmlify-tour.png
+tags: ["htmlify", "electron", "react native", "self-hosted", "video"]
+seoTitle: "htmlify: serve your rich text notes across your fleet"
+seoDescription: "A tour of htmlify: a desktop and phone viewer for folders of HTML and Markdown pages, and the daemon that serves them from every machine."
+published: true
+videoId: "ZcgPzZ0oG0o"
+gistLink: ""
+gitHubLink: ""
+---
+
+This is htmlify. It's a viewer for folders of HTML pages, built like Obsidian, but for HTML instead of Markdown.
+
+It's made for research pages: generated HTML with its own charts, styles and scripts. htmlify renders them exactly as written, and it renders Markdown too.
+
+It has three parts. A daemon serves your folders. A desktop app and a phone app read from it.
+
+```
+phone (mobile app) ─┐
+                    ├── HTTPS + WebSocket ──> daemon on the machine
+laptop (desktop) ───┘     (pinned cert, token)     that has the files
+```
+
+## Reading pages on the desktop
+
+On first launch the desktop app shows a start page. **Open folder** adds any folder on this computer.
+
+The folder appears in the sidebar. Only pages are listed: HTML, Markdown, PDFs, text and images. Folders full of CSS and scripts stay out of the way.
+
+Click a page and it renders in the main panel. Scripts run, so interactive pages stay interactive. In the video, a solar model recalculates as you drag its slider.
+
+Links work like a browser. Follow one, and the tab title, the breadcrumb and the file tree all follow along. Back and forward walk the tab's history.
+
+The usual shortcuts work:
+
+- **⌘-click** opens a page in a new tab
+- **⌘T** and **⌘W** open and close tabs
+- **⌘[** and **⌘]** go back and forward
+- **⌘\\** hides the sidebar, **⌘⇧\\** hides the outline
+- **⌘O** or **⌘P** opens the quick switcher
+- **⌘⇧F** searches every page
+
+## Markdown and the outline
+
+Markdown renders too, so htmlify can replace Obsidian for reading. Frontmatter is hidden, and task lists and code blocks render.
+
+Wiki links work the Obsidian way, including links that jump straight to a heading on an HTML page.
+
+The outline lists the headings of the open page. Click one to scroll to it.
+
+## Finding pages
+
+The filter at the top of the sidebar narrows the file tree as you type. ⌘O opens the quick switcher: type a few letters of a file name and press enter. ⌘⇧F searches the text of every page, on every machine you're connected to.
+
+## Live reload and Google Drive
+
+Pages reload when their file changes on disk. A script can rewrite a report, and the page updates in place without losing its scroll position. That's handy while an agent is still writing a page.
+
+For Google Drive, install Google Drive for desktop. htmlify finds your Drive, and **Add a Google Drive folder** picks a folder inside it.
+
+## The daemon
+
+Now the part that makes this work across machines: the daemon.
+
+The daemon is one file. Copy it to any machine with Node 22 and point it at a folder:
+
+```sh
+pnpm daemon:build                                  # writes packages/daemon/dist/htmlify-daemon.mjs
+scp packages/daemon/dist/htmlify-daemon.mjs server:~/
+ssh server 'node ~/htmlify-daemon.mjs --vault ~/pages --name server'
+```
+
+It prints its address, a token, its certificate fingerprint and a pairing link, plus a QR code for your phone.
+
+Everything is served over HTTPS with the daemon's own certificate, and every request needs the token. When a file changes, the daemon pushes an event over a WebSocket, and that's what drives live reload.
+
+There's a Dockerfile too, if you'd rather run it in a container:
+
+```sh
+docker build -t htmlify-daemon -f packages/daemon/Dockerfile packages/daemon
+docker run -d --name htmlify -p 7337:7337 \
+  -v htmlify-config:/config -v ~/pages:/vaults/pages:ro \
+  htmlify-daemon --vault /vaults/pages --public-url https://server.lan:7337
+```
+
+To test a daemon from another machine, run the check script. It signs in, lists the folders and loads a page, so you know a client will work:
+
+```sh
+pnpm --filter @htmlify/daemon check 'htmlify://connect?url=…' --watch 10
+```
+
+## Connecting machines
+
+On the desktop, open **Connect to another machine** and paste the pairing link. The other machine appears in the sidebar next to this computer, with its own folders.
+
+Its pages open like local ones, and the breadcrumb shows which machine a page came from. If that machine goes away, htmlify says so instead of showing a broken page.
+
+Other machines can read a daemon's folders but can't add new ones, so a leaked token can't expose the rest of the disk.
+
+## Sharing this computer
+
+The desktop app is a daemon too. Turn on sharing, and it listens on your network on port 7338. It shows a QR code: scan it with your phone's camera to connect the phone app.
+
+## The phone app
+
+The phone app is built with React Native and Expo.
+
+Add a machine with its pairing link, or type the address, token and fingerprint. Each machine lists its folders; tap one to browse it. The filter at the top searches the whole folder by name.
+
+Pages render in a web view, scripts and all, and the outline button lists the headings. Search covers the text of every machine you've added. Live reload works here too: change a file on the computer, and the phone updates.
+
+## Under the hood
+
+Here's what happens when you open a page. The app asks the daemon for it by address, with the token in the path. Keeping the token in the path means relative links, images and scripts inside the page all load without any extra setup.
+
+The daemon adds one small script to every HTML page. It reports the title and headings back to the app, keeps links inside the viewer, and saves your scroll position on reload.
+
+Markdown is turned into HTML on the daemon, so the desktop and the phone always show it the same way.
+
+## How it fits together
+
+Every machine with files runs a daemon, and the desktop app runs one built in.
+
+A client can connect to any number of daemons, so a laptop, a home server and your Google Drive sit in one tree.
+
+Connections are direct, so the machines need to reach each other on your network, or over a VPN like Tailscale.
