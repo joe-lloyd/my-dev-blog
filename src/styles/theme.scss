@@ -27,13 +27,9 @@ $font-sans: Inter, -apple-system, "Segoe UI", system-ui, sans-serif;
 
 $header-h: 3.25rem;
 $container: 80rem;
-// Post pages. Text is set in em so the line holds ~80 Inter characters at any size; the size
-// grows with the viewport (17px up to 1280px wide, 21px at 2560px) so big screens get bigger
-// text, not longer lines. Video and code blocks use the wider column.
+// Post pages: one column, as wide as the video. The text size grows with the viewport (17px up
+// to 1280px wide, 21px at 2560px) and the column is a multiple of it, so it grows too.
 $post-size: clamp(1.0625rem, 0.8125rem + 0.3125vw, 1.375rem);
-// Widths are multiples of the text size itself (not em), so elements with their own font size,
-// like headings and the breadcrumb, still share one column edge.
-$post-text: calc(34 * #{$post-size});
 $post-wide: calc(46 * #{$post-size});
 
 // ---- font -----------------------------------------------------------------
@@ -924,23 +920,14 @@ video {
   .container {
     max-width: calc(#{$post-wide} + 2rem);
   }
-
-  // Text, and everything that lines up with it, sits in the centred text column; the video,
-  // code blocks, images and tables use the full wide column.
-  .breadcrumb,
-  .post__tags,
-  .prose > :not(.gatsby-highlight):not(figure):not(table):not(.gatsby-resp-image-wrapper) {
-    max-width: $post-text;
-    margin-inline: auto;
-  }
 }
 
-// The post hero's text starts on the same left edge as the post text.
+// The post hero uses the same column as the post, so the title starts on the text's left edge.
 .hero--post {
   font-size: $post-size;
 
   .container {
-    max-width: calc(#{$post-text} + 2rem);
+    max-width: calc(#{$post-wide} + 2rem);
 
     @media (min-width: 768px) {
       grid-template-columns: 1fr;
