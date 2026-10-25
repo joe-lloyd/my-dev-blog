@@ -32,3 +32,19 @@ too old for ffmpeg's NVENC.
 
 After `assemble.mjs`, open the project in the running Neon app and finish there with
 `neon-cli` (branding, render), so the edit lives in the editor like any other.
+
+## Graphics-only cuts
+
+For an episode Joe voices himself, `graphics-cut.mjs <episodeDir> <neonRepo> <packDir> <outDir>`
+builds a round-one project in its own headless Neon. The private `episode.json` holds one
+section per beat (`title`, `say`, `show`, optional `notes`) and the `shots` under it
+(`scene`, `title`, `items`, optional `image`). Each section becomes one script box in
+review. Its shots are timed from the words at 150 a minute, plus 25 seconds per [JOE]
+gap. The pack's first template is the background and its second is the stage, as in
+`fx/neon-studio`. Every word on a shot is a field, so Joe edits all of it in the inspector.
+
+Run `bun scripts/vlog/tooling.test.mjs` from the repository root to check cut
+layout guards and private-instance routing without a live Neon project.
+Graphics-only cuts clear inherited Neon connection settings and pin all edits
+and shutdown to their own headless instance. Revoicing requires every incoming
+section and line to match the existing placements before it can change a cut.
