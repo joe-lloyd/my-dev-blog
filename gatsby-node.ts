@@ -78,6 +78,31 @@ export const createPages: GatsbyNode["createPages"] = async ({
     })
   })
 
+  // The Git Gud tour was 13 posts, one per episode, before it became one post over the playlist.
+  // The old URLs went out in video descriptions, so each lands on its section of the tour.
+  const gitGudEpisodes: [string, string][] = [
+    ["01-meet-git-gud", "meet-git-gud"],
+    ["02-commit-graph", "reading-the-commit-graph"],
+    ["03-staging-and-committing", "staging-and-committing"],
+    ["04-branches-tags-stashes", "branches-tags-stashes-and-worktrees"],
+    ["05-remotes", "working-with-remotes"],
+    ["06-rewriting-history", "rewriting-history"],
+    ["07-conflicts-and-auto-fix", "conflicts-and-auto-fix"],
+    ["08-recovery-tools", "recovery-and-power-tools"],
+    ["09-gerrit-mode", "gerrit-mode"],
+    ["10-settings-and-updates", "settings-and-updates"],
+    ["11-peer-connections", "peer-connections"],
+    ["12-headless-and-relay", "the-headless-daemon-and-the-relay"],
+    ["13-companion-app", "the-companion-app"],
+  ]
+  gitGudEpisodes.forEach(([oldSlug, section]) => {
+    actions.createRedirect({
+      fromPath: `/git-gud-${oldSlug}/`,
+      toPath: `/git-gud-tour/#${section}`,
+      isPermanent: true,
+    })
+  })
+
   /**
    * Create paginated blog overview
    */
