@@ -1,0 +1,84 @@
+---
+title: "Git Gud 05: Working with remotes"
+author: "Joe"
+date: "2026-10-25"
+slug: "/git-gud-05-remotes"
+excerpt: "Fetch, pull, push and sign-in. Episode 5 of 13 in the Git Gud video tour."
+featuredImage: ../images/thumbnails/git-gud-05.png
+tags: ["git gud", "git", "electron", "developer tools", "video"]
+seoTitle: "Git Gud 05: Working with remotes. Fetch, pull, push and sign-in"
+seoDescription: "Fetch, pull, push and sign-in. Episode 5 of 13 in the Git Gud video tour. Your repository has a copy on a server, called a remote. Fetch downloads what's"
+published: true
+videoId: "PBHql8kzv_4"
+gistLink: ""
+gitHubLink: "https://github.com/joe-lloyd/git-gud"
+---
+
+*Episode 5 of 13 in a video tour of [Git Gud](https://github.com/joe-lloyd/git-gud), a desktop Git client with a lane-colored commit graph. The video is above; this is what it says, with the details.*
+
+Your repository has a copy on a server, called a remote. Fetch downloads what's new there without touching your work.
+
+Pull fetches and then brings those commits into your branch. Push sends your commits up.
+
+## Fetch, pull and push
+
+Click Fetch. A teammate pushed two commits to main, and now they show up in the graph on the remote branch, above ours.
+
+The Pull button counts it for you: two commits behind.
+
+The arrow next to Pull offers three ways to pull: a normal pull, fast-forward only, which refuses to make a merge, or pull with rebase.
+
+A plain pull here fast-forwards main to the new commits.
+
+Now commit something, and the Push button shows one commit ahead. Click Push to send it.
+
+Push has its own menu, with force push. Git Gud always uses force with lease, which refuses to overwrite work you haven't seen.
+
+## When branches diverge
+
+If you and the remote both have new commits, a pull can't simply fast-forward. Git Gud asks whether to merge or to rebase, and explains the difference right there.
+
+- **Merge**: Keeps both histories and joins them with a merge commit
+- **Rebase**: Replays your commits on top of the remote ones, for a straight line
+
+
+And if a push is rejected because the remote moved, the message offers to pull right away.
+
+- **Push**: The remote refuses: it moved on
+- **Pull now**: One click, from the message
+- **Push again**: Now it goes through
+
+
+## Signing in to your host
+
+The GitHub button opens Integrations. Git Gud signs in to GitHub, GitLab and Bitbucket.
+
+GitHub uses a device code: Git Gud shows a code, you approve it in the browser, and that's it. GitLab and Bitbucket take an access token, and GitLab works with self-hosted servers too.
+
+Once you're signed in, pushing and pulling to that host just works. Git Gud adds your token to each git command for that host only. Tokens are encrypted on your machine.
+
+From here you can also create a new repository on the host for the project you have open, and Git Gud adds it as origin.
+
+And Clone from Remote on the start page clones by URL, or lets you browse your own repositories on each host you're signed in to.
+
+---
+
+Previous: [Branches, tags, stashes and worktrees](/git-gud-04-branches-tags-stashes) · Next: [Rewriting history](/git-gud-06-rewriting-history)
+
+### The series
+
+1. [Meet Git Gud](/git-gud-01-meet-git-gud)
+2. [Reading the commit graph](/git-gud-02-commit-graph)
+3. [Staging and committing](/git-gud-03-staging-and-committing)
+4. [Branches, tags, stashes and worktrees](/git-gud-04-branches-tags-stashes)
+5. **Working with remotes** (this post)
+6. [Rewriting history](/git-gud-06-rewriting-history)
+7. [Conflicts and auto-fix](/git-gud-07-conflicts-and-auto-fix)
+8. [Recovery and power tools](/git-gud-08-recovery-tools)
+9. [Gerrit mode](/git-gud-09-gerrit-mode)
+10. [Settings and updates](/git-gud-10-settings-and-updates)
+11. [Peer connections](/git-gud-11-peer-connections)
+12. [The headless daemon and the relay](/git-gud-12-headless-and-relay)
+13. [The companion app](/git-gud-13-companion-app)
+
+Git Gud is open source. Get it from the [latest release](https://github.com/joe-lloyd/git-gud/releases/latest), or read [every feature in one list](https://github.com/joe-lloyd/git-gud/blob/565032efe6eb2646dbeab1235dc75429e700e3c6/docs/feature-list.md).

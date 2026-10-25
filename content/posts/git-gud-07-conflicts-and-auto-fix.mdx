@@ -1,0 +1,87 @@
+---
+title: "Git Gud 07: Conflicts and auto-fix"
+author: "Joe"
+date: "2026-10-25"
+slug: "/git-gud-07-conflicts-and-auto-fix"
+excerpt: "The conflict editor, rerere, and blocked actions. Episode 7 of 13 in the Git Gud video tour."
+featuredImage: ../images/thumbnails/git-gud-07.png
+tags: ["git gud", "git", "electron", "developer tools", "video"]
+seoTitle: "Git Gud 07: Conflicts and auto-fix. The conflict editor, rerere, and blocked actions"
+seoDescription: "The conflict editor, rerere, and blocked actions. Episode 7 of 13 in the Git Gud video tour. Let's merge feature/metric-default into main. Both branches"
+published: true
+videoId: "AfRs-afo72E"
+gistLink: ""
+gitHubLink: "https://github.com/joe-lloyd/git-gud"
+---
+
+*Episode 7 of 13 in a video tour of [Git Gud](https://github.com/joe-lloyd/git-gud), a desktop Git client with a lane-colored commit graph. The video is above; this is what it says, with the details.*
+
+Let's merge `feature/metric-default` into main. Both branches changed the same line of `src/units.js`, so git can't decide alone.
+
+Git Gud switches into conflict mode. The top bar says a merge is paused, and the right panel lists the files that need you.
+
+Each file can be opened in the conflict editor. When they're all resolved, Continue finishes the merge. Abort puts everything back as it was.
+
+## The conflict editor
+
+The conflict editor shows three panes. Current is your branch. Incoming is the branch you're merging. In the middle is the result you're writing.
+
+Lines both sides share are lightly tinted. Lines that differ are strongly tinted, and the words that changed are marked.
+
+Each conflict block has buttons: use this side, or keep both. The arrows jump between blocks.
+
+You can also click any single line in a side pane, and it's inserted into the result at your cursor.
+
+The result is a real editor, with syntax highlighting. Here the best answer is a mix of both: read the environment variable, and fall back to metres.
+
+The gutter tags show where every line came from: current, incoming, both, or edited by you. The legend counts them.
+
+Save and mark resolved writes the file and stages it. If conflict markers are still in there, it warns you first.
+
+Continue, and the merge commit is made.
+
+## Remembering resolutions
+
+If you resolve the same conflict again and again, for example while rebasing a long branch, turn on Reuse recorded conflict resolutions in Settings.
+
+- **Resolve once**: You fix a conflict by hand
+- **Git remembers**: rerere records your answer
+- **Same conflict again**: The answer is applied for you
+- **Not right?**: Forget it from the banner
+
+
+## Auto-fix for blocked actions
+
+Git often refuses to act because of uncommitted changes. Checking out a branch, pulling, cherry-picking: they all stop if your edits would be overwritten.
+
+I have local edits to the README, and I double-click a branch that changes the README too.
+
+Instead of an error, Git Gud stashes my edits, retries the checkout, and tells me exactly what it did, step by step.
+
+For a checkout it keeps the stash rather than dropping my edits onto another branch. The message offers to pop it right now if I want them here.
+
+For a pull, the edits are put back automatically once the pull is done. If putting them back conflicts, the stash is kept safe and the conflict panel opens.
+
+If you'd rather decide yourself every time, switch off Auto-fix blocked actions in Settings, and you'll get the old prompts back.
+
+---
+
+Previous: [Rewriting history](/git-gud-06-rewriting-history) · Next: [Recovery and power tools](/git-gud-08-recovery-tools)
+
+### The series
+
+1. [Meet Git Gud](/git-gud-01-meet-git-gud)
+2. [Reading the commit graph](/git-gud-02-commit-graph)
+3. [Staging and committing](/git-gud-03-staging-and-committing)
+4. [Branches, tags, stashes and worktrees](/git-gud-04-branches-tags-stashes)
+5. [Working with remotes](/git-gud-05-remotes)
+6. [Rewriting history](/git-gud-06-rewriting-history)
+7. **Conflicts and auto-fix** (this post)
+8. [Recovery and power tools](/git-gud-08-recovery-tools)
+9. [Gerrit mode](/git-gud-09-gerrit-mode)
+10. [Settings and updates](/git-gud-10-settings-and-updates)
+11. [Peer connections](/git-gud-11-peer-connections)
+12. [The headless daemon and the relay](/git-gud-12-headless-and-relay)
+13. [The companion app](/git-gud-13-companion-app)
+
+Git Gud is open source. Get it from the [latest release](https://github.com/joe-lloyd/git-gud/releases/latest), or read [every feature in one list](https://github.com/joe-lloyd/git-gud/blob/565032efe6eb2646dbeab1235dc75429e700e3c6/docs/feature-list.md).

@@ -1,0 +1,83 @@
+---
+title: "Git Gud 13: The companion app"
+author: "Joe"
+date: "2026-10-25"
+slug: "/git-gud-13-companion-app"
+excerpt: "Your repositories on your phone. Episode 13 of 13 in the Git Gud video tour."
+featuredImage: ../images/thumbnails/git-gud-13.png
+tags: ["git gud", "git", "electron", "developer tools", "video"]
+seoTitle: "Git Gud 13: The companion app. Your repositories on your phone"
+seoDescription: "Your repositories on your phone. Episode 13 of 13 in the Git Gud video tour. The companion app is Git Gud for your phone, on Android and iOS. It's for"
+published: true
+videoId: "0jjHVCg5ITY"
+gistLink: ""
+gitHubLink: "https://github.com/joe-lloyd/git-gud"
+---
+
+*Episode 13 of 13 in a video tour of [Git Gud](https://github.com/joe-lloyd/git-gud), a desktop Git client with a lane-colored commit graph. The video is above; this is what it says, with the details.*
+
+The companion app is Git Gud for your phone, on Android and iOS. It's for looking: checking what changed, reading a diff, following along while something runs.
+
+To pair it, show the QR code from the host's sharing settings, or from the daemon's pair command. The phone scans it, or you paste the link.
+
+The QR code carries the host's address and its certificate fingerprint, so the phone pins the certificate before its very first request.
+
+## Browsing
+
+Machines lists every paired computer and whether it's reachable right now. Tap one to see its repositories.
+
+A repository opens on its graph. It's the same lane-colored graph, sized for a phone.
+
+Tap a commit to read its message. The working tree tab shows uncommitted changes on the machine, and tapping a file shows its diff.
+
+The activity tab shows the git commands the host is running.
+
+It's all live. When the repository changes on the computer, the phone updates by itself.
+
+## Read-only by design
+
+The phone is read-only. Every pairing from a phone is marked read-only on the host, and the app itself refuses to send a write before it leaves the phone.
+
+- **Read-only pairing**: The host marks every phone read-only
+- **Refused on the phone**: Writes never leave the device
+- **Scopes**: The host can allow fetch, pull or push, one at a time
+- **Notifications**: Optional: hear when a repository changes
+
+
+If you want a little more, the host can grant scopes. Allow fetch, and a Fetch button appears on the phone. Pulls are always fast-forward only, and pushes are never forced.
+
+With notifications on, the host tells your phone when a repository changes. The notification has a Fetch now button when that scope is allowed. Only the machine, the repository and the kind of change are sent.
+
+- **Something changes**: A commit, a fetch, a checkout
+- **Host notifies**: Machine, repository and kind of event, nothing else
+- **Tap Fetch now**: If the fetch scope is granted
+- **No spam**: At most one per repository every thirty seconds
+
+
+## How it all fits
+
+That's the whole family. The desktop app for your work. The daemon for machines with no screen. The relay to reach them from anywhere. And the phone to keep an eye on things.
+
+All four speak one protocol, with certificates pinned at pairing and every git command visible. Thanks for watching.
+
+---
+
+Previous: [The headless daemon and the relay](/git-gud-12-headless-and-relay)
+
+### The series
+
+1. [Meet Git Gud](/git-gud-01-meet-git-gud)
+2. [Reading the commit graph](/git-gud-02-commit-graph)
+3. [Staging and committing](/git-gud-03-staging-and-committing)
+4. [Branches, tags, stashes and worktrees](/git-gud-04-branches-tags-stashes)
+5. [Working with remotes](/git-gud-05-remotes)
+6. [Rewriting history](/git-gud-06-rewriting-history)
+7. [Conflicts and auto-fix](/git-gud-07-conflicts-and-auto-fix)
+8. [Recovery and power tools](/git-gud-08-recovery-tools)
+9. [Gerrit mode](/git-gud-09-gerrit-mode)
+10. [Settings and updates](/git-gud-10-settings-and-updates)
+11. [Peer connections](/git-gud-11-peer-connections)
+12. [The headless daemon and the relay](/git-gud-12-headless-and-relay)
+13. **The companion app** (this post)
+
+Git Gud is open source. Get it from the [latest release](https://github.com/joe-lloyd/git-gud/releases/latest), or read [every feature in one list](https://github.com/joe-lloyd/git-gud/blob/565032efe6eb2646dbeab1235dc75429e700e3c6/docs/feature-list.md).
