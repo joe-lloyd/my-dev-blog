@@ -49,7 +49,7 @@ To get this project running on your local machine, follow these steps:
 
 To add a new post:
 
-1. Create a new MDX file in the `content/post` directory.
+1. Create a new MDX file in the `content/posts` directory.
 2. Add the necessary metadata at the top of your MDX file:
 
 ```mdx
@@ -57,17 +57,26 @@ To add a new post:
 title: "Your Title Here"
 author: "Your Name"
 date: "YYYY-MM-DD"
-slug: "post-slug"
+slug: "/post-slug"
 excerpt: "Brief description of the post"
 featuredImage: "/path/to/image"
 tags: ["tag1", "tag2"]
 seoTitle: "SEO Title Here"
 seoDescription: "SEO Description Here"
 published: true/false
-videoSrc: "URL to video"
+videoId: "YouTube video ID (optional)"
+playlistId: "YouTube playlist ID (optional)"
 gistLink: "URL to gist with code examples"
 ---
 ```
+
+Use `videoId` for a single video or `playlistId` for a playlist at the top of the
+post. Copy the playlist ID from the `list` parameter in its YouTube URL. When both
+fields are set, the playlist takes priority and starts with its first video.
+Leave both fields empty, or omit them, for a text-only post. Adding videos to the
+YouTube playlist updates the embedded series without editing or rebuilding the post.
+See [YouTube's embed documentation](https://developers.google.com/youtube/player_parameters)
+for the player URL format.
 
 ## Deployment
 

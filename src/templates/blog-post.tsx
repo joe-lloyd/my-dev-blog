@@ -33,7 +33,7 @@ const BlogPost: React.FC<PropsWithChildren<{ data: BlogPostPageQuery }>> = ({ da
         <div className="container">
           <Breadcrumbs slug={fm.slug || ""} />
           <Tags tags={fm.tags || []} />
-          {fm.videoId && <YouTubeVideo videoSrc={fm.videoId} />}
+          <YouTubeVideo videoSrc={fm.videoId} playlistId={fm.playlistId} title={fm.title} />
           <article className="prose">{children}</article>
           <Ad format="in-article" />
           <ArticleFooter
@@ -79,6 +79,7 @@ export const query = graphql`
         }
         tags
         videoId
+        playlistId
         seoTitle
         seoDescription
       }

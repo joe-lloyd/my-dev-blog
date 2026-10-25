@@ -44,7 +44,7 @@ const Index: React.FC<PageProps<OverviewPageQuery, { postIds: string[] }>> = ({ 
               <BlogCard
                 key={node.id}
                 title={node.frontmatter.title}
-                excerpt={node.frontmatter.excerpt}
+                excerpt={node.frontmatter.excerpt ?? ""}
                 slug={node.frontmatter.slug}
                 date={node.frontmatter.date}
                 tags={node.frontmatter.tags}
