@@ -100,6 +100,8 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
       excerpt: String
       tags: [String!]!
       featuredImage: File @fileByRelativePath
+      videoId: String
+      playlistId: String
     }
 
     type Mdx implements Node {
