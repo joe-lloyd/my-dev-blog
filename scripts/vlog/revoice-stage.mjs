@@ -29,6 +29,12 @@ const graphics = p.clips.filter(c => c.componentName === 'StfuStage').sort((a, b
 const audio = p.clips.filter(c => c.kind === 'audio').sort((a, b) => a.startFrame - b.startFrame);
 if (graphics.length !== old.placements.length || audio.length !== graphics.length)
   throw Error('Unexpected cut layout');
+const expected = episode.sections.flatMap(section =>
+  section.lines.map((_, line) => ({ section: section.id, line }))
+);
+if (expected.length !== old.placements.length || expected.some((entry, index) =>
+  entry.section !== old.placements[index].section || entry.line !== old.placements[index].line
+)) throw Error('Episode lines must match every existing placement before revoicing');
 const plan = [];
 const push = (route, body) => {
   let n = plan.length;

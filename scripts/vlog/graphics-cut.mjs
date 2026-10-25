@@ -17,8 +17,11 @@ const pack = JSON.parse(readFileSync(join(packDir, 'pack.json'), 'utf8'));
 const [background, stage] = pack.templates.map(t => t.name);
 const home = mkdtempSync(join(tmpdir(), 'neon-cut-'));
 const cli = join(resolve(neonArg), 'apps/cli/src/main.ts');
+// A private home must not inherit a different desktop or remote target.
+const env = { ...process.env, NEON_HOME: home };
+for (const key of ['NEON_HOST', 'NEON_ENDPOINT', 'NEON_TOKEN']) delete env[key];
 const run = (...args) => {
-  const result = JSON.parse(execFileSync(process.execPath, [cli, '--json', ...args], { encoding: 'utf8', maxBuffer: 64 << 20, env: { ...process.env, NEON_HOME: home } }));
+  const result = JSON.parse(execFileSync(process.execPath, [cli, '--json', ...args], { encoding: 'utf8', maxBuffer: 64 << 20, env }));
   if (!result.ok) throw new Error(JSON.stringify(result));
   return result.data;
 };
@@ -31,7 +34,13 @@ const seconds = say => {
   return Math.max(15, Math.round(words / 150 * 60 + gaps.length * 25));
 };
 
-run('serve', '--detach');
+const server = run('serve', '--detach');
+const instance = JSON.parse(readFileSync(join(home, 'instance.json'), 'utf8'));
+if (instance.pid !== server.pid || server.endpoint !== `http://127.0.0.1:${instance.port}` ||
+    typeof instance.token !== 'string' || !instance.token) throw new Error('Private Neon instance does not match the server just started');
+// Pin edits and shutdown to this exact server, even if discovery changes.
+env.NEON_ENDPOINT = server.endpoint;
+env.NEON_TOKEN = instance.token;
 try {
   run('project', 'new', '--name', episode.title, '--fps', '30', '--width', '1920', '--height', '1080');
   run('packs', 'install', packDir);

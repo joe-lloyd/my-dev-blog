@@ -48,7 +48,16 @@ cache. When replacing a reference recording under the same name, change a
 configuration field such as `voice.referenceRevision` to invalidate old takes.
 
 `tts.mjs` runs `voice/clone-qwen.py` in a disposable `chinese-speech:latest`
-container on Jellybingus. It needs `faster-qwen3-tts` 0.3.2, qwen-tts 0.1.1,
+container. Cloned engines use `voice.remoteHost`, default `jellybingus`, and
+`voice.remoteDir`, default `vlog/voice`, for SSH and SCP. Set `voice.workMount`
+to the absolute path Docker on that host uses for the same folder. For example,
+a Linux host can use `/home/alex/vlog/voice`. Windows Docker needs the host
+path visible to Docker. The script stops before remote commands if this field
+is missing. `voice.modelVolume` defaults to `chinese-speech-data` for Qwen.
+Chatterbox uses `voice.cacheMount`, default `huggingface-cache`, at `/hf`.
+Set `voice.image` when the host uses another image name.
+
+Qwen needs `faster-qwen3-tts` 0.3.2, qwen-tts 0.1.1,
 and CUDA PyTorch. It mounts the existing `chinese-speech-data` model volume
 and the private `vlog/voice` folder. It does not change the running speech
 service. Model files must already be present because generation runs offline.
