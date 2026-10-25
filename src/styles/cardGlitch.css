@@ -1,0 +1,79 @@
+/* Shared with the blog: four short takes on tearing, broken scanlines and color. */
+[data-glitch-image] { isolation: isolate; }
+.card-glitch__lines, .card-glitch__slice, .card-glitch__chroma {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.card-glitch__lines {
+  z-index: 2;
+  background: repeating-linear-gradient(180deg, rgba(23,20,35,.3) 0 2px, transparent 2px 4px);
+}
+.card-glitch__slice { z-index: 1; opacity: 0; }
+.card-glitch__slice img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: saturate(.75);
+}
+.card-glitch__slice--a { clip-path: inset(var(--tear-top,34%) 0 var(--tear-bottom,58%)); }
+.card-glitch__slice--b { clip-path: inset(var(--echo-top,64%) 0 var(--echo-bottom,31%)); }
+.card-glitch__chroma {
+  z-index: 2;
+  opacity: 0;
+  background: linear-gradient(transparent 0 43%,rgba(67,202,223,.2) 43% 43.8%,transparent 44% 47%,rgba(218,37,125,.18) 47% 47.8%,transparent 48%);
+}
+.card-glitch[data-card-glitch="0"] {
+  --glitch-duration: 1200ms; --tear-x: 5px; --echo-x: -4px; --color-y: -6px;
+  --tear-top: 34%; --tear-bottom: 58%; --echo-top: 64%; --echo-bottom: 31%;
+}
+.card-glitch[data-card-glitch="1"] {
+  --glitch-duration: 1500ms; --tear-x: -7px; --echo-x: 5px; --color-y: 9px;
+  --tear-top: 24%; --tear-bottom: 69%; --echo-top: 57%; --echo-bottom: 35%;
+}
+.card-glitch[data-card-glitch="2"] {
+  --glitch-duration: 1350ms; --tear-x: 8px; --echo-x: -3px; --color-y: -10px;
+  --tear-top: 47%; --tear-bottom: 44%; --echo-top: 74%; --echo-bottom: 22%;
+}
+.card-glitch[data-card-glitch="3"] {
+  --glitch-duration: 1600ms; --tear-x: -4px; --echo-x: 7px; --color-y: 5px;
+  --tear-top: 18%; --tear-bottom: 77%; --echo-top: 48%; --echo-bottom: 43%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .card-glitch[data-card-glitch] .card-glitch__lines {
+    animation: card-signal-break var(--glitch-duration) steps(1) both;
+  }
+  .card-glitch[data-card-glitch] .card-glitch__slice--a {
+    animation: card-tear var(--glitch-duration) steps(1) both;
+  }
+  .card-glitch[data-card-glitch] .card-glitch__slice--b {
+    animation: card-echo var(--glitch-duration) steps(1) both;
+  }
+  .card-glitch[data-card-glitch] .card-glitch__chroma {
+    animation: card-chroma var(--glitch-duration) steps(1) both;
+  }
+}
+@keyframes card-tear {
+  0%,16%,39%,100% { opacity: 0; transform: translateX(0); }
+  20% { opacity: 1; transform: translateX(var(--tear-x)); }
+  27% { opacity: 1; transform: translateX(calc(var(--tear-x) * -.6)); }
+  33% { opacity: 1; transform: translateX(calc(var(--tear-x) * .4)); }
+}
+@keyframes card-echo {
+  0%,26%,48%,100% { opacity: 0; transform: translateX(0); }
+  30% { opacity: 1; transform: translateX(var(--echo-x)); }
+  37% { opacity: 1; transform: translateX(calc(var(--echo-x) * -.6)); }
+  43% { opacity: 1; transform: translateX(calc(var(--echo-x) * .3)); }
+}
+@keyframes card-signal-break {
+  0%,18%,48%,100% { clip-path: inset(0); }
+  22% { clip-path: polygon(0 0,100% 0,100% 27%,0 27%,0 35%,100% 35%,100% 69%,0 69%,0 75%,100% 75%,100% 100%,0 100%); }
+  34% { clip-path: polygon(0 0,100% 0,100% 45%,0 45%,0 53%,100% 53%,100% 100%,0 100%); }
+}
+@keyframes card-chroma {
+  0%,18%,55%,100% { opacity: 0; transform: translateY(0); }
+  22% { opacity: .9; transform: translateY(var(--color-y)); }
+  35% { opacity: .6; transform: translateY(calc(var(--color-y) * -1)); }
+  45% { opacity: .8; transform: translateY(calc(var(--color-y) * .5)); }
+}
+
