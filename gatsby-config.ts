@@ -81,7 +81,8 @@ const config: GatsbyConfig = {
               // It's important to specify the maxWidth (in pixels) of
               // the in-post container as this plugin uses this as the
               // base for generating different widths of each image.
-              maxWidth: 590,
+              // The widest the post column gets (46 × 22px text). Smaller images keep their size.
+              maxWidth: 1012,
               wrapperStyle: `margin: 3rem auto;`,
             },
           },
